@@ -1,0 +1,19 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   all-style.css  –  Filter pills pagina All Cocktails
+══════════════════════════════════════════════════════════════════════════ */
+.all-filter-bar {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 24px; padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+}
+.filter-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px;
+    font-family: var(--font-sans); font-size: 0.78rem;
+    color: var(--text2); cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap; box-shadow: var(--shadow-sm);
+}
+.filter-pill:hover { background: var(--gold-pale); border-color: var(--border-gold); color: var(--text); }
+.filter-pill.active { background: rgba(184,149,42,0.14); border-color: var(--gold); color: var(--gold); font-weight: 600; }

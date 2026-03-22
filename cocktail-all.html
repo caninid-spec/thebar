@@ -7,54 +7,24 @@
     <link rel="stylesheet" href="core.css">
     <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="category-style.css">
+    <link rel="stylesheet" href="all-style.css">
     <script src="cocktails-data.js"></script>
     <script src="search-filter.js"></script>
-    <style>
-        .all-filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(180, 210, 190, 0.12);
-        }
-        .filter-pill {
-            background: #122a1e;
-            border: 1px solid rgba(180, 210, 190, 0.18);
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 0.78rem;
-            color: #a0b0a6;
-            cursor: pointer;
-            transition: background 0.15s, border-color 0.15s, color 0.15s;
-            white-space: nowrap;
-        }
-        .filter-pill:hover {
-            background: #183525;
-            border-color: rgba(192, 208, 196, 0.4);
-            color: #d4ddd6;
-        }
-        .filter-pill.active {
-            background: rgba(192, 208, 196, 0.12);
-            border-color: #c0d0c4;
-            color: #c0d0c4;
-        }
-    </style>
 </head>
 <body>
 
-<div class="container">
+<nav class="hub-nav">
+    <a href="index.html" class="back-link">← The Bar</a>
+</nav>
 
-    <nav class="hub-nav">
-        <a href="index.html" class="back-link">← The Bar</a>
-    </nav>
+<header class="cat-header">
+    <div class="cat-emoji">📖</div>
+    <h1 class="cat-title">All Cocktails</h1>
+    <p class="cat-subtitle">IBA · Difford's Guide · Nomad Cocktail Book</p>
+    <div class="cat-count" id="cat-count"></div>
+</header>
 
-    <header class="cat-header">
-        <div class="cat-emoji">📖</div>
-        <h1 class="cat-title">All Cocktails</h1>
-        <p class="cat-subtitle">IBA · Difford's Guide · Nomad Cocktail Book</p>
-        <div class="cat-count" id="cat-count"></div>
-    </header>
+<div class="container" style="padding: 28px 20px 60px;">
 
     <!-- Filter bar -->
     <div class="all-filter-bar">
@@ -76,11 +46,11 @@
         <div id="recipes-container"></div>
     </main>
 
-    <footer>
-        <p>The Bar · <a href="index.html">← Home</a></p>
-    </footer>
-
 </div>
+
+<footer>
+    <p>The Bar · <a href="index.html">← Home</a></p>
+</footer>
 
 <script>
 (function () {

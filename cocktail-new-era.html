@@ -12,31 +12,26 @@
 </head>
 <body>
 
-<div class="container">
+<nav class="hub-nav">
+    <a href="index.html" class="back-link">← The Bar</a>
+</nav>
 
-    <!-- Nav -->
-    <nav class="hub-nav">
-        <a href="index.html" class="back-link">← The Bar</a>
-    </nav>
+<header class="cat-header">
+    <div class="cat-emoji" id="cat-emoji">🍸</div>
+    <h1 class="cat-title" id="cat-title">Categoria</h1>
+    <p class="cat-subtitle" id="cat-subtitle"></p>
+    <div class="cat-count" id="cat-count"></div>
+</header>
 
-    <!-- Header categoria -->
-    <header class="cat-header">
-        <div class="cat-emoji" id="cat-emoji">🍸</div>
-        <h1 class="cat-title" id="cat-title">Categoria</h1>
-        <p class="cat-subtitle" id="cat-subtitle"></p>
-        <div class="cat-count" id="cat-count"></div>
-    </header>
-
-    <!-- Lista ricette -->
-    <main>
-        <div id="recipes-container"></div>
-    </main>
-
-    <footer>
-        <p>The Bar · <a href="index.html">← Home</a></p>
-    </footer>
-
+<div class="container" style="padding: 32px 20px 60px;">
+<main>
+    <div id="recipes-container"></div>
+</main>
 </div>
+
+<footer>
+    <p>The Bar · <a href="index.html">← Home</a></p>
+</footer>
 
 <script>
 (function () {

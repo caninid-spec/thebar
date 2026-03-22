@@ -12,9 +12,9 @@
 </head>
 <body>
 
-<div class="container">
-
-    <header>
+<!-- Header a tutta larghezza (verde smeraldo) -->
+<header>
+    <div class="container">
         <div class="logo">🍸</div>
         <h1>The Bar</h1>
         <p class="subtitle">Guida ai cocktail classici e contemporanei.<br>IBA · Difford's Guide · Nomad Cocktail Book</p>
@@ -24,163 +24,154 @@
             <div class="search-box">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="search-input" placeholder="Cerca un cocktail, uno spirit, un sapore…" autocomplete="off" spellcheck="false">
-                <button class="search-clear" id="search-clear" aria-label="Cancella ricerca" hidden>✕</button>
+                <button class="search-clear" id="search-clear" aria-label="Cancella" hidden>✕</button>
             </div>
             <p class="search-status" id="search-status"></p>
             <div class="search-dropdown" id="search-dropdown" hidden></div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main>
+<!-- Corpo avorio -->
+<div class="container">
+<main>
 
-        <!-- Feature card -->
-        <a href="cocktail-finder.html" class="feature-card">
-            <div class="feature-icon">🎯</div>
-            <div class="feature-body">
-                <h2>Trova il tuo cocktail di oggi</h2>
-                <p>Dimmi cosa hai nel bar e che voglia hai: ti trovo il cocktail perfetto.</p>
+    <!-- Feature card -->
+    <a href="cocktail-finder.html" class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-body">
+            <h2>Trova il tuo cocktail di oggi</h2>
+            <p>Dimmi cosa hai nel bar e che voglia hai: ti trovo il cocktail perfetto.</p>
+        </div>
+        <div class="feature-cta">Inizia <span class="arrow">→</span></div>
+    </a>
+
+    <!-- ════ IBA ════ -->
+    <div class="section-label">
+        <div class="section-label-line"></div>
+        <span>IBA Official Cocktails</span>
+        <div class="section-label-line"></div>
+    </div>
+
+    <div class="cards-grid">
+        <a href="cocktail-unforgettables.html" class="calc-card">
+            <div class="card-icon">✨</div>
+            <div class="card-body">
+                <h2>The Unforgettables</h2>
+                <p class="card-desc">I grandi classici che hanno fatto la storia del cocktail.</p>
+                <div class="card-count" id="count-unforgettables"></div>
             </div>
-            <div class="feature-cta">Inizia <span class="arrow">→</span></div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
         </a>
+        <a href="cocktail-contemporary.html" class="calc-card">
+            <div class="card-icon">🍸</div>
+            <div class="card-body">
+                <h2>The Contemporary Classics</h2>
+                <p class="card-desc">I classici moderni entrati nell'olimpo IBA tra gli anni '70 e '90.</p>
+                <div class="card-count" id="count-contemporary"></div>
+            </div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
+        </a>
+        <a href="cocktail-new-era.html" class="calc-card">
+            <div class="card-icon">🚀</div>
+            <div class="card-body">
+                <h2>The New Era Drinks</h2>
+                <p class="card-desc">I cocktail del XXI secolo: creativi, audaci, già iconici.</p>
+                <div class="card-count" id="count-new-era"></div>
+            </div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
+        </a>
+    </div>
 
-        <!-- ════ IBA ════ -->
-        <div class="section-label">
-            <div class="section-label-line"></div>
-            <span>IBA Official Cocktails</span>
-            <div class="section-label-line"></div>
-        </div>
+    <!-- ════ NOMAD ════ -->
+    <div class="section-label">
+        <div class="section-label-line"></div>
+        <span>Nomad Cocktail Book</span>
+        <div class="section-label-line"></div>
+    </div>
 
-        <div class="cards-grid">
+    <div class="cards-grid">
+        <a href="cocktail-aperitivi.html" class="calc-card">
+            <div class="card-icon">🥂</div>
+            <div class="card-body">
+                <h2>Aperitivi</h2>
+                <p class="card-desc">Leggeri, vivaci e invitanti. Per aprire la serata nel modo giusto.</p>
+                <div class="card-count" id="count-aperitivi"></div>
+            </div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
+        </a>
+        <a href="cocktail-light.html" class="calc-card">
+            <div class="card-icon">🌿</div>
+            <div class="card-body">
+                <h2>Light Spirited</h2>
+                <p class="card-desc">Cocktail delicati e rinfrescanti, a bassa gradazione alcolica.</p>
+                <div class="card-count" id="count-light"></div>
+            </div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
+        </a>
+        <a href="cocktail-dark.html" class="calc-card">
+            <div class="card-icon">🌑</div>
+            <div class="card-body">
+                <h2>Dark Spirited</h2>
+                <p class="card-desc">Distillati scuri, profondità e carattere. Per i palati più esigenti.</p>
+                <div class="card-count" id="count-dark"></div>
+            </div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
+        </a>
+        <a href="cocktail-classics.html" class="calc-card">
+            <div class="card-icon">🏛️</div>
+            <div class="card-body">
+                <h2>Classics</h2>
+                <p class="card-desc">La selezione Nomad dei grandi classici senza tempo.</p>
+                <div class="card-count" id="count-classics"></div>
+            </div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
+        </a>
+        <a href="cocktail-soft.html" class="calc-card">
+            <div class="card-icon">🌱</div>
+            <div class="card-body">
+                <h2>Soft Cocktails</h2>
+                <p class="card-desc">Senza alcol, ma senza compromessi sul gusto.</p>
+                <div class="card-count" id="count-soft"></div>
+            </div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
+        </a>
+        <a href="cocktail-basics.html" class="calc-card">
+            <div class="card-icon">🧪</div>
+            <div class="card-body">
+                <h2>Basics</h2>
+                <p class="card-desc">Sciroppi, cordiali e preparazioni base da avere sempre pronti.</p>
+                <div class="card-count" id="count-basics"></div>
+            </div>
+            <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
+        </a>
+    </div>
 
-            <a href="cocktail-unforgettables.html" class="calc-card">
-                <div class="card-icon">✨</div>
-                <div class="card-body">
-                    <h2>The Unforgettables</h2>
-                    <p class="card-desc">I grandi classici che hanno fatto la storia del cocktail.</p>
-                    <div class="card-count" id="count-unforgettables"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
+    <!-- ════ ALL COCKTAILS ════ -->
+    <div class="section-label">
+        <div class="section-label-line"></div>
+        <span>Archivio completo</span>
+        <div class="section-label-line"></div>
+    </div>
 
-            <a href="cocktail-contemporary.html" class="calc-card">
-                <div class="card-icon">🍸</div>
-                <div class="card-body">
-                    <h2>The Contemporary Classics</h2>
-                    <p class="card-desc">I classici moderni entrati nell'olimpo IBA tra gli anni '70 e '90.</p>
-                    <div class="card-count" id="count-contemporary"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
+    <div class="cards-grid">
+        <a href="cocktail-all.html" class="calc-card calc-card--all">
+            <div class="card-icon">📖</div>
+            <div class="card-body">
+                <h2>All Cocktails</h2>
+                <p class="card-desc">Tutti i cocktail in un'unica lista: IBA, Difford's Guide e Nomad. Filtrabile e ricercabile.</p>
+                <div class="card-count" id="count-all"></div>
+            </div>
+            <div class="card-cta">Sfoglia tutto <span class="arrow">→</span></div>
+        </a>
+    </div>
 
-            <a href="cocktail-new-era.html" class="calc-card">
-                <div class="card-icon">🚀</div>
-                <div class="card-body">
-                    <h2>The New Era Drinks</h2>
-                    <p class="card-desc">I cocktail del XXI secolo: creativi, audaci, già iconici.</p>
-                    <div class="card-count" id="count-new-era"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
-
-        </div>
-
-        <!-- ════ NOMAD ════ -->
-        <div class="section-label">
-            <div class="section-label-line"></div>
-            <span>Nomad Cocktail Book</span>
-            <div class="section-label-line"></div>
-        </div>
-
-        <div class="cards-grid">
-
-            <a href="cocktail-aperitivi.html" class="calc-card">
-                <div class="card-icon">🥂</div>
-                <div class="card-body">
-                    <h2>Aperitivi</h2>
-                    <p class="card-desc">Leggeri, vivaci e invitanti. Per aprire la serata nel modo giusto.</p>
-                    <div class="card-count" id="count-aperitivi"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
-
-            <a href="cocktail-light.html" class="calc-card">
-                <div class="card-icon">🌿</div>
-                <div class="card-body">
-                    <h2>Light Spirited</h2>
-                    <p class="card-desc">Cocktail delicati e rinfrescanti, a bassa gradazione alcolica.</p>
-                    <div class="card-count" id="count-light"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
-
-            <a href="cocktail-dark.html" class="calc-card">
-                <div class="card-icon">🌑</div>
-                <div class="card-body">
-                    <h2>Dark Spirited</h2>
-                    <p class="card-desc">Distillati scuri, profondità e carattere. Per i palati più esigenti.</p>
-                    <div class="card-count" id="count-dark"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
-
-            <a href="cocktail-classics.html" class="calc-card">
-                <div class="card-icon">🏛️</div>
-                <div class="card-body">
-                    <h2>Classics</h2>
-                    <p class="card-desc">La selezione Nomad dei grandi classici senza tempo.</p>
-                    <div class="card-count" id="count-classics"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
-
-            <a href="cocktail-soft.html" class="calc-card">
-                <div class="card-icon">🌱</div>
-                <div class="card-body">
-                    <h2>Soft Cocktails</h2>
-                    <p class="card-desc">Senza alcol, ma senza compromessi sul gusto.</p>
-                    <div class="card-count" id="count-soft"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
-
-            <a href="cocktail-basics.html" class="calc-card">
-                <div class="card-icon">🧪</div>
-                <div class="card-body">
-                    <h2>Basics</h2>
-                    <p class="card-desc">Sciroppi, cordiali e preparazioni base da avere sempre pronti.</p>
-                    <div class="card-count" id="count-basics"></div>
-                </div>
-                <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
-            </a>
-
-        </div>
-
-        <!-- ════ ALL COCKTAILS ════ -->
-        <div class="section-label">
-            <div class="section-label-line"></div>
-            <span>Archivio completo</span>
-            <div class="section-label-line"></div>
-        </div>
-
-        <div class="cards-grid">
-            <a href="cocktail-all.html" class="calc-card calc-card--all">
-                <div class="card-icon">📖</div>
-                <div class="card-body">
-                    <h2>All Cocktails</h2>
-                    <p class="card-desc">Tutti i cocktail in un'unica lista: IBA, Difford's Guide e Nomad. Filtrabile e ricercabile.</p>
-                    <div class="card-count" id="count-all"></div>
-                </div>
-                <div class="card-cta">Sfoglia tutto <span class="arrow">→</span></div>
-            </a>
-        </div>
-
-    </main>
-
-    <footer>
-        <p>The Bar · Basato su <strong>IBA Official Cocktails</strong>, <strong>Difford's Guide</strong> e <strong>Nomad Cocktail Book</strong></p>
-    </footer>
-
+</main>
 </div>
+
+<footer>
+    <p>The Bar · <strong>IBA Official Cocktails</strong> · <strong>Difford's Guide</strong> · <strong>Nomad Cocktail Book</strong></p>
+</footer>
 
 <script>
 (function () {
