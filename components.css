@@ -51,7 +51,7 @@
     line-height: 1;
     margin-bottom: 14px;
     display: block;
-    filter: drop-shadow(0 2px 8px rgba(201,168,76,0.3));
+    filter: drop-shadow(0 2px 8px rgba(192,208,196,0.3));
 }
 
 .card-body { flex: 1; }
@@ -221,7 +221,7 @@ article.recipe-card:hover { border-color: var(--border-gold); }
     border: 1px solid var(--border);
 }
 
-.badge--iba { background: rgba(201,168,76,0.12); color: var(--gold); border-color: var(--border-gold); }
+.badge--iba { background: rgba(192,208,196,0.12); color: var(--gold); border-color: var(--border-gold); }
 .badge--difford { background: rgba(100,160,255,0.1); color: #6fa0e0; border-color: rgba(100,160,255,0.2); }
 .badge--spirit { background: rgba(180,100,200,0.1); color: #c880e0; border-color: rgba(180,100,200,0.2); }
 .badge--light { background: rgba(100,200,160,0.1); color: #6ec8a0; border-color: rgba(100,200,160,0.2); }
@@ -230,7 +230,7 @@ article.recipe-card:hover { border-color: var(--border-gold); }
 .badge--sour { background: rgba(200,230,80,0.1); color: #c0d060; border-color: rgba(200,230,80,0.2); }
 .badge--dry { background: rgba(160,180,200,0.1); color: #a0b4c8; border-color: rgba(160,180,200,0.2); }
 .badge--fruity { background: rgba(230,100,130,0.1); color: #e08090; border-color: rgba(230,100,130,0.2); }
-.badge--category { background: rgba(201,168,76,0.07); color: var(--silver2); border-color: var(--border-gold); }
+.badge--category { background: rgba(192,208,196,0.07); color: var(--silver2); border-color: var(--border-gold); }
 
 .recipe-chevron {
     color: var(--muted);
@@ -272,7 +272,7 @@ article.recipe-card.open .recipe-body { display: block; }
 }
 
 .sub-card--info {
-    background: rgba(201,168,76,0.05);
+    background: rgba(192,208,196,0.05);
     border-color: var(--border-gold);
 }
 
@@ -394,8 +394,8 @@ article.recipe-card.open .recipe-body { display: block; }
     display: flex;
     align-items: center;
     gap: 20px;
-    background: linear-gradient(135deg, rgba(201,168,76,0.1) 0%, rgba(201,168,76,0.04) 100%);
-    border: 1px solid rgba(201,168,76,0.3);
+    background: linear-gradient(135deg, rgba(192,208,196,0.1) 0%, rgba(192,208,196,0.04) 100%);
+    border: 1px solid rgba(192,208,196,0.3);
     border-radius: 16px;
     padding: 24px 28px;
     text-decoration: none;
@@ -404,7 +404,7 @@ article.recipe-card.open .recipe-body { display: block; }
 }
 
 .feature-card:hover {
-    border-color: rgba(201,168,76,0.6);
+    border-color: rgba(192,208,196,0.6);
     transform: translateY(-2px);
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
@@ -465,9 +465,30 @@ article.recipe-card.open .recipe-body { display: block; }
 
 /* All Cocktails card accent */
 .calc-card--all {
-    border-color: rgba(201,168,76,0.2);
-    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, var(--surface) 60%);
+    border-color: rgba(192,208,196,0.2);
+    background: linear-gradient(135deg, rgba(192,208,196,0.06) 0%, var(--surface) 60%);
 }
 .calc-card--all:hover {
     border-color: var(--gold);
 }
+
+
+/* Hub nav */
+.hub-nav {padding: 10px 0 0; margin-bottom: -10px;}
+
+.hub-nav a {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    background: var(--paper);
+    padding: 5px 11px;
+    border-radius: 20px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-sm);
+    transition: color 0.18s;
+}
+
+.hub-nav a:hover { color: var(--accent); }
+.hub-nav-sep { font-size: 0.7rem; color: var(--muted); }

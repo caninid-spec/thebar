@@ -91,13 +91,13 @@
 }
 
 .chip:hover {
-    background: rgba(201,168,76,0.08);
-    border-color: rgba(201,168,76,0.25);
+    background: rgba(192,208,196,0.08);
+    border-color: rgba(192,208,196,0.25);
     color: var(--silver);
 }
 
 .chip--active {
-    background: rgba(201,168,76,0.15) !important;
+    background: rgba(192,208,196,0.15) !important;
     border-color: var(--gold) !important;
     color: var(--gold) !important;
 }
@@ -182,7 +182,7 @@
 }
 
 .result-card:hover {
-    border-color: rgba(201,168,76,0.45);
+    border-color: rgba(192,208,196,0.45);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
@@ -243,8 +243,8 @@
 }
 
 .spirit-tag--match {
-    background: rgba(201,168,76,0.12);
-    border-color: rgba(201,168,76,0.3);
+    background: rgba(192,208,196,0.12);
+    border-color: rgba(192,208,196,0.3);
     color: var(--gold);
 }
 

@@ -97,8 +97,8 @@
                 position: sticky;
                 top: 0;
                 z-index: 100;
-                background: rgba(26,28,30,0.97);
-                border-bottom: 1px solid rgba(201,168,76,0.25);
+                background: rgba(9,21,16,0.97);
+                border-bottom: 1px solid rgba(192,208,196,0.25);
                 padding: 10px 20px;
                 backdrop-filter: blur(10px);
             }
@@ -118,10 +118,10 @@
                 min-width: 0;
                 font-family: var(--font-sans, sans-serif);
             }
-            .sfb-text strong { color: var(--gold, #c9a84c); }
+            .sfb-text strong { color: var(--gold, #c0d0c4); }
             .sfb-link {
                 font-size: 0.78rem;
-                color: var(--gold, #c9a84c);
+                color: var(--gold, #c0d0c4);
                 text-decoration: none;
                 white-space: nowrap;
                 font-weight: 500;
@@ -130,7 +130,7 @@
             .sfb-link:hover { text-decoration: underline; }
             .sfb-clear {
                 background: none;
-                border: 1px solid rgba(201,168,76,0.25);
+                border: 1px solid rgba(192,208,196,0.25);
                 border-radius: 20px;
                 padding: 3px 12px;
                 font-size: 0.75rem;
@@ -141,8 +141,8 @@
                 transition: background 0.15s, color 0.15s;
             }
             .sfb-clear:hover {
-                background: rgba(201,168,76,0.1);
-                color: var(--gold, #c9a84c);
+                background: rgba(192,208,196,0.1);
+                color: var(--gold, #c0d0c4);
             }
             article.recipe-card.sf-nomatch {
                 opacity: 0.2;
@@ -152,8 +152,8 @@
             }
             article.recipe-card.sf-match {
                 opacity: 1;
-                border-color: rgba(201,168,76,0.4) !important;
-                box-shadow: 0 0 0 2px rgba(201,168,76,0.1);
+                border-color: rgba(192,208,196,0.4) !important;
+                box-shadow: 0 0 0 2px rgba(192,208,196,0.1);
                 transition: opacity 0.2s;
             }
         `;

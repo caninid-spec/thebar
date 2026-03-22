@@ -5,39 +5,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Cinzel:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
 
 :root {
-    /* Palette principale — silver/grigio raffinato */
-    --bg:          #1a1c1e;
-    --bg2:         #141618;
-    --surface:     #222428;
-    --surface2:    #2a2d32;
-    --surface3:    #32363c;
-    --silver:      #c8cdd6;
-    --silver2:     #9aa0ac;
-    --silver3:     #6b7280;
-    --gold:        #c9a84c;
-    --gold2:       #e8c96a;
-    --gold-pale:   rgba(201,168,76,0.1);
-    --accent:      #c9a84c;
-    --accent2:     #e8c96a;
-    --text:        #e8eaed;
-    --text2:       #b8bdc6;
-    --muted:       #7a8090;
-    --border:      rgba(200,205,214,0.12);
-    --border-soft: rgba(255,255,255,0.06);
-    --border-gold: rgba(201,168,76,0.25);
+    /* Palette principale — verde smeraldo */
+    --bg:          #0d1f18;
+    --bg2:         #091510;
+    --surface:     #122a1e;
+    --surface2:    #183525;
+    --surface3:    #1e3f2c;
+    --silver:      #d4ddd6;
+    --silver2:     #a0b0a6;
+    --silver3:     #6b7d72;
+    --gold:        #c0d0c4;   /* accento silver/argento */
+    --gold2:       #e0ece4;   /* argento chiaro */
+    --gold-pale:   rgba(192,208,196,0.10);
+    --accent:      #c0d0c4;
+    --accent2:     #e0ece4;
+    --text:        #e4ede7;
+    --text2:       #b4c4ba;
+    --muted:       #6a8070;
+    --border:      rgba(180,210,190,0.12);
+    --border-soft: rgba(255,255,255,0.05);
+    --border-gold: rgba(192,208,196,0.28);
     --error:       #e05c4b;
-    --shadow:      0 4px 24px rgba(0,0,0,0.4);
-    --shadow-lg:   0 16px 56px rgba(0,0,0,0.5);
-    --shadow-sm:   0 2px 12px rgba(0,0,0,0.25);
+    --shadow:      0 4px 24px rgba(0,0,0,0.5);
+    --shadow-lg:   0 16px 56px rgba(0,0,0,0.6);
+    --shadow-sm:   0 2px 12px rgba(0,0,0,0.35);
     --radius:      10px;
     --radius-lg:   16px;
 
     /* Palette estesa */
-    --paper:       #222428;
-    --paper2:      #2a2d32;
-    --ink:         #e8eaed;
-    --ink2:        #b8bdc6;
-    --accent-pale: rgba(201,168,76,0.08);
+    --paper:       #122a1e;
+    --paper2:      #183525;
+    --ink:         #e4ede7;
+    --ink2:        #b4c4ba;
+    --accent-pale: rgba(192,208,196,0.08);
 
     /* Font */
     --font-display:     'Cinzel', 'Playfair Display', serif;
@@ -64,7 +64,7 @@ body {
 
 body.calc-page {
     padding: 20px 16px 60px;
-    background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(40,120,70,0.10) 0%, transparent 70%);
 }
 
 .container      { max-width: 1100px; margin: 0 auto; width: 100%; }

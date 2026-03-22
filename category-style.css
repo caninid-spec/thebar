@@ -65,12 +65,12 @@ article.recipe-card {
 }
 
 article.recipe-card:hover {
-    border-color: rgba(201, 168, 76, 0.3);
+    border-color: rgba(192, 208, 196, 0.3);
 }
 
 article.recipe-card--highlight {
-    border-color: rgba(201, 168, 76, 0.5);
-    box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.12);
+    border-color: rgba(192, 208, 196, 0.5);
+    box-shadow: 0 0 0 2px rgba(192, 208, 196, 0.12);
 }
 
 /* ── Toggle header ── */

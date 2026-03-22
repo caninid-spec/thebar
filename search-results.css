@@ -15,15 +15,14 @@
 }
 
 .back-link {
-    display: inline-block;
     color: var(--silver2);
     text-decoration: none;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     font-family: var(--font-sans);
-    margin-bottom: 8px;
     transition: color 0.15s;
 }
 .back-link:hover { color: var(--gold); }
+
 
 .results-title {
     font-family: var(--font-display);
@@ -186,7 +185,7 @@
 }
 
 .result-card:hover {
-    border-color: rgba(201, 168, 76, 0.4);
+    border-color: rgba(192, 208, 196, 0.4);
     transform: translateX(3px);
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
@@ -234,8 +233,8 @@
 }
 
 .result-tag--iba {
-    background: rgba(201,168,76,0.12);
-    border-color: rgba(201,168,76,0.25);
+    background: rgba(192,208,196,0.12);
+    border-color: rgba(192,208,196,0.25);
     color: var(--gold);
 }
 
