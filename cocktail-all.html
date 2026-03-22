@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Cocktails — The Bar</title>
+    <link rel="stylesheet" href="core.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="category-style.css">
+    <link rel="stylesheet" href="all-style.css">
+    <script src="cocktails-data.js"></script>
+    <script src="search-filter.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <nav class="cat-nav">
+        <a href="index.html" class="back-link">← The Bar</a>
+    </nav>
+
+    <header class="cat-header">
+        <div class="cat-emoji">📖</div>
+        <h1 class="cat-title">All Cocktails</h1>
+        <p class="cat-subtitle">IBA · Difford's Guide · Nomad Cocktail Book</p>
+        <div class="cat-count" id="cat-count"></div>
+    </header>
+
+    <!-- Filter bar -->
+    <div class="all-filter-bar">
+        <button class="filter-pill filter-pill--active" data-filter="all">Tutti</button>
+        <button class="filter-pill" data-filter="iba">IBA</button>
+        <button class="filter-pill" data-filter="difford">Difford's</button>
+        <button class="filter-pill" data-filter="unforgettables">Unforgettables</button>
+        <button class="filter-pill" data-filter="contemporary">Contemporary</button>
+        <button class="filter-pill" data-filter="new_era">New Era</button>
+        <button class="filter-pill" data-filter="aperitivi">Aperitivi</button>
+        <button class="filter-pill" data-filter="light">Light</button>
+        <button class="filter-pill" data-filter="dark">Dark</button>
+        <button class="filter-pill" data-filter="classics">Classics</button>
+        <button class="filter-pill" data-filter="soft">Soft</button>
+        <button class="filter-pill" data-filter="basics">Basics</button>
+    </div>
+
+    <main>
+        <div id="recipes-container"></div>
+    </main>
+
+    <footer>
+        <p>The Bar · <a href="index.html">← Home</a></p>
+    </footer>
+
+</div>
+
+<script>
+(function () {
+
+    const GLASS_EMOJI = {
+        coupe:'🍷', rocks:'🥃', highball:'🥤', flute:'🥂',
+        martini:'🍸', 'nick&nora':'🍸', hurricane:'🌀', mule:'🍺',
+        wine:'🍷', shot:'🥃', champagne:'🥂', none:''
+    };
+    const SERVE_LABEL = { stirred:'Mescolato', shaken:'Shakeraro', built:'Costruito', blended:'Frullato' };
+
+    function renderRecipeCard(c) {
+        const hasDouble = c.recipeIBA && c.recipeDifford;
+        const recipe = c.recipeIBA || c.recipeDifford || c.recipe;
+
+        const badges = [];
+        if (c.iba)    badges.push('<span class="badge badge--iba">IBA</span>');
+        if (c.difford && !c.iba) badges.push('<span class="badge badge--difford">Difford\'s</span>');
+        if (hasDouble) badges.push('<span class="badge badge--double">2 versioni</span>');
+
+        const cats = [c.ibaCategory, c.nomadCategory].filter(Boolean);
+        const catLabels = { unforgettables:'Unforgettables', contemporary:'Contemporary', new_era:'New Era', aperitivi:'Aperitivi', light:'Light', dark:'Dark', classics:'Classics', soft:'Soft', basics:'Basics' };
+
+        return `
+        <article class="recipe-card"
+                 data-iba="${c.iba}"
+                 data-difford="${c.difford}"
+                 data-iba-cat="${c.ibaCategory||''}"
+                 data-nomad-cat="${c.nomadCategory||''}">
+            <div class="recipe-toggle" role="button" tabindex="0" aria-expanded="false">
+                <div class="recipe-toggle-left">
+                    <span class="recipe-emoji">${c.emoji}</span>
+                    <div class="recipe-toggle-info">
+                        <h3>${c.name}</h3>
+                        <p class="recipe-tagline">${c.tagline}</p>
+                    </div>
+                </div>
+                <div class="recipe-toggle-right">
+                    <div class="recipe-badges">
+                        ${badges.join('')}
+                        ${cats.map(cat => `<span class="badge badge--category">${catLabels[cat]||cat}</span>`).join('')}
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+            </div>
+
+            <div class="recipe-body">
+                <div class="quick-specs">
+                    ${c.glass && c.glass !== 'none' ? `<span class="qs-item">${GLASS_EMOJI[c.glass]||''} ${c.glass}</span>` : ''}
+                    ${c.serve ? `<span class="qs-item">⚗️ ${SERVE_LABEL[c.serve]||c.serve}</span>` : ''}
+                    ${c.ice && c.ice !== 'none' ? `<span class="qs-item">🧊 ${c.ice}</span>` : ''}
+                    ${c.garnish && c.garnish !== 'Nessuno' ? `<span class="qs-item">🌿 ${c.garnish}</span>` : ''}
+                </div>
+
+                ${renderIngredientsList(c)}
+
+                ${recipe ? `
+                <div class="body-method">
+                    <span class="method-mini-label">Metodo</span>
+                    <p>${recipe.method}</p>
+                    ${recipe.notes ? `<p class="method-notes">💡 ${recipe.notes}</p>` : ''}
+                </div>` : ''}
+
+                ${hasDouble ? `
+                <div class="double-version-hint">
+                    <a href="cocktail-recipe.html?id=${c.id}" class="btn btn--ghost">
+                        📖 Vedi entrambe le versioni IBA & Difford's →
+                    </a>
+                </div>` : `
+                <div class="recipe-full-link">
+                    <a href="cocktail-recipe.html?id=${c.id}" class="btn btn--ghost">Scheda completa →</a>
+                </div>`}
+
+                ${c.description ? `<p class="recipe-desc">${c.description}</p>` : ''}
+            </div>
+        </article>`;
+    }
+
+    function renderIngredientsList(c) {
+        const recipe = c.recipeIBA || c.recipeDifford || c.recipe;
+        if (!recipe || !recipe.ingredients) return '';
+        const label = c.recipeIBA ? '✨ IBA' : (c.recipeDifford ? "📖 Difford's" : '');
+        return `
+        <div class="body-ingredients">
+            ${label ? `<div class="ing-version-label">${label}</div>` : ''}
+            ${recipe.ingredients.map(i => `
+            <div class="ing-row">
+                <span class="ing-amount">${i.amount}</span>
+                <span class="ing-item">${i.item}</span>
+            </div>`).join('')}
+        </div>`;
+    }
+
+    // Render tutti
+    const container = document.getElementById('recipes-container');
+    container.innerHTML = COCKTAILS.map(renderRecipeCard).join('');
+
+    // Contatore
+    document.getElementById('cat-count').textContent = COCKTAILS.length + ' cocktail';
+
+    // Toggle
+    document.querySelectorAll('.recipe-toggle').forEach(toggle => {
+        const open = () => {
+            const card = toggle.closest('.recipe-card');
+            const isOpen = card.classList.toggle('open');
+            toggle.setAttribute('aria-expanded', isOpen);
+            const icon = toggle.querySelector('.toggle-icon');
+            if (icon) icon.textContent = isOpen ? '▲' : '▼';
+        };
+        toggle.addEventListener('click', open);
+        toggle.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+
+    // Filter pills
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('filter-pill--active'));
+            pill.classList.add('filter-pill--active');
+
+            const f = pill.dataset.filter;
+            const cards = document.querySelectorAll('article.recipe-card');
+            let visible = 0;
+
+            cards.forEach(card => {
+                let show = false;
+                if (f === 'all') {
+                    show = true;
+                } else if (f === 'iba') {
+                    show = card.dataset.iba === 'true';
+                } else if (f === 'difford') {
+                    show = card.dataset.difford === 'true';
+                } else {
+                    show = card.dataset.ibaCat === f || card.dataset.nomadCat === f;
+                }
+                card.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+
+            document.getElementById('cat-count').textContent = visible + ' cocktail';
+        });
+    });
+
+})();
+</script>
+
+</body>
+</html>
