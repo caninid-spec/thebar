@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bar — Cocktail Guide</title>
+    <link rel="stylesheet" href="core.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="home-style.css">
+    <script src="cocktails-data.js"></script>
+    <script src="search-index.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="logo">🍸</div>
+        <h1>The Bar</h1>
+        <p class="subtitle">Guida ai cocktail classici e contemporanei.<br>IBA · Difford's Guide · Nomad Cocktail Book</p>
+        <div class="divider"></div>
+
+        <!-- Barra di ricerca -->
+        <div class="search-wrapper">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search-input" placeholder="Cerca un cocktail, uno spirit, un sapore…" autocomplete="off" spellcheck="false">
+                <button class="search-clear" id="search-clear" aria-label="Cancella ricerca" hidden>✕</button>
+            </div>
+            <p class="search-status" id="search-status"></p>
+            <div class="search-dropdown" id="search-dropdown" hidden></div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ════ FEATURE CARD: TROVA IL TUO COCKTAIL ════ -->
+        <a href="cocktail-finder.html" class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-body">
+                <h2>Trova il tuo cocktail di oggi</h2>
+                <p>Dimmi cosa hai nel bar e che voglia hai: ti trovo il cocktail perfetto.</p>
+            </div>
+            <div class="feature-cta">Inizia <span class="arrow">→</span></div>
+        </a>
+
+        <!-- ════ IBA: THE UNFORGETTABLES ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>✨ The Unforgettables</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">I 35 grandi classici IBA. Il cuore della storia del cocktail.</p>
+
+        <div class="cards-grid" id="grid-unforgettables"></div>
+
+        <!-- ════ IBA: THE CONTEMPORARY CLASSICS ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>🍸 The Contemporary Classics</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">I classici moderni entrati nell'olimpo IBA tra gli anni '70 e '90.</p>
+
+        <div class="cards-grid" id="grid-contemporary"></div>
+
+        <!-- ════ IBA: THE NEW ERA ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>🚀 The New Era Drinks</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">I cocktail del XXI secolo: creativi, audaci, già iconici.</p>
+
+        <div class="cards-grid" id="grid-new-era"></div>
+
+        <!-- ════ NOMAD: APERITIVI ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>🥂 Aperitivi</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">Leggeri, vivaci e invitanti. Per aprire la serata nel modo giusto.</p>
+
+        <div class="cards-grid" id="grid-aperitivi"></div>
+
+        <!-- ════ NOMAD: LIGHT SPIRITED ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>🌿 Light Spirited</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">Cocktail delicati e rinfrescanti, a bassa gradazione alcolica.</p>
+
+        <div class="cards-grid" id="grid-light"></div>
+
+        <!-- ════ NOMAD: DARK SPIRITED ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>🌑 Dark Spirited</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">Distillati scuri, profondità e carattere. Per i palati più esigenti.</p>
+
+        <div class="cards-grid" id="grid-dark"></div>
+
+        <!-- ════ NOMAD: CLASSICS ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>🏛️ Classics</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">La selezione Nomad dei grandi classici senza tempo.</p>
+
+        <div class="cards-grid" id="grid-classics"></div>
+
+        <!-- ════ NOMAD: SOFT COCKTAILS ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>🌱 Soft Cocktails</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">Senza alcol, ma senza compromessi sul gusto.</p>
+
+        <div class="cards-grid" id="grid-soft"></div>
+
+        <!-- ════ NOMAD: BASICS ════ -->
+        <div class="section-label">
+            <div class="section-label-line"></div>
+            <span>🧪 Basics</span>
+            <div class="section-label-line"></div>
+        </div>
+        <p class="section-desc">Sciroppi, cordiali e preparazioni base da avere sempre a portata di mano.</p>
+
+        <div class="cards-grid" id="grid-basics"></div>
+
+    </main>
+
+    <footer>
+        <p>The Bar · Basato su <strong>IBA Official Cocktails</strong>, <strong>Difford's Guide</strong> e <strong>Nomad Cocktail Book</strong></p>
+    </footer>
+
+</div>
+
+<script>
+(function () {
+    // Mappa delle griglie
+    const GRIDS = [
+        { id: 'grid-unforgettables', list: IBA_UNFORGETTABLES,  page: 'cocktail-unforgettables.html' },
+        { id: 'grid-contemporary',   list: IBA_CONTEMPORARY,    page: 'cocktail-contemporary.html' },
+        { id: 'grid-new-era',        list: IBA_NEW_ERA,         page: 'cocktail-new-era.html' },
+        { id: 'grid-aperitivi',      list: NOMAD_APERITIVI,     page: 'cocktail-aperitivi.html' },
+        { id: 'grid-light',          list: NOMAD_LIGHT,         page: 'cocktail-light.html' },
+        { id: 'grid-dark',           list: NOMAD_DARK,          page: 'cocktail-dark.html' },
+        { id: 'grid-classics',       list: NOMAD_CLASSICS,      page: 'cocktail-classics.html' },
+        { id: 'grid-soft',           list: NOMAD_SOFT,          page: 'cocktail-soft.html' },
+        { id: 'grid-basics',         list: NOMAD_BASICS,        page: 'cocktail-basics.html' },
+    ];
+
+    function strengthLabel(s) {
+        const map = { light: 'Leggero', medium: 'Medio', strong: 'Forte', 'spirit-forward': 'Spirit-forward', none: '' };
+        return map[s] || s || '';
+    }
+
+    function badgesHtml(c) {
+        const b = [];
+        if (c.iba)    b.push('<span class="badge badge--iba">IBA</span>');
+        if (c.difford && !c.iba) b.push('<span class="badge badge--difford">Difford\'s</span>');
+        if (c.difford && c.iba) b.push('<span class="badge badge--difford">+ Difford\'s</span>');
+        return b.join('');
+    }
+
+    function tasteChips(c) {
+        return (c.taste || []).slice(0, 3).map(t =>
+            `<span class="badge badge--taste">${t}</span>`
+        ).join('');
+    }
+
+    function renderCard(c) {
+        const sl = strengthLabel(c.strength);
+        return `
+        <a href="cocktail-recipe.html?id=${c.id}" class="calc-card" data-search="${[c.name, ...(c.baseSpirits||[]), ...(c.ingredients||[]), ...(c.taste||[])].join(' ')}">
+            <div class="card-icon">${c.emoji}</div>
+            <div class="card-body">
+                <h2>${c.name}</h2>
+                <p class="card-desc">${c.tagline}</p>
+                <div class="card-badges">
+                    ${badgesHtml(c)}
+                    ${tasteChips(c)}
+                    ${sl ? `<span class="badge badge--strength">${sl}</span>` : ''}
+                </div>
+                <div class="card-spirits">${(c.baseSpirits||[]).slice(0,3).map(s => `<span class="spirit-tag">${s}</span>`).join('')}</div>
+            </div>
+            <div class="card-cta">Ricetta <span class="arrow">→</span></div>
+        </a>`;
+    }
+
+    GRIDS.forEach(({ id, list }) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (!list || list.length === 0) {
+            el.innerHTML = '<p class="empty-section">Nessuna ricetta in questa sezione.</p>';
+            return;
+        }
+        el.innerHTML = list.map(renderCard).join('');
+    });
+})();
+</script>
+
+</body>
+</html>

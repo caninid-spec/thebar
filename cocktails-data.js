@@ -1,0 +1,3155 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   cocktails-data.js  —  Database principale di tutti i cocktail
+   
+   Struttura di ogni cocktail:
+   {
+     id:          slug unico (es. "negroni")
+     name:        nome del cocktail
+     emoji:       emoji rappresentativa
+     tagline:     breve descrizione
+     
+     // Fonti
+     iba:         true/false — è nella lista IBA
+     difford:     true/false — è nella Difford's Guide
+     ibaCategory: categoria IBA ("unforgettables"|"contemporary"|"new_era")
+     nomadCategory: categoria Nomad ("aperitivi"|"light"|"dark"|"classics"|"soft"|"basics")
+     
+     // Ingredienti principali (per la funzione "trova il tuo cocktail")
+     baseSpirits:  ["gin","vermouth",...] — spirits principali
+     ingredients:  ["campari","olive brine",...] — altri ingredienti
+     
+     // Caratteristiche
+     taste:       ["dry","bitter","..."] — profilo gusto
+     strength:    "light"|"medium"|"strong"|"spirit-forward"
+     style:       "short"|"long"|"shot"|"sparkling"
+     serve:       "stirred"|"shaken"|"built"|"blended"
+     glass:       "coupe"|"rocks"|"highball"|"flute"|"nick&nora"|"martini"|"hurricane"|"mule"|"champagne"|"wine"|"shot"
+     ice:         "none"|"cubed"|"large cube"|"crushed"|"sphere"|"blended"
+     garnish:     stringa
+     
+     // Ricette
+     recipeIBA:   { ingredients: [...], method: "...", notes: "..." }
+     recipeDifford: { ingredients: [...], method: "...", notes: "..." }
+     recipe:      { ingredients: [...], method: "...", notes: "..." }  // se solo uno
+     
+     // Descrizione
+     description: testo descrittivo
+     history:     storia del cocktail
+   }
+══════════════════════════════════════════════════════════════════════════ */
+
+const COCKTAILS = [
+
+  /* ════════════════════════════════════
+     IBA — THE UNFORGETTABLES
+  ════════════════════════════════════ */
+
+  {
+    id: "alexander",
+    name: "Alexander",
+    emoji: "🍫",
+    tagline: "Crema, cioccolato e cognac in un classico elegante",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["cognac"],
+    ingredients: ["crème de cacao", "heavy cream"],
+    taste: ["sweet", "creamy", "chocolate"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Noce moscata grattugiata",
+    recipeIBA: {
+      ingredients: [
+        { amount: "3 cl", item: "Cognac" },
+        { amount: "3 cl", item: "Crème de cacao scuro" },
+        { amount: "3 cl", item: "Panna fresca" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in una coppa fredda.",
+      notes: "Guarnire con noce moscata grattugiata al momento."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "5 cl", item: "Cognac" },
+        { amount: "2.5 cl", item: "Crème de cacao bianco" },
+        { amount: "2.5 cl", item: "Panna fresca" }
+      ],
+      method: "Shakerare con forza con ghiaccio. Doppia filtrazione in coppa.",
+      notes: "Difford preferisce il crème de cacao bianco per un risultato più delicato. Shaker energico per incorporare la panna."
+    },
+    description: "Un classico indelebile della storia dei cocktail, l'Alexander nasce nei primi anni del '900. Cremoso, dolce e avvolgente.",
+    history: "La versione originale con gin risale al 1915, poi reinterpretata con brandy durante il proibizionismo."
+  },
+
+  {
+    id: "americano",
+    name: "Americano",
+    emoji: "🇮🇹",
+    tagline: "Il padre del Negroni: amaro, dolce e frizzante",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["campari", "sweet vermouth"],
+    ingredients: ["soda water"],
+    taste: ["bitter", "sweet", "herbal", "refreshing"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "rocks",
+    ice: "cubed",
+    garnish: "Fetta d'arancia, scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "3 cl", item: "Campari" },
+        { amount: "3 cl", item: "Vermouth rosso dolce" },
+        { amount: "q.b.", item: "Acqua tonica/seltz" }
+      ],
+      method: "Costruire nel bicchiere con ghiaccio. Aggiungere il seltz per ultimo. Mescolare delicatamente.",
+      notes: "Variazione classica: aggiungere uno spicchio d'arancia. È il cocktail che James Bond ordina in Casino Royale prima di 'evolversi' al Vesper Martini."
+    },
+    description: "L'Americano è probabilmente il cocktail aperitivo italiano più famoso dopo il Negroni, del quale è il predecessore diretto.",
+    history: "Inventato dal Caffè Camparino di Milano intorno al 1860 come variante del 'Milano-Torino' con l'aggiunta di seltz."
+  },
+
+  {
+    id: "angel-face",
+    name: "Angel Face",
+    emoji: "😇",
+    tagline: "Gin, Calvados e Apricot Brandy in perfetto equilibrio",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin", "calvados"],
+    ingredients: ["apricot brandy"],
+    taste: ["fruity", "dry", "complex"],
+    strength: "strong",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "3 cl", item: "Gin London Dry" },
+        { amount: "3 cl", item: "Calvados" },
+        { amount: "3 cl", item: "Apricot Brandy" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio abbondante. Filtrare in una coppa fredda.",
+      notes: "La semplicità è la sua forza: parti uguali dei tre ingredienti. Usare un Calvados di qualità fa tutta la differenza."
+    },
+    description: "Un cocktail elegante e complesso, popolare negli anni '30. La combinazione gin-Calvados-Apricot è sorprendentemente armoniosa.",
+    history: "Comparso per la prima volta nel Savoy Cocktail Book di Harry Craddock (1930)."
+  },
+
+  {
+    id: "aviation",
+    name: "Aviation",
+    emoji: "✈️",
+    tagline: "Gin, maraschino e violetta: un classico dimenticato e riscoperto",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["maraschino", "crème de violette", "lemon juice"],
+    taste: ["floral", "sour", "dry"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Ciliegia al maraschino",
+    recipeIBA: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Gin London Dry" },
+        { amount: "1.5 cl", item: "Liquore Maraschino" },
+        { amount: "1.5 cl", item: "Succo di limone fresco" },
+        { amount: "0.75 cl", item: "Crème de violette" }
+      ],
+      method: "Shakerare con ghiaccio. Filtrare in coppa fredda. Guarnire.",
+      notes: "Il crème de violette dona il caratteristico colore lavanda. Senza di esso il cocktail è ancora valido, ma perde la sua identità visiva."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Gin London Dry" },
+        { amount: "1.5 cl", item: "Liquore Maraschino" },
+        { amount: "2.25 cl", item: "Succo di limone fresco" },
+        { amount: "1.5 cl", item: "Crème de violette" }
+      ],
+      method: "Shakerare vigorosamente. Doppia filtrazione in coppa pre-raffreddata.",
+      notes: "Difford usa proporzioni più bilanciate con più limone per contrastare la dolcezza. Raccomanda Luxardo Maraschino."
+    },
+    description: "Un cocktail pre-proibizionista riscoperto a partire dagli anni 2000 con la ricomparsa sul mercato del crème de violette.",
+    history: "Creato da Hugo Ensslin intorno al 1910-1916. La ricetta originale includeva il crème de violette, poi eliminato da Harry Craddock nel Savoy Book."
+  },
+
+  {
+    id: "bacardi",
+    name: "Bacardi Cocktail",
+    emoji: "🦇",
+    tagline: "Rum bianco, lime e granadina: fresco e iconico",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["rum bianco"],
+    ingredients: ["lime juice", "grenadine"],
+    taste: ["sour", "fruity", "refreshing"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Ciliegia al maraschino",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Rum bianco Bacardi" },
+        { amount: "2 cl", item: "Succo di lime fresco" },
+        { amount: "1.5 cl", item: "Granadina" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Una sentenza del 1936 della Corte Suprema di New York stabilì che questo cocktail deve essere preparato esclusivamente con rum Bacardi. Il più famoso cocktail 'marchio-specifico' della storia."
+    },
+    description: "Tecnicamente una variante del Daiquiri, ma con identità propria grazie alla granadina. La leggenda e il legame col brand sono inseparabili.",
+    history: "Popolare negli anni '30, fu al centro di una storica disputa legale che costrinse i bar a usare solo rum Bacardi per questo cocktail."
+  },
+
+  {
+    id: "between-the-sheets",
+    name: "Between the Sheets",
+    emoji: "🛏️",
+    tagline: "Cognac, rum e Cointreau: un Sidecar con personalità",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["cognac", "rum bianco"],
+    ingredients: ["triple sec", "lemon juice"],
+    taste: ["sour", "dry", "complex"],
+    strength: "strong",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "3 cl", item: "Cognac" },
+        { amount: "3 cl", item: "Rum bianco" },
+        { amount: "3 cl", item: "Triple Sec / Cointreau" },
+        { amount: "2 cl", item: "Succo di limone fresco" }
+      ],
+      method: "Shakerare con ghiaccio abbondante. Filtrare in coppa fredda.",
+      notes: "Può essere servito con o senza bordo di zucchero. Variante: sostituire rum con rum invecchiato per maggiore profondità."
+    },
+    description: "Una variante più alcolica e complessa del Sidecar, con l'aggiunta di rum che regala carattere tropicale.",
+    history: "Attribuito a Harry MacElhone del Harry's New York Bar di Parigi negli anni '30."
+  },
+
+  {
+    id: "black-russian",
+    name: "Black Russian",
+    emoji: "⚫",
+    tagline: "Vodka e Kahlúa: semplice, robusto, senza fronzoli",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["vodka"],
+    ingredients: ["kahlua", "coffee liqueur"],
+    taste: ["bitter", "sweet", "coffee"],
+    strength: "strong",
+    style: "short",
+    serve: "built",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "5 cl", item: "Vodka" },
+        { amount: "2 cl", item: "Kahlúa (liquore al caffè)" }
+      ],
+      method: "Costruire nel bicchiere con ghiaccio abbondante. Mescolare brevemente.",
+      notes: "La variante White Russian aggiunge 3 cl di panna fresca versata sul dorso del cucchiaio. Usare una vodka neutra di qualità per non coprire il caffè."
+    },
+    description: "Un cocktail minimalista che non ha bisogno di artifici. Vodka e caffè: due forze che si bilanciamo perfettamente.",
+    history: "Creato da Gustave Tops all'Hotel Metropole di Bruxelles nel 1949, in onore di Perle Mesta, ambasciatrice USA in Lussemburgo."
+  },
+
+  {
+    id: "boulevardier",
+    name: "Boulevardier",
+    emoji: "🥃",
+    tagline: "Il cugino americano del Negroni: bourbon invece del gin",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "dark",
+    baseSpirits: ["bourbon", "sweet vermouth"],
+    ingredients: ["campari"],
+    taste: ["bitter", "sweet", "spicy", "complex"],
+    strength: "strong",
+    style: "short",
+    serve: "stirred",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Scorza d'arancia",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Bourbon" },
+        { amount: "3 cl", item: "Vermouth rosso dolce" },
+        { amount: "3 cl", item: "Campari" }
+      ],
+      method: "Mescolare con ghiaccio per circa 30 secondi. Filtrare in un bicchiere rocks con cubetto grande.",
+      notes: "Alcune varianti usano rye whiskey per un profilo più secco e speziato. Esprimere la scorza d'arancia sul bicchiere e adagiarla sul bordo."
+    },
+    description: "Strutturalmente identico al Negroni ma radicalmente diverso nel carattere. Il bourbon porta dolcezza vanigliata e spezie che il gin non può dare.",
+    history: "Creato da Erskine Gwynne, americano a Parigi, pubblicato per la prima volta nel 1927 su 'Barflies and Cocktails'."
+  },
+
+  {
+    id: "bronx",
+    name: "Bronx",
+    emoji: "🗽",
+    tagline: "Gin, due vermouth e succo d'arancia: la trinità del Martini",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["sweet vermouth", "dry vermouth", "orange juice"],
+    taste: ["fruity", "dry", "herbal"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Scorza d'arancia",
+    recipe: {
+      ingredients: [
+        { amount: "4 cl", item: "Gin London Dry" },
+        { amount: "1.5 cl", item: "Vermouth rosso dolce" },
+        { amount: "1.5 cl", item: "Vermouth bianco secco" },
+        { amount: "3 cl", item: "Succo d'arancia fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Usare sempre succo d'arancia appena spremuto. La qualità del vermouth è fondamentale — usarne uno fresco aperto di recente."
+    },
+    description: "Un classico pre-proibizionista che fu uno dei cocktail più popolari del primo Novecento americano.",
+    history: "Creato da Johnny Solon al Waldorf Hotel di New York verso il 1905-1906."
+  },
+
+  {
+    id: "casino",
+    name: "Casino",
+    emoji: "🎰",
+    tagline: "Old Tom Gin con maraschino, Angostura e limone",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["old tom gin"],
+    ingredients: ["maraschino", "orange bitters", "lemon juice"],
+    taste: ["sour", "floral", "complex"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Ciliegia al maraschino, scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "4 cl", item: "Old Tom Gin" },
+        { amount: "1 cl", item: "Liquore Maraschino" },
+        { amount: "1 cl", item: "Succo di limone fresco" },
+        { amount: "1 cl", item: "Orange Bitters" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "L'Old Tom Gin è fondamentale: leggermente più dolce del London Dry, era lo stile dominante prima del proibizionismo. In mancanza, aggiungere un touch di sciroppo al London Dry."
+    },
+    description: "Un cocktail che richiede uno stile di gin ormai raro ma affascinante: l'Old Tom. Vale la pena cercarlo.",
+    history: "Dal Savoy Cocktail Book di Harry Craddock (1930)."
+  },
+
+  {
+    id: "clover-club",
+    name: "Clover Club",
+    emoji: "🍀",
+    tagline: "Gin, lampone e albume d'uovo: un classico rosa e setoso",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["raspberry syrup", "lemon juice", "egg white"],
+    taste: ["sour", "fruity", "silky"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Lamponi freschi",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Gin London Dry" },
+        { amount: "1.5 cl", item: "Succo di limone fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di lampone (o granadina)" },
+        { amount: "1", item: "Albume d'uovo" }
+      ],
+      method: "Dry shake (senza ghiaccio) per 15 secondi. Aggiungere ghiaccio, shakerare ancora. Filtrare in coppa.",
+      notes: "Il dry shake è essenziale per montare l'albume. La schiuma deve essere densa e stabile. Decorare con lamponi freschi sulla schiuma."
+    },
+    description: "Elegante, rosa e setoso: il Clover Club è uno dei cocktail con albume più belli da guardare e soddisfacenti da bere.",
+    history: "Prende il nome da un club maschile di Philadelphia attivo tra il 1880 e il 1920. Dal Savoy Cocktail Book (1930)."
+  },
+
+  {
+    id: "daiquiri",
+    name: "Daiquiri",
+    emoji: "🍋",
+    tagline: "Rum, lime, zucchero: la santissima trinità tropicale",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "light",
+    baseSpirits: ["rum bianco"],
+    ingredients: ["lime juice", "simple syrup"],
+    taste: ["sour", "refreshing", "clean"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Nessuno, o fetta di lime",
+    recipeIBA: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Rum bianco" },
+        { amount: "2.5 cl", item: "Succo di lime fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero (2:1)" }
+      ],
+      method: "Shakerare con ghiaccio abbondante. Filtrare in coppa fredda.",
+      notes: "Semplicità è tutto. Usare lime freschissimi, rum di qualità neutro-fruttato (tipo Havana 3yo), sciroppo 2:1."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Rum bianco" },
+        { amount: "3 cl", item: "Succo di lime fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero (2:1)" }
+      ],
+      method: "Shakerare vigorosamente con abbondante ghiaccio. Doppia filtrazione.",
+      notes: "Difford usa proporzioni più generose. Suggerisce di regolare il bilanciamento dolce/acido in base alla stagione dei lime. Invernali più agrodolci."
+    },
+    description: "Il Daiquiri è forse il cocktail più semplice da fare e più difficile da fare perfettamente. Tre ingredienti, nessun posto dove nascondersi.",
+    history: "Nato a Santiago de Cuba nel 1898, attribuito all'ingegnere minerario americano Jennings Cox. Reso famoso da Ernest Hemingway e dal barman Constantino Ribalaigua al Floridita di L'Avana."
+  },
+
+  {
+    id: "derby",
+    name: "Derby",
+    emoji: "🐎",
+    tagline: "Gin e peach bitters: rarissimo, elegante, da riscoprire",
+    iba: true, difford: false,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["peach bitters", "sweet vermouth", "lime juice"],
+    taste: ["fruity", "dry", "herbal"],
+    strength: "medium",
+    style: "short",
+    serve: "stirred",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Foglie di menta fresca",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Gin London Dry" },
+        { amount: "2 dash", item: "Peach Bitters" },
+        { amount: "foglie", item: "Menta fresca" }
+      ],
+      method: "Stirare con ghiaccio. Filtrare in coppa fredda. Guarnire con menta.",
+      notes: "Uno dei cocktail IBA meno conosciuti. I peach bitters possono essere sostituiti con peach schnapps in mancanza. La menta è parte integrante dell'esperienza olfattiva."
+    },
+    description: "Un cocktail quasi dimenticato che merita attenzione per la sua semplicità elegante e la combinazione insolita.",
+    history: "Origine incerta, comparso in vari ricettari degli anni '20-'30."
+  },
+
+  {
+    id: "dry-martini",
+    name: "Dry Martini",
+    emoji: "🍸",
+    tagline: "Il cocktail per eccellenza. Gin e vermouth, nient'altro.",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["dry vermouth"],
+    taste: ["dry", "herbal", "crisp"],
+    strength: "spirit-forward",
+    style: "short",
+    serve: "stirred",
+    glass: "martini",
+    ice: "none",
+    garnish: "Olive verdi o scorza di limone (twist)",
+    recipeIBA: {
+      ingredients: [
+        { amount: "6 cl", item: "Gin London Dry" },
+        { amount: "1 cl", item: "Vermouth bianco secco" }
+      ],
+      method: "Mescolare con ghiaccio abbondante per 30-40 secondi. Filtrare in coppa Martini pre-raffreddata.",
+      notes: "Il rapporto gin/vermouth è oggetto di infinite discussioni. La versione IBA (6:1) è già molto secca. Churchill usava solo guardare la bottiglia di vermouth. La temperatura è tutto: bicchiere gelato, ghiaccio abbondante."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "7.5 cl", item: "Gin London Dry" },
+        { amount: "1.5 cl", item: "Vermouth bianco secco Noilly Prat" },
+        { amount: "1 dash", item: "Orange bitters (facoltativo)" }
+      ],
+      method: "Mescolare con abbondante ghiaccio per 45-60 secondi. Filtrare in coppa pre-raffreddata in freezer.",
+      notes: "Difford sottolinea l'importanza della diluzione controllata. Mescolare più a lungo per un cocktail più diluito e freddo. Il bicchiere deve essere ghiacciato."
+    },
+    description: "Il Martini non è solo un cocktail: è una filosofia. Ogni barman ha la sua ricetta, ogni appassionato la sua preferenza. La semplicità al massimo livello.",
+    history: "Le origini sono dibattute tra Martinez (California, 1860s) e Martini (New York, 1900s). La versione 'dry' si è affermata nel XX secolo con il calo del vermouth."
+  },
+
+  {
+    id: "gin-fizz",
+    name: "Gin Fizz",
+    emoji: "🫧",
+    tagline: "Gin, limone e soda: fresco, brillante, classicissimo",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "light",
+    baseSpirits: ["gin"],
+    ingredients: ["lemon juice", "simple syrup", "soda water"],
+    taste: ["sour", "refreshing", "clean"],
+    strength: "light",
+    style: "long",
+    serve: "shaken",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta di limone",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Gin London Dry" },
+        { amount: "3 cl", item: "Succo di limone fresco" },
+        { amount: "1 cl", item: "Sciroppo di zucchero (2:1)" },
+        { amount: "q.b.", item: "Acqua di seltz" }
+      ],
+      method: "Shakerare gin, limone e sciroppo con ghiaccio. Versare in highball con ghiaccio. Completare con seltz freddo.",
+      notes: "Non shakerare con la soda: va aggiunta dopo. Variante Silver Fizz: aggiungere albume d'uovo prima dello shaker. Golden Fizz: aggiungere tuorlo."
+    },
+    description: "Il Fizz è una categoria di cocktail: il Gin Fizz è il capostipite. Fresco, beverino, adatto a ogni momento della giornata.",
+    history: "I Fizz come categoria emergono negli anni 1870-1880. Il New Orleans Fizz (o Ramos Gin Fizz) è la variante più elaborata."
+  },
+
+  {
+    id: "john-collins",
+    name: "John Collins",
+    emoji: "🍋",
+    tagline: "Whiskey, limone, zucchero e soda: il Collins originale",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "light",
+    baseSpirits: ["bourbon", "old tom gin"],
+    ingredients: ["lemon juice", "simple syrup", "soda water"],
+    taste: ["sour", "refreshing", "sweet"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta di limone, ciliegia al maraschino",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Old Tom Gin o Bourbon" },
+        { amount: "3 cl", item: "Succo di limone fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero (2:1)" },
+        { amount: "6 cl", item: "Acqua di seltz" }
+      ],
+      method: "Costruire nel bicchiere con ghiaccio. Mescolare delicatamente.",
+      notes: "Il Tom Collins usa gin London Dry, il John Collins usa Old Tom Gin o bourbon. La distinzione è spesso ignorata nei bar moderni."
+    },
+    description: "Il progenitore di tutta la famiglia Collins. Lungo, rinfrescante e bilanciato.",
+    history: "Prende il nome da un omonimo barman del Limmer's Hotel di Londra (1860s circa). La variante Tom Collins divenne poi la più popolare."
+  },
+
+  {
+    id: "manhattan",
+    name: "Manhattan",
+    emoji: "🌆",
+    tagline: "Whiskey, vermouth rosso e bitters: il re dei cocktail stirred",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "dark",
+    baseSpirits: ["rye whiskey", "bourbon"],
+    ingredients: ["sweet vermouth", "angostura bitters"],
+    taste: ["bitter", "sweet", "spicy", "complex"],
+    strength: "strong",
+    style: "short",
+    serve: "stirred",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Ciliegia al maraschino o scorza d'arancia",
+    recipeIBA: {
+      ingredients: [
+        { amount: "5 cl", item: "Rye Whiskey o Bourbon" },
+        { amount: "2 cl", item: "Vermouth rosso dolce" },
+        { amount: "1 dash", item: "Angostura Bitters" }
+      ],
+      method: "Mescolare tutti gli ingredienti con ghiaccio per 30 secondi. Filtrare in coppa fredda.",
+      notes: "Rye whiskey per un Manhattan più secco e speziato. Bourbon per uno più morbido e vanigliato. Vermouth fresco è fondamentale: conservare in frigorifero."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Rye Whiskey (preferibilmente 100 Proof)" },
+        { amount: "3 cl", item: "Vermouth rosso Carpano Antica Formula" },
+        { amount: "2 dash", item: "Angostura Bitters" }
+      ],
+      method: "Mescolare con abbondante ghiaccio per 40-50 secondi. Filtrare in coupe o Nick & Nora fredda.",
+      notes: "Difford preferisce il Carpano Antica Formula per la sua profondità vanigliata. Il rapporto 2:1 whiskey/vermouth è il suo standard."
+    },
+    description: "Nato a New York City, il Manhattan è il Martini del whiskey. Elegante, complesso, mai fuori moda. Il Perfect Manhattan usa metà vermouth dolce e metà secco.",
+    history: "Leggenda vuole sia stato creato nel 1874 al Manhattan Club di New York per un banchetto di Lady Randolph Churchill. La storia è probabilmente apocrifa."
+  },
+
+  {
+    id: "mary-pickford",
+    name: "Mary Pickford",
+    emoji: "🎬",
+    tagline: "Rum bianco, ananas, maraschino e granadina: Hollywood in un bicchiere",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "light",
+    baseSpirits: ["rum bianco"],
+    ingredients: ["pineapple juice", "maraschino", "grenadine"],
+    taste: ["sweet", "fruity", "tropical"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Ciliegia al maraschino",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Rum bianco" },
+        { amount: "6 cl", item: "Succo d'ananas fresco" },
+        { amount: "1 cl", item: "Liquore Maraschino" },
+        { amount: "1 tsp", item: "Granadina" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Il succo d'ananas fresco (non in barattolo) fa una differenza enorme. La granadina è solo per il colore e deve essere usata con parsimonia."
+    },
+    description: "Creato in onore della star del cinema muto Mary Pickford durante la sua visita a Cuba negli anni '20.",
+    history: "Inventato dal barman Fred Kaufman all'Hotel Nacional di L'Avana negli anni '20."
+  },
+
+  {
+    id: "million-dollar-cocktail",
+    name: "Million Dollar Cocktail",
+    emoji: "💰",
+    tagline: "Gin, vermouth, ananas e albume: lusso in forma liquida",
+    iba: true, difford: false,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["sweet vermouth", "pineapple juice", "grenadine", "egg white"],
+    taste: ["fruity", "sweet", "silky"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Ciliegia al maraschino",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Gin" },
+        { amount: "1.5 cl", item: "Vermouth rosso dolce" },
+        { amount: "1.5 cl", item: "Succo d'ananas" },
+        { amount: "1 tsp", item: "Granadina" },
+        { amount: "1", item: "Albume d'uovo" }
+      ],
+      method: "Dry shake senza ghiaccio per 15 secondi. Aggiungere ghiaccio, shakerare ancora. Filtrare.",
+      notes: "Il dry shake per l'albume è imprescindibile. La granadina è solo per il colore rosato."
+    },
+    description: "Un cocktail dell'era d'oro pre-proibizionista, ora raramente visto ma meritevole di riscoperta.",
+    history: "Dal Savoy Cocktail Book (1930)."
+  },
+
+  {
+    id: "mint-julep",
+    name: "Mint Julep",
+    emoji: "🌿",
+    tagline: "Bourbon, menta fresca e ghiaccio tritato: il sud degli USA in un bicchiere",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "dark",
+    baseSpirits: ["bourbon"],
+    ingredients: ["fresh mint", "simple syrup"],
+    taste: ["refreshing", "sweet", "minty", "spirit-forward"],
+    strength: "strong",
+    style: "short",
+    serve: "built",
+    glass: "mule",
+    ice: "crushed",
+    garnish: "Rametto di menta fresca abbondante",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Bourbon" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero (2:1)" },
+        { amount: "12 foglie", item: "Menta fresca" }
+      ],
+      method: "Pestare delicatamente la menta con lo sciroppo nel bicchiere (julep cup o highball). Aggiungere bourbon. Riempire con ghiaccio tritato abbondante. Mescolare leggermente. Aggiungere ancora ghiaccio a cupola.",
+      notes: "Il bicchiere argentato (julep cup) è tradizionale: si ghiaccia all'esterno in modo affascinante. Non pestare la menta con forza: si amareggia. Il ghiaccio tritato è fondamentale, non in cubetti."
+    },
+    description: "La bevanda ufficiale del Kentucky Derby. Elegante, aromatico, scenografico. Il bicchiere esternamente ghiacciato è un'icona.",
+    history: "Il Mint Julep ha radici nel XVIII secolo. Divenne la bevanda del Kentucky Derby nel 1938."
+  },
+
+  {
+    id: "monkey-gland",
+    name: "Monkey Gland",
+    emoji: "🐒",
+    tagline: "Gin, succo d'arancia, absinthe e granadina: il cocktail più strano",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["orange juice", "absinthe", "grenadine"],
+    taste: ["sweet", "fruity", "anise"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Gin London Dry" },
+        { amount: "3 cl", item: "Succo d'arancia fresco" },
+        { amount: "1 tsp", item: "Absinthe" },
+        { amount: "1 tsp", item: "Granadina" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "L'absinthe va usato con parsimonia: solo un rinse o un cucchiaino. Il nome viene dalla controversa pratica del chirurgo Serge Voronoff negli anni '20."
+    },
+    description: "Il nome più bizzarro nella storia dei cocktail. Il gusto, sorprendentemente, è tutt'altro che bizzarro: equilibrato e piacevole.",
+    history: "Creato da Harry MacElhone al Harry's New York Bar di Parigi negli anni '20, ispirato alle controverse ricerche del dr. Voronoff."
+  },
+
+  {
+    id: "negroni",
+    name: "Negroni",
+    emoji: "🍊",
+    tagline: "Gin, Campari, vermouth rosso: la perfezione in tre ingredienti",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["gin"],
+    ingredients: ["campari", "sweet vermouth"],
+    taste: ["bitter", "sweet", "herbal", "complex"],
+    strength: "medium",
+    style: "short",
+    serve: "stirred",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Scorza d'arancia (twist)",
+    recipeIBA: {
+      ingredients: [
+        { amount: "3 cl", item: "Gin London Dry" },
+        { amount: "3 cl", item: "Campari" },
+        { amount: "3 cl", item: "Vermouth rosso dolce" }
+      ],
+      method: "Mescolare tutti gli ingredienti con ghiaccio nel bicchiere o in un mixing glass. Servire in rocks glass con cubetto grande. Esprimere la scorza d'arancia.",
+      notes: "Il Negroni è sacro: parti uguali, sempre. Non shakerare. Esprimere la scorza d'arancia sul bicchiere: gli oli essenziali fanno la differenza."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "3 cl", item: "Gin London Dry (preferibilmente botanico)" },
+        { amount: "3 cl", item: "Campari" },
+        { amount: "3 cl", item: "Vermouth rosso Cinzano 1757 o Carpano Antica" }
+      ],
+      method: "Mescolare in mixing glass con abbondante ghiaccio per 30-40 secondi. Filtrare in rocks glass con cubetto singolo grande.",
+      notes: "Difford suggerisce gin con profilo botanico complesso (Tanqueray, Beefeater). La scelta del vermouth cambia radicalmente il carattere. Carpano Antica per un Negroni più vanigliato."
+    },
+    description: "Il Negroni è probabilmente il cocktail più influente del XX secolo. Semplice da fare, difficile da fare male. Tre ingredienti, una miriade di interpretazioni.",
+    history: "Inventato al Caffè Casoni di Firenze nel 1919 dal Conte Camillo Negroni, che chiese al barman Fosco Scarselli di rafforzare il suo Americano con gin invece della soda."
+  },
+
+  {
+    id: "old-fashioned",
+    name: "Old Fashioned",
+    emoji: "🥃",
+    tagline: "Whiskey, zucchero e bitters: il cocktail originale",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "dark",
+    baseSpirits: ["bourbon", "rye whiskey"],
+    ingredients: ["angostura bitters", "sugar", "orange bitters"],
+    taste: ["sweet", "spicy", "bitter", "spirit-forward"],
+    strength: "spirit-forward",
+    style: "short",
+    serve: "built",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Scorza d'arancia (twist), ciliegia al maraschino",
+    recipeIBA: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Bourbon o Rye Whiskey" },
+        { amount: "1 zolletta", item: "Zucchero" },
+        { amount: "2 dash", item: "Angostura Bitters" },
+        { amount: "qualche goccia", item: "Acqua" }
+      ],
+      method: "Pestare la zolletta di zucchero con i bitters e poche gocce d'acqua nel bicchiere. Aggiungere il whiskey e un cubetto di ghiaccio grande. Mescolare delicatamente. Esprimere la scorza d'arancia.",
+      notes: "Usare zolletta di zucchero, non sciroppo, per la tradizione. Costruire sempre nel bicchiere di servizio, non trasferire. Il cubetto grande mantiene la diluizione lenta."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Bourbon (preferibilmente 90 proof+)" },
+        { amount: "1 tsp", item: "Sciroppo di zucchero (2:1)" },
+        { amount: "2 dash", item: "Angostura Bitters" },
+        { amount: "1 dash", item: "Acqua" }
+      ],
+      method: "Mescolare tutti gli ingredienti nel bicchiere con ghiaccio. Nessun travaso. Esprimere e adagiare la scorza d'arancia.",
+      notes: "Difford preferisce lo sciroppo per consistenza. Sconsiglia la ciliegia schiacciata (stile Wisconsin): 'deturpa la semplicità del cocktail'."
+    },
+    description: "L'Old Fashioned è il cocktail originale: la definizione stessa di 'cocktail' come spirits + zucchero + bitters + acqua. Nient'altro. Tutto il resto è innovazione.",
+    history: "La parola 'cocktail' appare per la prima volta nel 1806. L'Old Fashioned come lo conosciamo si cristallizza intorno al 1880 al Pendennis Club di Louisville, Kentucky."
+  },
+
+  {
+    id: "paradise",
+    name: "Paradise",
+    emoji: "🌴",
+    tagline: "Gin, apricot brandy e succo d'arancia: un'estate in un bicchiere",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "light",
+    baseSpirits: ["gin"],
+    ingredients: ["apricot brandy", "orange juice"],
+    taste: ["fruity", "sweet", "tropical"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Scorza d'arancia",
+    recipe: {
+      ingredients: [
+        { amount: "3.5 cl", item: "Gin London Dry" },
+        { amount: "2 cl", item: "Apricot Brandy" },
+        { amount: "1.5 cl", item: "Succo d'arancia fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Cocktail semplice e piacevole. La qualità dell'apricot brandy fa la differenza."
+    },
+    description: "Un classico del Savoy Cocktail Book. Fruttato, facile da bere, perfetto come aperitivo estivo.",
+    history: "Dal Savoy Cocktail Book di Harry Craddock (1930)."
+  },
+
+  {
+    id: "planters-punch",
+    name: "Planter's Punch",
+    emoji: "🌺",
+    tagline: "Rum, lime, zucchero e soda: il punch tropicale per eccellenza",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "light",
+    baseSpirits: ["rum scuro", "rum giamaicano"],
+    ingredients: ["lime juice", "simple syrup", "soda water", "angostura bitters"],
+    taste: ["fruity", "refreshing", "tropical", "sweet"],
+    strength: "medium",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta d'arancia, ciliegia al maraschino, rametto di menta",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Rum scuro giamaicano" },
+        { amount: "3.5 cl", item: "Succo di lime fresco" },
+        { amount: "2.5 cl", item: "Sciroppo di zucchero" },
+        { amount: "q.b.", item: "Soda" },
+        { amount: "1 dash", item: "Angostura Bitters" }
+      ],
+      method: "Shakerare rum, lime e sciroppo. Versare in highball con ghiaccio. Completare con soda. Aggiungere bitters sopra.",
+      notes: "La regola tradizionale: 'One sour, two sweet, three strong, four weak' (1 lime, 2 zucchero, 3 rum, 4 acqua). Infinitamente personalizzabile."
+    },
+    description: "Il Planter's Punch è la madre di tutti i punch tropicali. Ogni isola caraibica ha la sua versione.",
+    history: "Le origini sono dibattute tra Giamaica e Barbados. La ricetta in versi appare per la prima volta nel 1908 sul Barbados Globe."
+  },
+
+  {
+    id: "rob-roy",
+    name: "Rob Roy",
+    emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    tagline: "Il Manhattan scozzese: scotch, vermouth e bitters",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "dark",
+    baseSpirits: ["scotch whisky"],
+    ingredients: ["sweet vermouth", "angostura bitters"],
+    taste: ["smoky", "sweet", "herbal", "bitter"],
+    strength: "strong",
+    style: "short",
+    serve: "stirred",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Ciliegia al maraschino o scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Scotch Whisky blended" },
+        { amount: "2 cl", item: "Vermouth rosso dolce" },
+        { amount: "2 dash", item: "Angostura Bitters" }
+      ],
+      method: "Mescolare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Usare uno scotch blended accessibile (Famous Grouse, Dewar's) per un risultato bilanciato. Per un Rob Roy più secco, usare vermouth dry invece del dolce (Dry Rob Roy)."
+    },
+    description: "Il Manhattan con scotch whisky. La torbatura dello scotch porta una dimensione completamente diversa rispetto al bourbon.",
+    history: "Creato nel 1894 al bar del Waldorf Hotel di New York City in occasione della prima dell'operetta Rob Roy di Reginald De Koven."
+  },
+
+  {
+    id: "rose",
+    name: "Rose",
+    emoji: "🌹",
+    tagline: "Dry vermouth, kirsch e granadina: romantico e delicato",
+    iba: true, difford: false,
+    ibaCategory: "unforgettables",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["dry vermouth"],
+    ingredients: ["kirsch", "grenadine"],
+    taste: ["floral", "fruity", "dry"],
+    strength: "light",
+    style: "short",
+    serve: "stirred",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Petalo di rosa (facoltativo)",
+    recipe: {
+      ingredients: [
+        { amount: "2 cl", item: "Kirsch" },
+        { amount: "1 cl", item: "Granadina" },
+        { amount: "7 cl", item: "Vermouth bianco secco" }
+      ],
+      method: "Mescolare con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Un cocktail elegante e leggero, perfetto come aperitivo. Il kirsch porta una nota di ciliegia che si sposa bene con la granadina."
+    },
+    description: "Un cocktail dimenticato che meriterebbe più attenzione: leggero, aromatico, perfettamente equilibrato.",
+    history: "Dal Savoy Cocktail Book (1930)."
+  },
+
+  {
+    id: "rusty-nail",
+    name: "Rusty Nail",
+    emoji: "🔩",
+    tagline: "Scotch e Drambuie: Scotland in a glass",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "dark",
+    baseSpirits: ["scotch whisky"],
+    ingredients: ["drambuie"],
+    taste: ["sweet", "smoky", "honeyed", "spirit-forward"],
+    strength: "spirit-forward",
+    style: "short",
+    serve: "built",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Scotch Whisky" },
+        { amount: "2.5 cl", item: "Drambuie" }
+      ],
+      method: "Costruire nel bicchiere con ghiaccio. Mescolare delicatamente. Esprimere la scorza di limone.",
+      notes: "Il Drambuie è un liquore scozzese di whisky, miele, erbe e spezie. Il rapporto è regolabile: più Drambuie per un drink più dolce. Rat Pack drink per eccellenza."
+    },
+    description: "Semplice, robusto, scozzese. Il Rusty Nail fu il drink preferito del Rat Pack negli anni '60.",
+    history: "Popolarizzato dal Rat Pack negli anni '60. Il Drambuie sostiene che la ricetta risalga al XVIII secolo."
+  },
+
+  {
+    id: "sazerac",
+    name: "Sazerac",
+    emoji: "🌿",
+    tagline: "Rye whiskey, absinthe e Peychaud's: il cocktail di New Orleans",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "dark",
+    baseSpirits: ["rye whiskey"],
+    ingredients: ["peychauds bitters", "absinthe", "sugar"],
+    taste: ["bitter", "anise", "spicy", "complex"],
+    strength: "spirit-forward",
+    style: "short",
+    serve: "stirred",
+    glass: "rocks",
+    ice: "none",
+    garnish: "Scorza di limone (twist, non servita)",
+    recipeIBA: {
+      ingredients: [
+        { amount: "5 cl", item: "Cognac o Rye Whiskey" },
+        { amount: "1 zolletta", item: "Zucchero" },
+        { amount: "2 dash", item: "Peychaud's Bitters" },
+        { amount: "q.b.", item: "Absinthe (per il rinse)" }
+      ],
+      method: "Raffreddare un rocks glass. Rinsciaquarlo con absinthe e scartare l'eccesso. In un mixing glass, sciogliere lo zucchero con i bitters e poche gocce d'acqua. Aggiungere il whiskey e ghiaccio, mescolare. Filtrare nel bicchiere preparato. Esprimere la scorza di limone sopra (non adagiarla).",
+      notes: "Il rinse con absinthe è fondamentale e irrinunciabile. Il bicchiere viene servito senza ghiaccio."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Rye Whiskey 100 Proof" },
+        { amount: "1 tsp", item: "Sciroppo di zucchero" },
+        { amount: "2 dash", item: "Peychaud's Bitters" },
+        { amount: "1 dash", item: "Angostura Bitters" },
+        { amount: "1.5 cl", item: "Absinthe (per rinse)" }
+      ],
+      method: "Rinse del bicchiere con absinthe. Mescolare tutti gli altri ingredienti nel mixing glass con ghiaccio. Filtrare nel bicchiere preparato. Servire senza ghiaccio con la scorza di limone espressa.",
+      notes: "Difford aggiunge un dash di Angostura alla ricetta tradizionale. Consiglia il Sazerac Rye o Rittenhouse come base."
+    },
+    description: "Il cocktail ufficiale di New Orleans. Una delle ricette più antiche e ritualistiche della cocktail culture. Il rinse con absinthe è la sua firma inconfondibile.",
+    history: "Nato al Sazerac Coffee House di New Orleans intorno al 1830, originariamente fatto con Cognac Sazerac-de-Forge. Divenuto a base rye whiskey dopo un'epidemia di fillossera che decimò i vigneti francesi."
+  },
+
+  {
+    id: "sidecar",
+    name: "Sidecar",
+    emoji: "🏍️",
+    tagline: "Cognac, Cointreau e limone: il template di tutti i sour",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["cognac"],
+    ingredients: ["triple sec", "lemon juice"],
+    taste: ["sour", "dry", "fruity"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Scorza d'arancia o bordo di zucchero",
+    recipeIBA: {
+      ingredients: [
+        { amount: "5 cl", item: "Cognac" },
+        { amount: "2 cl", item: "Triple Sec / Cointreau" },
+        { amount: "2 cl", item: "Succo di limone fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda (opzionale: bordo di zucchero).",
+      notes: "Il rapporto è dibattuto: la versione 2:1:1 è più secca, la 1:1:1 più bilanciata. Usare Cognac VS o VSOP di qualità."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "5 cl", item: "Cognac VSOP" },
+        { amount: "2 cl", item: "Cointreau" },
+        { amount: "2.5 cl", item: "Succo di limone fresco" }
+      ],
+      method: "Shakerare vigorosamente con abbondante ghiaccio. Doppia filtrazione in coppa pre-raffreddata.",
+      notes: "Difford enfatizza l'importanza del Cognac di qualità. Il bordo di zucchero è opzionale ma 'tradizionale'."
+    },
+    description: "Il Sidecar è il template definitivo dei cocktail sour: base spirit + triple sec + succo di limone. Elegante nella sua semplicità.",
+    history: "Contesa tra Parigi e Londra, anni '20. Harry MacElhone (Harry's Bar, Parigi) e Pat MacGarry (Buck's Club, Londra) si contendono la paternità."
+  },
+
+  {
+    id: "stinger",
+    name: "Stinger",
+    emoji: "🌿",
+    tagline: "Brandy e crème de menthe: il digestivo dei barman",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["cognac", "brandy"],
+    ingredients: ["crème de menthe"],
+    taste: ["sweet", "minty", "digestive"],
+    strength: "strong",
+    style: "short",
+    serve: "stirred",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Rametto di menta (facoltativo)",
+    recipe: {
+      ingredients: [
+        { amount: "5 cl", item: "Cognac o Brandy" },
+        { amount: "2 cl", item: "Crème de Menthe bianca" }
+      ],
+      method: "Mescolare o shakerare con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Usare crème de menthe bianca (non verde) per un cocktail più elegante visivamente. Un classico dopo-cena."
+    },
+    description: "Un digestivo classico degli anni '40-'50. Semplice ma efficace: la menta pulisce il palato dopo un pasto.",
+    history: "Popolare negli anni '40-'50, associato all'era dei grandi alberghi americani."
+  },
+
+  {
+    id: "tuxedo",
+    name: "Tuxedo",
+    emoji: "🤵",
+    tagline: "Gin, dry vermouth, maraschino e absinthe: il Martini elaborato",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin", "dry vermouth"],
+    ingredients: ["maraschino", "absinthe", "orange bitters"],
+    taste: ["dry", "herbal", "complex"],
+    strength: "strong",
+    style: "short",
+    serve: "stirred",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Scorza di limone, ciliegia al maraschino",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Old Tom Gin" },
+        { amount: "4.5 cl", item: "Vermouth bianco secco" },
+        { amount: "1/8 tsp", item: "Absinthe" },
+        { amount: "1/8 tsp", item: "Liquore Maraschino" },
+        { amount: "2 dash", item: "Orange Bitters" }
+      ],
+      method: "Mescolare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Un cocktail che richiede ingredienti di qualità in piccole dosi: absinthe e maraschino sono potenti. Usare parsimonia."
+    },
+    description: "Un Martini più elaborato e profumato: la presenza di absinthe e maraschino lo rende complesso e intrigante.",
+    history: "Dal Savoy Cocktail Book (1930), ma con radici nel XIX secolo."
+  },
+
+  {
+    id: "whiskey-sour",
+    name: "Whiskey Sour",
+    emoji: "🍋",
+    tagline: "Whiskey, limone, zucchero e albume: il sour per eccellenza",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "dark",
+    baseSpirits: ["bourbon"],
+    ingredients: ["lemon juice", "simple syrup", "egg white"],
+    taste: ["sour", "sweet", "smooth", "silky"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "rocks",
+    ice: "cubed",
+    garnish: "Scorza d'arancia, ciliegia al maraschino, dash di Angostura",
+    recipeIBA: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Bourbon" },
+        { amount: "3 cl", item: "Succo di limone fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero" },
+        { amount: "0.5", item: "Albume d'uovo (facoltativo)" }
+      ],
+      method: "Dry shake senza ghiaccio (se con albume). Aggiungere ghiaccio, shakerare di nuovo. Filtrare in rocks glass con ghiaccio.",
+      notes: "Il dry shake è fondamentale per una schiuma stabile. I 3 dash di Angostura sulla schiuma sono la firma moderna. Si può servire anche up (senza ghiaccio) in coppa."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "5 cl", item: "Bourbon (preferibilmente 90 proof)" },
+        { amount: "2.5 cl", item: "Succo di limone fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero (2:1)" },
+        { amount: "1", item: "Albume d'uovo" }
+      ],
+      method: "Dry shake per 15 secondi senza ghiaccio. Wet shake con ghiaccio abbondante. Doppia filtrazione in rocks glass con ghiaccio fresco.",
+      notes: "Difford considera l'albume irrinunciabile per la versione moderna. Angostura in punta di stuzzicadenti sulla schiuma per decorazione."
+    },
+    description: "Il Whiskey Sour è tra i 5 cocktail più ordinati al mondo. Con albume d'uovo diventa un Boston Sour: setoso, morbido, perfetto.",
+    history: "Le ricette 'sour' compaiono negli anni 1870. Il Whiskey Sour compare nel Bartender's Guide di Jerry Thomas (1862)."
+  },
+
+  {
+    id: "white-lady",
+    name: "White Lady",
+    emoji: "🤍",
+    tagline: "Gin, Cointreau e limone: elegante e potente",
+    iba: true, difford: true,
+    ibaCategory: "unforgettables",
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["triple sec", "lemon juice", "egg white"],
+    taste: ["sour", "dry", "clean"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Scorza di limone",
+    recipeIBA: {
+      ingredients: [
+        { amount: "4 cl", item: "Gin London Dry" },
+        { amount: "3 cl", item: "Triple Sec / Cointreau" },
+        { amount: "2 cl", item: "Succo di limone fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "La versione IBA non include albume. Aggiungere mezzo albume per una texture più setosa e morbida (scelta di molti barman)."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "5 cl", item: "Gin London Dry" },
+        { amount: "2.5 cl", item: "Cointreau" },
+        { amount: "2.5 cl", item: "Succo di limone fresco" },
+        { amount: "0.5", item: "Albume d'uovo" }
+      ],
+      method: "Dry shake, poi wet shake con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Difford include l'albume come standard, non come opzione."
+    },
+    description: "La White Lady è un Sidecar con gin al posto del cognac. Più floreale, più aromatica, perfetta come aperitivo.",
+    history: "Creata da Harry MacElhone al Ciro's Club di Londra nel 1919, poi rielaborata al Harry's Bar di Parigi nel 1929."
+  },
+
+  /* ════════════════════════════════════
+     IBA — CONTEMPORARY CLASSICS
+  ════════════════════════════════════ */
+
+  {
+    id: "b52",
+    name: "B-52",
+    emoji: "✈️",
+    tagline: "Kahlúa, Baileys e Grand Marnier a strati: un capolavoro visivo",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: null,
+    baseSpirits: ["kahlua", "baileys"],
+    ingredients: ["grand marnier", "coffee liqueur", "irish cream"],
+    taste: ["sweet", "coffee", "creamy", "orange"],
+    strength: "medium",
+    style: "shot",
+    serve: "built",
+    glass: "shot",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "2 cl", item: "Kahlúa (liquore al caffè)" },
+        { amount: "2 cl", item: "Baileys Irish Cream" },
+        { amount: "2 cl", item: "Grand Marnier" }
+      ],
+      method: "Versare il Kahlúa nel bicchiere da shot. Sul dorso di un cucchiaio, versare lentamente il Baileys sopra il Kahlúa. Ripetere con il Grand Marnier.",
+      notes: "I tre strati funzionano perché le densità decrescono dall'alto al basso (Kahlúa più denso, Grand Marnier meno). Si può flambé il Grand Marnier per effetto scenografico."
+    },
+    description: "Un cocktail layered iconico degli anni '80. La tecnica degli strati è semplice una volta compresa la fisica delle densità.",
+    history: "Creato negli anni '70-'80, il nome è ispirato al bombardiere B-52 Stratofortress."
+  },
+
+  {
+    id: "barracuda",
+    name: "Barracuda",
+    emoji: "🐟",
+    tagline: "Rum dorado, Galliano, ananas e Prosecco: tropicale e frizzante",
+    iba: true, difford: false,
+    ibaCategory: "contemporary",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["rum dorado"],
+    ingredients: ["galliano", "pineapple juice", "lime juice", "prosecco"],
+    taste: ["sweet", "tropical", "sparkling", "fruity"],
+    strength: "medium",
+    style: "long",
+    serve: "shaken",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Spicchio d'ananas",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Rum dorado" },
+        { amount: "1.5 cl", item: "Galliano L'Autentico" },
+        { amount: "6 cl", item: "Succo d'ananas" },
+        { amount: "1 tsp", item: "Succo di lime fresco" },
+        { amount: "q.b.", item: "Prosecco" }
+      ],
+      method: "Shakerare rum, Galliano, succo d'ananas e lime con ghiaccio. Versare in highball con ghiaccio. Completare con Prosecco.",
+      notes: "Il Galliano porta una nota vanigliata e erbacea tipica. Non eccedere: è potente."
+    },
+    description: "Un contemporary classic IBA dall'anima tropicale. Il Galliano lo distingue da un comune rum punch.",
+    history: "Aggiunto alla lista IBA come contemporary classic."
+  },
+
+  {
+    id: "bellini",
+    name: "Bellini",
+    emoji: "🍑",
+    tagline: "Prosecco e purée di pesca bianca: Venezia in un calice",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["prosecco"],
+    ingredients: ["white peach puree"],
+    taste: ["fruity", "sweet", "sparkling", "delicate"],
+    strength: "light",
+    style: "sparkling",
+    serve: "built",
+    glass: "flute",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "10 cl", item: "Prosecco freddo" },
+        { amount: "5 cl", item: "Purée di pesca bianca fresca" }
+      ],
+      method: "Versare la purée di pesca nel calice. Aggiungere il Prosecco lentamente, mescolare delicatamente.",
+      notes: "La pesca bianca è essenziale: quella gialla dà un risultato diverso (e meno autentico). Stagionale: da giugno ad agosto. Il Cipriani di Venezia usa solo pesche di Verona. Non usare mai succo di pesca in barattolo."
+    },
+    description: "Il cocktail veneziano per eccellenza, inventato all'Harry's Bar di Venezia. Semplice, elegante, inimitabile quando la pesca è di stagione.",
+    history: "Inventato da Giuseppe Cipriani all'Harry's Bar di Venezia intorno al 1948. Il nome è ispirato al pittore veneziano Giovanni Bellini."
+  },
+
+  {
+    id: "black-and-tan",
+    name: "Black and Tan",
+    emoji: "🍺",
+    tagline: "Guinness e pale ale a strati: il layered beer cocktail",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: null,
+    baseSpirits: [],
+    ingredients: ["guinness", "pale ale", "stout"],
+    taste: ["bitter", "malty", "roasted"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "25 cl", item: "Pale Ale (Bass Ale o simile)" },
+        { amount: "25 cl", item: "Guinness" }
+      ],
+      method: "Versare la pale ale. Sul dorso di un cucchiaio, versare lentamente la Guinness sopra per creare lo strato scuro.",
+      notes: "La Guinness è meno densa della pale ale nonostante sembri più pesante visivamente. Il trucco del cucchiaio è fondamentale. Notare: in Irlanda il nome è considerato offensivo per riferimenti storici; usare 'Half and Half'."
+    },
+    description: "Un layered cocktail a base birra. La tecnica è la stessa del B-52: densità differenti creano gli strati.",
+    history: "Classico britannico/irlandese."
+  },
+
+  {
+    id: "caipirinha",
+    name: "Caipirinha",
+    emoji: "🇧🇷",
+    tagline: "Cachaça, lime e zucchero: il cocktail nazionale brasiliano",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["cachaca"],
+    ingredients: ["lime", "sugar"],
+    taste: ["sour", "refreshing", "earthy"],
+    strength: "medium",
+    style: "short",
+    serve: "built",
+    glass: "rocks",
+    ice: "crushed",
+    garnish: "Spicchio di lime",
+    recipeIBA: {
+      ingredients: [
+        { amount: "6 cl", item: "Cachaça" },
+        { amount: "1/2", item: "Lime fresco" },
+        { amount: "2 tsp", item: "Zucchero semolato" }
+      ],
+      method: "Tagliare il lime a spicchi, pestare con lo zucchero nel bicchiere. Aggiungere la cachaça. Riempire con ghiaccio tritato. Mescolare bene.",
+      notes: "La cachaça è distillato di canna da zucchero fresca (non invecchiato): diversa dalla cachaça invecchiata che ha un profilo più simile al rum. Pestare il lime, non sgranarlo: gli oli della buccia sono parte del cocktail."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Cachaça premium (es. Leblon, Ypioca)" },
+        { amount: "4 spicchi", item: "Lime fresco (circa 3 cl di succo)" },
+        { amount: "2 tsp", item: "Zucchero di canna grezzo" }
+      ],
+      method: "Pestare il lime con lo zucchero di canna grezzo. Aggiungere cachaça. Ghiaccio tritato abbondante. Trasferire in un altro bicchiere e tornare indietro per miscelare.",
+      notes: "Lo zucchero di canna grezzo (demerara) è preferibile per un profilo più ricco. Difford suggerisce di 'lanciare' il drink tra due bicchieri per miscelare."
+    },
+    description: "Il cocktail nazionale del Brasile, semplice nella struttura ma dipendente dalla qualità della cachaça. Un Daiquiri terroso e più rusticamente energico.",
+    history: "Le origini sono brasiliane, probabilmente inizio '900. La cachaça è prodotta in Brasile da almeno il XVI secolo."
+  },
+
+  {
+    id: "campari-orange",
+    name: "Campari Orange",
+    emoji: "🍊",
+    tagline: "Campari e succo d'arancia: classico aperitivo italiano",
+    iba: true, difford: false,
+    ibaCategory: "contemporary",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["campari"],
+    ingredients: ["orange juice"],
+    taste: ["bitter", "fruity", "refreshing"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta d'arancia",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Campari" },
+        { amount: "12 cl", item: "Succo d'arancia fresco" }
+      ],
+      method: "Versare il Campari nel bicchiere con ghiaccio. Aggiungere il succo d'arancia. Mescolare delicatamente.",
+      notes: "Usare succo d'arancia fresco per la versione migliore. Il Garibaldi Cocktail è la versione 'fluffy': succo d'arancia montato con centrifuga."
+    },
+    description: "Uno dei long drink aperitivi più semplici e soddisfacenti. Il Campari trova nel succo d'arancia il suo abbinamento naturale.",
+    history: "Un abbinamento naturale che si è imposto da solo nella cultura del bar italiano."
+  },
+
+  {
+    id: "champagne-cocktail",
+    name: "Champagne Cocktail",
+    emoji: "🥂",
+    tagline: "Champagne, Angostura e cognac: il brindisi per eccellenza",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["champagne"],
+    ingredients: ["angostura bitters", "sugar", "cognac"],
+    taste: ["sparkling", "bitter", "sweet", "complex"],
+    strength: "light",
+    style: "sparkling",
+    serve: "built",
+    glass: "flute",
+    ice: "none",
+    garnish: "Scorza d'arancia, ciliegia al maraschino",
+    recipe: {
+      ingredients: [
+        { amount: "9 cl", item: "Champagne brut freddo" },
+        { amount: "1 zolletta", item: "Zucchero" },
+        { amount: "2 dash", item: "Angostura Bitters" },
+        { amount: "1 cl", item: "Cognac" }
+      ],
+      method: "Inzuppare la zolletta di zucchero con i bitters. Adagiarla nel calice. Aggiungere il cognac. Completare con Champagne freddo versato lentamente.",
+      notes: "La zolletta di zucchero imbevuta di bitters crea un effetto visivo di bollicine continue. Non mescolare. Champagne brut per l'equilibrio."
+    },
+    description: "Un classico elegante e teatrale. La zolletta di zucchero che si discioglie lentamente è parte dello spettacolo.",
+    history: "Presente nel bartender's guide di Jerry Thomas (1862). Uno dei cocktail più antichi ancora in uso."
+  },
+
+  {
+    id: "cosmopolitan",
+    name: "Cosmopolitan",
+    emoji: "🩷",
+    tagline: "Vodka citrus, triple sec, cranberry e lime: Sex and the City in un bicchiere",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["vodka"],
+    ingredients: ["triple sec", "cranberry juice", "lime juice"],
+    taste: ["sour", "fruity", "tart", "refreshing"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "martini",
+    ice: "none",
+    garnish: "Scorza d'arancia flambé o twist di lime",
+    recipeIBA: {
+      ingredients: [
+        { amount: "4 cl", item: "Vodka al limone/citrus" },
+        { amount: "1.5 cl", item: "Triple Sec" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" },
+        { amount: "3 cl", item: "Succo di mirtillo rosso (cranberry)" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa Martini fredda.",
+      notes: "Il succo di cranberry deve essere 100% succo (non cocktail di cranberry zuccherato). La vodka citrus amplifica il profilo citrico."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "5 cl", item: "Vodka Absolut Citron" },
+        { amount: "2 cl", item: "Cointreau" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" },
+        { amount: "2 cl", item: "Succo di cranberry" }
+      ],
+      method: "Shakerare con ghiaccio abbondante. Doppia filtrazione in coppa martini.",
+      notes: "Difford usa meno cranberry per un risultato meno dolce e più equilibrato. La scorza d'arancia espressa è fondamentale per l'aroma."
+    },
+    description: "Reso famoso da Sex and the City negli anni '90, il Cosmo è diventato un simbolo culturale. Nonostante la sua associazione pop, è un cocktail tecnicamente ben bilanciato.",
+    history: "Popularizzato da Toby Cecchini al Odeon di New York nel 1988. Reso icona mondiale da Sex and the City (1998-2004)."
+  },
+
+  {
+    id: "cuba-libre",
+    name: "Cuba Libre",
+    emoji: "🇨🇺",
+    tagline: "Rum, Coca-Cola e lime: libertà in un bicchiere",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "dark",
+    baseSpirits: ["rum bianco", "rum scuro"],
+    ingredients: ["coca cola", "lime"],
+    taste: ["sweet", "refreshing", "vanilla"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Spicchio di lime",
+    recipe: {
+      ingredients: [
+        { amount: "5 cl", item: "Rum bianco o dorado" },
+        { amount: "12 cl", item: "Coca-Cola" },
+        { amount: "1 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Versare il rum nel bicchiere con ghiaccio. Aggiungere il lime. Completare con Coca-Cola. Mescolare delicatamente.",
+      notes: "Il lime fresco (non solo la fetta decorativa) è ciò che distingue un Cuba Libre da un Rum&Cola. Piccolo ma fondamentale."
+    },
+    description: "Semplice quanto iconico. Il grido 'Cuba Libre!' accompagnava la vittoria cubana nella guerra ispano-americana del 1898.",
+    history: "Nato a Cuba intorno al 1900, quando la Coca-Cola arrivò sull'isola con le truppe americane."
+  },
+
+  {
+    id: "dark-and-stormy",
+    name: "Dark 'n' Stormy",
+    emoji: "⛈️",
+    tagline: "Dark rum Gosling's e ginger beer: il cocktail delle Bermuda",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "dark",
+    baseSpirits: ["rum scuro"],
+    ingredients: ["ginger beer", "lime juice"],
+    taste: ["spicy", "sweet", "ginger", "refreshing"],
+    strength: "medium",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Spicchio di lime",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Gosling's Black Seal Rum" },
+        { amount: "10 cl", item: "Ginger Beer" },
+        { amount: "1 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Versare il lime e la ginger beer nel bicchiere con ghiaccio. Versare il rum sopra senza mescolare (layered).",
+      notes: "Il Dark 'n' Stormy è un marchio registrato di Goslings Rum: legalmente solo il rum Gosling's può essere usato. Layered: il rum scuro in cima è parte estetica e del gusto iniziale."
+    },
+    description: "Il cocktail ufficiale delle Bermuda. Semplice, speziato, visivamente drammatico con il rum scuro che galleggia sopra.",
+    history: "Nato alle Bermuda, dove la Goslings è prodotta dal 1806. Il nome è registrato come marchio."
+  },
+
+  {
+    id: "espresso-martini",
+    name: "Espresso Martini",
+    emoji: "☕",
+    tagline: "Vodka, Kahlúa ed espresso: la sveglia in forma di cocktail",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["vodka"],
+    ingredients: ["kahlua", "espresso", "coffee liqueur"],
+    taste: ["coffee", "sweet", "bitter", "creamy"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "martini",
+    ice: "none",
+    garnish: "3 chicchi di caffè",
+    recipeIBA: {
+      ingredients: [
+        { amount: "5 cl", item: "Vodka" },
+        { amount: "2 cl", item: "Kahlúa" },
+        { amount: "3 cl", item: "Espresso fresco (appena fatto)" }
+      ],
+      method: "Shakerare tutti gli ingredienti con abbondante ghiaccio vigorosamente. Doppia filtrazione in coppa Martini fredda.",
+      notes: "L'espresso deve essere fresco e ancora caldo: la differenza di temperatura con il ghiaccio crea la schiuma. Shakerare con energia per la schiuma."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "5 cl", item: "Vodka premium" },
+        { amount: "2.5 cl", item: "Kahlúa" },
+        { amount: "3.5 cl", item: "Espresso (appena estratto)" },
+        { amount: "0.5 cl", item: "Sciroppo di zucchero (facoltativo)" }
+      ],
+      method: "Shakerare con energia per almeno 15 secondi. Doppia filtrazione. La schiuma deve essere densa e stabile.",
+      notes: "La qualità dell'espresso è decisiva. Difford consiglia un espresso ristretto per massimo aromaticità. La schiuma deve avere le tre bollicine tradizionali."
+    },
+    description: "Uno dei cocktail più richiesti degli ultimi 20 anni. Semplice nella teoria, difficile da fare perfettamente: la schiuma è tutto.",
+    history: "Creato da Dick Bradsell al Soho Brasserie di Londra nel 1983, su richiesta di una modella che chiese un drink che la 'svegliasse e poi la mettesse KO'."
+  },
+
+  {
+    id: "french-connection",
+    name: "French Connection",
+    emoji: "🇫🇷",
+    tagline: "Cognac e Amaretto: semplicità transalpina",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "classics",
+    baseSpirits: ["cognac"],
+    ingredients: ["amaretto"],
+    taste: ["sweet", "nutty", "warm"],
+    strength: "strong",
+    style: "short",
+    serve: "built",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "3.5 cl", item: "Cognac" },
+        { amount: "3.5 cl", item: "Amaretto" }
+      ],
+      method: "Versare entrambi gli ingredienti in un rocks glass con cubetto grande. Mescolare brevemente.",
+      notes: "Il rapporto cognac/amaretto è questione di gusto: più cognac per un drink meno dolce. Semplice ma soddisfacente come after-dinner."
+    },
+    description: "Un after-dinner semplice e appagante. Cognac e amaretto si completano a vicenda in modo sorprendentemente naturale.",
+    history: "Ispirato al film French Connection (1971). Un classico degli anni '70-'80."
+  },
+
+  {
+    id: "frozen-daiquiri",
+    name: "Frozen Daiquiri",
+    emoji: "🧊",
+    tagline: "Il classico Daiquiri frullato: L'Avana in versione granita",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["rum bianco"],
+    ingredients: ["lime juice", "simple syrup"],
+    taste: ["sour", "refreshing", "tropical"],
+    strength: "medium",
+    style: "short",
+    serve: "blended",
+    glass: "coupe",
+    ice: "blended",
+    garnish: "Fetta di lime",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Rum bianco" },
+        { amount: "2.5 cl", item: "Succo di lime fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero (2:1)" },
+        { amount: "1 cup", item: "Ghiaccio tritato" }
+      ],
+      method: "Frullare tutti gli ingredienti con il ghiaccio tritato fino a consistenza liscia e omogenea. Versare in coppa fredda.",
+      notes: "Hemingway ordinava il suo 'Papa Doble' al Floridita: doppia dose di rum, no zucchero, aggiunta di pompelmo. La versione frullata è popolare nei bar caraibici."
+    },
+    description: "La versione estiva e festosa del Daiquiri. Il Floridita di L'Avana è il suo tempio. Hemingway è il suo profeta.",
+    history: "Popolarizzato al Floridita di L'Avana dal barman Constantino Ribalaigua negli anni '20-'30."
+  },
+
+  {
+    id: "godfather",
+    name: "Godfather",
+    emoji: "🕴️",
+    tagline: "Scotch e Amaretto: il boss dei digestivi",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "dark",
+    baseSpirits: ["scotch whisky"],
+    ingredients: ["amaretto"],
+    taste: ["sweet", "smoky", "nutty"],
+    strength: "strong",
+    style: "short",
+    serve: "built",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "3.5 cl", item: "Scotch Whisky" },
+        { amount: "3.5 cl", item: "Amaretto" }
+      ],
+      method: "Versare in rocks glass con cubetto grande. Mescolare.",
+      notes: "Come la French Connection ma con scotch invece del cognac. La torbatura dello scotch si scontra interessantemente con la dolcezza dell'amaretto. Godmother = Vodka + Amaretto."
+    },
+    description: "Un cocktail semplice con un nome leggendario. Scotch e Amaretto in parti uguali creano qualcosa di più della somma delle parti.",
+    history: "Popolarizzato negli anni '70 dopo l'uscita del film Il Padrino (1972)."
+  },
+
+  {
+    id: "golden-dream",
+    name: "Golden Dream",
+    emoji: "✨",
+    tagline: "Galliano, triple sec, succo d'arancia e panna: sognante e cremoso",
+    iba: true, difford: false,
+    ibaCategory: "contemporary",
+    nomadCategory: "classics",
+    baseSpirits: [],
+    ingredients: ["galliano", "triple sec", "orange juice", "heavy cream"],
+    taste: ["sweet", "creamy", "vanilla", "fruity"],
+    strength: "light",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "2 cl", item: "Galliano L'Autentico" },
+        { amount: "2 cl", item: "Triple Sec" },
+        { amount: "2 cl", item: "Succo d'arancia fresco" },
+        { amount: "1 cl", item: "Panna fresca" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Il Galliano porta la nota distintiva di anice stellato e vaniglia. Leggero, dolce, da dessert."
+    },
+    description: "Un cocktail degli anni '60-'70, tipico dell'era dei drink cremosi e fruttati. Delicato e piacevole.",
+    history: "Popolare nell'era Harvey Wallbanger (anni '60-'70)."
+  },
+
+  {
+    id: "harvey-wallbanger",
+    name: "Harvey Wallbanger",
+    emoji: "🏄",
+    tagline: "Vodka, Galliano e succo d'arancia: gli anni '70 in un bicchiere",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["vodka"],
+    ingredients: ["galliano", "orange juice"],
+    taste: ["sweet", "fruity", "vanilla", "refreshing"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta d'arancia, ciliegia",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Vodka" },
+        { amount: "1.5 cl", item: "Galliano L'Autentico" },
+        { amount: "9 cl", item: "Succo d'arancia fresco" }
+      ],
+      method: "Versare vodka e succo d'arancia nel bicchiere con ghiaccio. Mescolare. Versare il Galliano sul dorso del cucchiaio in superficie.",
+      notes: "Il Galliano in superficie (float) crea il caratteristico effetto dorato. Un Screwdriver con personalità aggiuntiva grazie al Galliano."
+    },
+    description: "Un classico degli anni '70, simbolo di un'era. Facile, piacevole, e capace di una nostalgia genuina per chi lo ricorda.",
+    history: "Inventato da Donato 'Duke' Antone a Newport Beach, California, nel 1952. La leggenda del surfista Harvey che sbatteva la testa contro il muro dopo averlo bevuto troppo."
+  },
+
+  {
+    id: "hemingway-daiquiri",
+    name: "Hemingway Daiquiri",
+    emoji: "✒️",
+    tagline: "Rum, maraschino, pompelmo e lime: il Daiquiri dello scrittore",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["rum bianco"],
+    ingredients: ["maraschino", "grapefruit juice", "lime juice"],
+    taste: ["sour", "bitter", "dry", "complex"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Fetta di pompelmo o lime",
+    recipeIBA: {
+      ingredients: [
+        { amount: "6 cl", item: "Rum bianco" },
+        { amount: "4 cl", item: "Succo di pompelmo rosa fresco" },
+        { amount: "1.5 cl", item: "Liquore Maraschino" },
+        { amount: "1 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con abbondante ghiaccio. Filtrare in coppa.",
+      notes: "Noto anche come 'Papa Doble' nella versione originale di Hemingway: doppia dose di rum e no zucchero. Questo Daiquiri è secco e complesso."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Rum bianco" },
+        { amount: "3 cl", item: "Succo di pompelmo rosa" },
+        { amount: "1.5 cl", item: "Maraschino" },
+        { amount: "1.5 cl", item: "Succo di lime" },
+        { amount: "0.5 cl", item: "Sciroppo di zucchero" }
+      ],
+      method: "Shakerare vigorosamente. Doppia filtrazione in coppa.",
+      notes: "Difford aggiunge un touch di sciroppo per bilanciamento, divergendo dalla versione asciutta originale di Hemingway."
+    },
+    description: "Ernest Hemingway era diabetico e senza zucchero ordinava il suo Papa Doble al Floridita. Il pompelmo e il maraschino rendono questo Daiquiri unico.",
+    history: "Creato per Ernest Hemingway dal barman Constantino Ribalaigua al Floridita di L'Avana. Hemingway era solito berlo senza zucchero in versione 'Papa Doble'."
+  },
+
+  {
+    id: "horse-neck",
+    name: "Horse's Neck",
+    emoji: "🐴",
+    tagline: "Brandy o whiskey, ginger ale e bitters: lungo, elegante e aromatico",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "dark",
+    baseSpirits: ["brandy", "bourbon"],
+    ingredients: ["ginger ale", "angostura bitters"],
+    taste: ["refreshing", "spicy", "warm"],
+    strength: "medium",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Scorza di limone a spirale (il 'collo del cavallo')",
+    recipe: {
+      ingredients: [
+        { amount: "4 cl", item: "Cognac o Bourbon" },
+        { amount: "12 cl", item: "Ginger Ale" },
+        { amount: "2 dash", item: "Angostura Bitters" }
+      ],
+      method: "Ricavare una lunga spirale di scorza di limone. Appoggiarla nel bicchiere con un'estremità sul bordo (simula il collo del cavallo). Aggiungere ghiaccio, bitters, spirit e ginger ale. Mescolare delicatamente.",
+      notes: "La spirale di limone è parte dell'identità visiva irrinunciabile del cocktail. Prendere un limone intero e sbucciarlo a spirale continua."
+    },
+    description: "Un long drink elegante il cui nome si riferisce alla caratteristica guarnizione a spirale di scorza di limone che cade come il collo di un cavallo.",
+    history: "Risale al XIX secolo, originalmente senza alcol. La versione alcolica con brandy si è affermata negli anni '30-'40."
+  },
+
+  {
+    id: "irish-coffee",
+    name: "Irish Coffee",
+    emoji: "☘️",
+    tagline: "Irish whiskey, caffè, zucchero e panna: calore e comfort",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "dark",
+    baseSpirits: ["irish whiskey"],
+    ingredients: ["coffee", "brown sugar", "heavy cream"],
+    taste: ["coffee", "sweet", "warm", "creamy"],
+    strength: "medium",
+    style: "short",
+    serve: "built",
+    glass: "wine",
+    ice: "none",
+    garnish: "Nessuno (la panna è la guarnizione)",
+    recipe: {
+      ingredients: [
+        { amount: "4 cl", item: "Irish Whiskey" },
+        { amount: "12 cl", item: "Caffè caldo (non espresso, ma caffè lungo)" },
+        { amount: "1 tsp", item: "Zucchero di canna grezzo" },
+        { amount: "3 cl", item: "Panna fresca leggermente montata" }
+      ],
+      method: "Scaldare il bicchiere. Sciogliere lo zucchero nel caffè caldo. Aggiungere il whiskey. Versare la panna sul dorso del cucchiaio per creare uno strato galleggiante.",
+      notes: "La panna NON va mescolata: si beve il caffè attraverso di essa. Panna semi-montata (non densa): deve scorrere. Il bicchiere pre-riscaldato impedisce lo shock termico. Usare Irish Whiskey (non scotch)."
+    },
+    description: "Un classico invernale che scalda sia il corpo che l'anima. La tecnica dello strato di panna è fondamentale e non negoziabile.",
+    history: "Inventato da Joe Sheridan all'aeroporto di Foynes (Irlanda) nel 1943 per riscaldare i passeggeri bloccati da una tempesta."
+  },
+
+  {
+    id: "kir-royale",
+    name: "Kir Royale",
+    emoji: "👑",
+    tagline: "Champagne e Crème de Cassis: eleganza francese",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["champagne"],
+    ingredients: ["creme de cassis"],
+    taste: ["fruity", "sweet", "sparkling", "berry"],
+    strength: "light",
+    style: "sparkling",
+    serve: "built",
+    glass: "flute",
+    ice: "none",
+    garnish: "More o ribes (facoltativo)",
+    recipe: {
+      ingredients: [
+        { amount: "10 cl", item: "Champagne o Cremant brut" },
+        { amount: "1 cl", item: "Crème de Cassis" }
+      ],
+      method: "Versare la Crème de Cassis nel calice. Aggiungere lo Champagne freddo lentamente.",
+      notes: "Il Kir base usa vino bianco secco (preferibilmente Bourgogne Aligoté) al posto dello Champagne. Il Cassis deve essere di qualità: Vedrenne o simili."
+    },
+    description: "Uno dei cocktail aperitivo più eleganti. La semplicità assoluta nasconde la necessità di ingredienti di qualità.",
+    history: "Il Kir base fu reso famoso da Félix Kir, sindaco di Digione, che lo serviva agli ospiti ufficiali. La versione Royale con Champagne è più recente."
+  },
+
+  {
+    id: "long-island-iced-tea",
+    name: "Long Island Iced Tea",
+    emoji: "🍹",
+    tagline: "Vodka, gin, rum, tequila, triple sec e cola: la bomba americana",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["vodka", "gin", "rum bianco", "tequila"],
+    ingredients: ["triple sec", "lemon juice", "cola"],
+    taste: ["sweet", "sour", "strong", "refreshing"],
+    strength: "strong",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta di limone",
+    recipe: {
+      ingredients: [
+        { amount: "1.5 cl", item: "Vodka" },
+        { amount: "1.5 cl", item: "Gin London Dry" },
+        { amount: "1.5 cl", item: "Rum bianco" },
+        { amount: "1.5 cl", item: "Tequila bianca" },
+        { amount: "1.5 cl", item: "Triple Sec" },
+        { amount: "2.5 cl", item: "Succo di limone fresco" },
+        { amount: "q.b.", item: "Cola" }
+      ],
+      method: "Costruire nel bicchiere con ghiaccio abbondante. Completare con cola. Mescolare delicatamente.",
+      notes: "Nonostante il nome, non contiene tè. La cola aggiunge il colore. Pericolosamente easy da bere nonostante l'alto contenuto alcolico."
+    },
+    description: "Il cocktail che sembra una bevanda analcolica ma è una bomba alcolica. Molto popolare, quasi universalmente amato, raramente rispettato dai barman seri.",
+    history: "Creato da Robert 'Rosebud' Butt al Oak Beach Inn di Hampton Bays, New York, nel 1972."
+  },
+
+  {
+    id: "mai-tai",
+    name: "Mai Tai",
+    emoji: "🏝️",
+    tagline: "Rum agricole, Orgeat, lime e curaçao: il tiki cocktail originale",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["rum agricole", "rum giamaicano"],
+    ingredients: ["orange curacao", "orgeat", "lime juice"],
+    taste: ["tropical", "nutty", "fruity", "refreshing"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "rocks",
+    ice: "crushed",
+    garnish: "Foglia di menta, scorza di lime, fiore di ibisco",
+    recipeIBA: {
+      ingredients: [
+        { amount: "4 cl", item: "Rum agricole martinicano bianco" },
+        { amount: "2 cl", item: "Rum jamaicano scuro" },
+        { amount: "1.5 cl", item: "Orange Curaçao" },
+        { amount: "1.5 cl", item: "Sciroppo Orgeat" },
+        { amount: "1 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Versare in rocks glass con ghiaccio tritato abbondante. Guarnire scenograficamente.",
+      notes: "L'Orgeat (sciroppo di mandorle) è fondamentale e irrinunciabile. Usare rum di qualità: Appleton per il giamaicano, Clément o La Favorite per l'agricole."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "3 cl", item: "Rum agricole bianco" },
+        { amount: "3 cl", item: "Rum jamaicano invecchiato" },
+        { amount: "2 cl", item: "Orange Curaçao" },
+        { amount: "2 cl", item: "Orgeat" },
+        { amount: "2 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Shakerare con ghiaccio. Versare su ghiaccio tritato. Aggiungere float di rum scuro in superficie.",
+      notes: "Difford aggiunge un float di rum scuro per enfasi visiva e primo sorso più ricco."
+    },
+    description: "Il mai tai vuol dire 'fuori da questo mondo' in tahitiano: Victor Bergeron (Trader Vic) lo inventò nel 1944 e i suoi ospiti reagirono esattamente così.",
+    history: "Creato nel 1944 da Victor 'Trader Vic' Bergeron a Oakland, California, per degli amici di Tahiti. Bergeron e Donn Beach (Don the Beachcomber) si contesero la paternità per decenni."
+  },
+
+  {
+    id: "margarita",
+    name: "Margarita",
+    emoji: "🍹",
+    tagline: "Tequila, triple sec e lime: il cocktail messicano per eccellenza",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["tequila"],
+    ingredients: ["triple sec", "lime juice"],
+    taste: ["sour", "refreshing", "tart", "agave"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "margarita",
+    ice: "none",
+    garnish: "Bordo di sale grosso, fetta di lime",
+    recipeIBA: {
+      ingredients: [
+        { amount: "5 cl", item: "Tequila Blanco 100% agave" },
+        { amount: "2 cl", item: "Triple Sec / Cointreau" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Preparare il bordo di sale sulla coppa. Shakerare tutti gli ingredienti con ghiaccio. Filtrare nella coppa.",
+      notes: "Il bordo di sale è opzionale ma tradizionale. Tequila 100% agave, non mixto. Lime fresco, mai da bottiglie."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "5 cl", item: "Tequila Blanco (El Jimador, Olmeca Altos)" },
+        { amount: "2.5 cl", item: "Cointreau" },
+        { amount: "2.5 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Shakerare vigorosamente. Filtrare nella coppa con bordo di sale (metà bordo per chi preferisce).",
+      notes: "Difford usa più succo di lime per un profilo più acido. Consiglia la Tommy's Margarita (con Agave Syrup) come variante moderna pulita."
+    },
+    description: "La Margarita è il cocktail più venduto negli Stati Uniti. Tre ingredienti perfetti: tequila agave, acidità citrica, dolcezza del triple sec.",
+    history: "Le origini sono dibattute: Carlos 'Danny' Herrera a Tijuana (1938), o Margarita Sames a Acapulco (1948). La versione Frozen è popolare quanto quella on the rocks."
+  },
+
+  {
+    id: "mimosa",
+    name: "Mimosa",
+    emoji: "🌸",
+    tagline: "Champagne e succo d'arancia: il brunch cocktail per antonomasia",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["champagne"],
+    ingredients: ["orange juice"],
+    taste: ["fruity", "sparkling", "sweet", "refreshing"],
+    strength: "light",
+    style: "sparkling",
+    serve: "built",
+    glass: "flute",
+    ice: "none",
+    garnish: "Scorza d'arancia (facoltativo)",
+    recipe: {
+      ingredients: [
+        { amount: "7.5 cl", item: "Champagne o Cava brut" },
+        { amount: "7.5 cl", item: "Succo d'arancia fresco" }
+      ],
+      method: "Versare il succo d'arancia nel calice. Aggiungere lo Champagne lentamente. Non mescolare.",
+      notes: "Il Buck's Fizz britannico usa 1/3 di succo e 2/3 di Champagne. La Mimosa americana va 50/50. Succo fresco sempre: in barattolo è imperdonabile."
+    },
+    description: "Il re del brunch. Semplice, festivo, universalmente amato. La proporzione è la sola variabile.",
+    history: "Creata all'Hotel Ritz di Parigi da Frank Meier nel 1925. Il nome si riferisce alla mimosa, il fiore giallo simile al colore del cocktail."
+  },
+
+  {
+    id: "mojito",
+    name: "Mojito",
+    emoji: "🌿",
+    tagline: "Rum, menta, lime, zucchero e soda: Cuba distillata in un bicchiere",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["rum bianco"],
+    ingredients: ["fresh mint", "lime juice", "simple syrup", "soda water"],
+    taste: ["refreshing", "minty", "sour", "light"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "crushed",
+    garnish: "Rametto di menta abbondante, fetta di lime",
+    recipeIBA: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Rum bianco" },
+        { amount: "3 cl", item: "Succo di lime fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero (2:1)" },
+        { amount: "12 foglie", item: "Menta fresca" },
+        { amount: "q.b.", item: "Acqua di seltz" }
+      ],
+      method: "Pestare delicatamente la menta con lo sciroppo nel bicchiere. Aggiungere lime e rum. Ghiaccio tritato. Completare con seltz. Mescolare delicatamente.",
+      notes: "Non pestare la menta violentemente: amareggia. Usare rum a 40° con profilo leggero e fruttato (Havana 3 anni). Il ghiaccio tritato è preferibile ai cubetti."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Rum bianco" },
+        { amount: "3 cl", item: "Succo di lime fresco" },
+        { amount: "2 cl", item: "Sciroppo di zucchero" },
+        { amount: "10 foglie", item: "Menta fresca" },
+        { amount: "q.b.", item: "Soda" }
+      ],
+      method: "Pestare la menta nello sciroppo. Aggiungere lime e rum. Ghiaccio abbondante. Soda.",
+      notes: "Difford usa proporzioni più bilanciate. Sconsiglia di pestare eccessivamente la menta."
+    },
+    description: "Il Mojito è probabilmente il cocktail più ordinato al mondo insieme al Margarita. Fresco, aromatico, facilissimo da bere. Difficile da fare perfettamente.",
+    history: "Originario di Cuba, con radici nel 'Draque' del XVI secolo a base di acquavite di canna. Hemingway lo amava al La Bodeguita del Medio di L'Avana."
+  },
+
+  {
+    id: "moscow-mule",
+    name: "Moscow Mule",
+    emoji: "🫙",
+    tagline: "Vodka, ginger beer e lime: fresco, piccante, iconico",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["vodka"],
+    ingredients: ["ginger beer", "lime juice"],
+    taste: ["spicy", "refreshing", "tart", "ginger"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "mule",
+    ice: "cubed",
+    garnish: "Fetta di lime, rametto di menta",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Vodka" },
+        { amount: "12 cl", item: "Ginger Beer" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Versare vodka e lime nella tazza di rame (copper mug). Aggiungere ghiaccio. Completare con ginger beer. Guarnire con lime e menta.",
+      notes: "La tazza di rame (copper mug) è tradizionale: il metallo si raffredda rapidamente e mantiene il drink freddo. La ginger beer (alcolica o no) è preferibile al ginger ale."
+    },
+    description: "Il Moscow Mule è famoso quanto il bicchiere in cui viene servito: la tazza di rame è la sua firma inconfondibile.",
+    history: "Creato nel 1941 da John G. Martin (Smirnoff Vodka) e Jack Morgan (Cock 'n' Bull Ginger Beer) per commercializzare entrambi i prodotti."
+  },
+
+  {
+    id: "pina-colada",
+    name: "Piña Colada",
+    emoji: "🍍",
+    tagline: "Rum, crema di cocco e ananas: vacanza tropicale istantanea",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["rum bianco", "rum dorado"],
+    ingredients: ["coconut cream", "pineapple juice"],
+    taste: ["sweet", "tropical", "creamy", "refreshing"],
+    strength: "medium",
+    style: "long",
+    serve: "blended",
+    glass: "hurricane",
+    ice: "blended",
+    garnish: "Spicchio d'ananas, ciliegia al maraschino, ombrellino",
+    recipeIBA: {
+      ingredients: [
+        { amount: "3 cl", item: "Rum bianco" },
+        { amount: "3 cl", item: "Rum dorato" },
+        { amount: "6 cl", item: "Succo d'ananas fresco" },
+        { amount: "9 cl", item: "Crema di cocco" }
+      ],
+      method: "Frullare tutti gli ingredienti con una tazza di ghiaccio tritato. Versare in bicchiere hurricane. Guarnire.",
+      notes: "Crema di cocco (tipo Coco Lopez), NON latte di cocco: molto più densa e dolce. Ananas fresco è preferibile. Si può fare anche senza frullatore, shakerando con forza."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Rum dorado" },
+        { amount: "6 cl", item: "Succo d'ananas" },
+        { amount: "4.5 cl", item: "Crema di cocco" },
+        { amount: "1 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Frullare con ghiaccio. Oppure shakerare vigorosamente e servire su ghiaccio tritato.",
+      notes: "Difford aggiunge un tocco di lime per bilanciare la dolcezza. Usa solo rum dorato."
+    },
+    description: "La Piña Colada è il cocktail dei sogni vacanzieri. Dolce, cremosa, tropicale. Il cocktail nazionale di Puerto Rico.",
+    history: "Dichiarata cocktail nazionale di Puerto Rico nel 1978. Creata da Ramon 'Monchito' Marrero al Caribe Hilton di San Juan nel 1954."
+  },
+
+  {
+    id: "sangria",
+    name: "Sangria",
+    emoji: "🍷",
+    tagline: "Vino rosso, frutta e brandy: estate spagnola in una caraffa",
+    iba: true, difford: false,
+    ibaCategory: "contemporary",
+    nomadCategory: null,
+    baseSpirits: ["red wine"],
+    ingredients: ["brandy", "orange juice", "fruits", "sugar"],
+    taste: ["fruity", "refreshing", "wine", "sweet"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "wine",
+    ice: "cubed",
+    garnish: "Frutta fresca nella caraffa",
+    recipe: {
+      ingredients: [
+        { amount: "75 cl", item: "Vino rosso spagnolo giovane" },
+        { amount: "4.5 cl", item: "Brandy spagnolo" },
+        { amount: "12 cl", item: "Succo d'arancia fresco" },
+        { amount: "2 cucchiai", item: "Zucchero" },
+        { amount: "q.b.", item: "Frutta fresca (arancia, limone, pesca)" }
+      ],
+      method: "Mescolare tutti gli ingredienti in una caraffa. Lasciare macerare in frigorifero almeno 2 ore. Servire con ghiaccio nei bicchieri.",
+      notes: "La macerazione è fondamentale. Aggiungere soda o Cava per versione frizzante (Sangría con gas). Usare vino economico: non è il momento dei grandi Rioja."
+    },
+    description: "La Sangria è un punch spagnolo conviviale. Non c'è festa estiva senza di essa. La qualità del vino è meno importante della freschezza della frutta.",
+    history: "Tradizione spagnola centenaria. Popolarizzata a livello internazionale dopo la Fiera Mondiale di New York del 1964."
+  },
+
+  {
+    id: "sex-on-the-beach",
+    name: "Sex on the Beach",
+    emoji: "🏖️",
+    tagline: "Vodka, Peach Schnapps, arancia e mirtillo: fruttato e fresco",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["vodka"],
+    ingredients: ["peach schnapps", "orange juice", "cranberry juice"],
+    taste: ["fruity", "sweet", "refreshing"],
+    strength: "medium",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta d'arancia",
+    recipe: {
+      ingredients: [
+        { amount: "4 cl", item: "Vodka" },
+        { amount: "2 cl", item: "Peach Schnapps" },
+        { amount: "4 cl", item: "Succo d'arancia fresco" },
+        { amount: "4 cl", item: "Succo di mirtillo rosso (cranberry)" }
+      ],
+      method: "Costruire nel bicchiere con ghiaccio. Mescolare delicatamente.",
+      notes: "Può essere shakerато e servito in un bicchiere più piccolo. I colori si mescolano in modo attraente quando vengono versati separatamente."
+    },
+    description: "Uno dei cocktail più ordinati nei bar di tutto il mondo. Il nome irriverente e il gusto facile lo hanno reso universalmente famoso.",
+    history: "Creato nel 1987 da Ted Pizio in Florida durante una gara promossa da DeKuyper Peach Schnapps."
+  },
+
+  {
+    id: "singapore-sling",
+    name: "Singapore Sling",
+    emoji: "🌺",
+    tagline: "Gin, Cherry Heering, Benedictine, ananas e lime: l'esotico '20s",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["gin"],
+    ingredients: ["cherry heering", "benedictine", "cointreau", "pineapple juice", "lime juice", "grenadine", "angostura bitters"],
+    taste: ["sweet", "fruity", "herbal", "complex"],
+    strength: "medium",
+    style: "long",
+    serve: "shaken",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta d'ananas, ciliegia al maraschino",
+    recipe: {
+      ingredients: [
+        { amount: "3 cl", item: "Gin London Dry" },
+        { amount: "1.5 cl", item: "Cherry Heering" },
+        { amount: "0.75 cl", item: "Cointreau" },
+        { amount: "0.75 cl", item: "Bénédictine" },
+        { amount: "12 cl", item: "Succo d'ananas fresco" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" },
+        { amount: "1 tsp", item: "Granadina" },
+        { amount: "1 dash", item: "Angostura Bitters" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Versare in highball con ghiaccio.",
+      notes: "Il Cherry Heering è fondamentale e non sostituibile. La ricetta è lunga ma ogni ingrediente ha un ruolo specifico."
+    },
+    description: "Il cocktail del Raffles Hotel di Singapore: esotico, complesso, con una storia coloniale alle spalle. Irrinunciabile a Singapore.",
+    history: "Creato da Ngiam Tong Boon al Long Bar del Raffles Hotel di Singapore intorno al 1915."
+  },
+
+  {
+    id: "tequila-sunrise",
+    name: "Tequila Sunrise",
+    emoji: "🌅",
+    tagline: "Tequila, succo d'arancia e granadina: un'alba in un bicchiere",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["tequila"],
+    ingredients: ["orange juice", "grenadine"],
+    taste: ["fruity", "sweet", "refreshing"],
+    strength: "medium",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fetta d'arancia, ciliegia al maraschino",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Tequila Blanco" },
+        { amount: "9 cl", item: "Succo d'arancia fresco" },
+        { amount: "1.5 cl", item: "Granadina" }
+      ],
+      method: "Versare tequila e succo d'arancia nel bicchiere con ghiaccio. Mescolare. Far scivolare la granadina sul bordo del bicchiere (sinks to the bottom). Non mescolare.",
+      notes: "La granadina che affonda crea il caratteristico effetto alba: rosso in basso, arancione in alto. Non mescolare dopo aver aggiunto la granadina."
+    },
+    description: "Uno dei cocktail più scenografici grazie al gradiente di colore. Reso famoso dai Rolling Stones durante il loro tour del 1972.",
+    history: "La versione moderna fu creata da Bobby Lozoff e Billy Rice al Trident di Sausalito, California, nel 1972. I Rolling Stones la resero famosa."
+  },
+
+  {
+    id: "vesper",
+    name: "Vesper",
+    emoji: "🕵️",
+    tagline: "Gin, vodka e Lillet: shaken, not stirred",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "classics",
+    baseSpirits: ["gin", "vodka"],
+    ingredients: ["lillet blanc"],
+    taste: ["dry", "crisp", "herbal", "complex"],
+    strength: "spirit-forward",
+    style: "short",
+    serve: "shaken",
+    glass: "martini",
+    ice: "none",
+    garnish: "Scorza di limone (grande)",
+    recipeIBA: {
+      ingredients: [
+        { amount: "6 cl", item: "Gin Gordon's" },
+        { amount: "1.5 cl", item: "Vodka" },
+        { amount: "0.75 cl", item: "Lillet Blanc" }
+      ],
+      method: "Shakerare con ghiaccio abbondante fino a quasi ghiacciato. Filtrare in coppa Martini grande. Scorza di limone grande.",
+      notes: "'Shaken, not stirred' è la richiesta di James Bond — un tecnicismo discutibile (agita le proteine del vermouth), ma è la firma del personaggio."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "6 cl", item: "Gin London Dry" },
+        { amount: "2 cl", item: "Vodka" },
+        { amount: "1 cl", item: "Lillet Blanc (o Cocchi Americano)" }
+      ],
+      method: "Shakerare o mescolare secondo preferenza. Filtrare in coppa fredda.",
+      notes: "Difford nota che il Cocchi Americano Bianco è più vicino al Kina Lillet originale della ricetta di Fleming."
+    },
+    description: "Il cocktail di James Bond, descritto per la prima volta in Casino Royale (1953). Gin, vodka e Lillet: un Martini ibrido che rompe le regole.",
+    history: "Inventato da Ian Fleming per il suo romanzo Casino Royale (1953). Prende il nome da Vesper Lynd, il personaggio femminile."
+  },
+
+  {
+    id: "yellow-bird",
+    name: "Yellow Bird",
+    emoji: "🐦",
+    tagline: "Rum bianco, Galliano, triple sec e lime: caraibico e solare",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "light",
+    baseSpirits: ["rum bianco"],
+    ingredients: ["galliano", "triple sec", "lime juice"],
+    taste: ["sweet", "tropical", "vanilla", "citrus"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Fetta di lime",
+    recipe: {
+      ingredients: [
+        { amount: "3 cl", item: "Rum bianco" },
+        { amount: "1.5 cl", item: "Galliano L'Autentico" },
+        { amount: "1.5 cl", item: "Triple Sec" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Il Galliano porta la nota vanigliata e erbacea distintiva. Semplice ma elegante."
+    },
+    description: "Un contemporary classic caribico. Il Galliano è il suo ingrediente caratteristico e inconfondibile.",
+    history: "Di origine caribica, popolare dagli anni '70."
+  },
+
+  {
+    id: "zombie",
+    name: "Zombie",
+    emoji: "🧟",
+    tagline: "Tre rum, frutta esotica e Absinthe: il cocktail tiki più potente",
+    iba: true, difford: true,
+    ibaCategory: "contemporary",
+    nomadCategory: "dark",
+    baseSpirits: ["rum bianco", "rum scuro", "rum 151"],
+    ingredients: ["apricot brandy", "lime juice", "grenadine", "pineapple juice", "papaya juice", "angostura bitters", "absinthe"],
+    taste: ["tropical", "fruity", "strong", "complex"],
+    strength: "strong",
+    style: "long",
+    serve: "blended",
+    glass: "hurricane",
+    ice: "crushed",
+    garnish: "Menta, ciliegia, striscia di frutta",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Rum bianco" },
+        { amount: "4.5 cl", item: "Rum scuro" },
+        { amount: "1.5 cl", item: "Rum 151° (overproof)" },
+        { amount: "2 cl", item: "Succo di lime fresco" },
+        { amount: "2 cl", item: "Succo d'ananas" },
+        { amount: "1.5 cl", item: "Apricot Brandy" },
+        { amount: "1 tsp", item: "Granadina" },
+        { amount: "1 tsp", item: "Absinthe" },
+        { amount: "1 dash", item: "Angostura Bitters" }
+      ],
+      method: "Shakerare tutti gli ingredienti tranne il rum 151°. Versare su ghiaccio tritato. Float di rum 151° in superficie.",
+      notes: "Il Donn Beach (Don the Beachcomber) limitava a 2 Zombie a persona per cliente. Con il rum overproof capisce perché. Flambé del rum 151° per effetto scenografico."
+    },
+    description: "Il cocktail tiki più leggendario e pericoloso. Creato per mandare KO un cliente sboraccio, ha finito per creare una mitologia propria.",
+    history: "Creato da Donn Beach (Ernest Raymond Beaumont Gantt) al Don the Beachcomber di Hollywood nel 1934. La ricetta originale fu tenuta segreta per decenni."
+  },
+
+  /* ════════════════════════════════════
+     IBA — NEW ERA DRINKS
+  ════════════════════════════════════ */
+
+  {
+    id: "naked-and-famous",
+    name: "Naked and Famous",
+    emoji: "⭐",
+    tagline: "Mezcal, Aperol, Yellow Chartreuse e lime: la perfezione modernista",
+    iba: true, difford: true,
+    ibaCategory: "new_era",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["mezcal"],
+    ingredients: ["aperol", "yellow chartreuse", "lime juice"],
+    taste: ["smoky", "bitter", "herbal", "sour"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "2.25 cl", item: "Mezcal joven" },
+        { amount: "2.25 cl", item: "Aperol" },
+        { amount: "2.25 cl", item: "Yellow Chartreuse" },
+        { amount: "2.25 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Parti uguali: la semplicità è la sua eleganza. Il mezcal porta fumo, l'Aperol amaro agrumato, il Chartreuse erbe, il lime acidità. Bilanciato come un quartetto."
+    },
+    description: "Creato nel 2011, è già un classico moderno. Parti uguali di quattro ingredienti complementari: un esercizio di armonia perfetta.",
+    history: "Creato da Joaquín Simó al Death & Co di New York nel 2011. Ispirato al Paper Plane di Sam Ross."
+  },
+
+  {
+    id: "aperol-spritz",
+    name: "Aperol Spritz",
+    emoji: "🍊",
+    tagline: "Aperol, Prosecco e soda: l'aperitivo italiano del terzo millennio",
+    iba: true, difford: true,
+    ibaCategory: "new_era",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["aperol"],
+    ingredients: ["prosecco", "soda water"],
+    taste: ["bitter", "fruity", "sparkling", "refreshing"],
+    strength: "light",
+    style: "sparkling",
+    serve: "built",
+    glass: "wine",
+    ice: "cubed",
+    garnish: "Fetta d'arancia",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Aperol" },
+        { amount: "9 cl", item: "Prosecco" },
+        { amount: "3 cl", item: "Soda" }
+      ],
+      method: "Versare il Prosecco nel bicchiere con ghiaccio. Aggiungere l'Aperol. Completare con soda. Guarnire con la fetta d'arancia.",
+      notes: "La regola ufficiale: 3-2-1 (3 Prosecco, 2 Aperol, 1 soda). Aggiungere sempre il Prosecco prima dell'Aperol per evitare eccesso di schiuma."
+    },
+    description: "Da drink veneziano a fenomeno globale nel giro di due decenni. L'Aperol Spritz è il cocktail aperitivo più consumato al mondo.",
+    history: "L'Aperol esiste dal 1919 (Casa Barbieri, Padova). Il boom globale dell'Aperol Spritz è avvenuto intorno al 2003-2010 grazie a una campagna marketing efficacissima."
+  },
+
+  {
+    id: "porn-star-martini",
+    name: "Porn Star Martini",
+    emoji: "🍾",
+    tagline: "Vodka vaniglia, maracuja, lime e vaniglia: dolce, esotico e instagrammabile",
+    iba: true, difford: true,
+    ibaCategory: "new_era",
+    nomadCategory: "light",
+    baseSpirits: ["vanilla vodka", "vodka"],
+    ingredients: ["passoa", "passion fruit", "lime juice", "vanilla syrup", "prosecco"],
+    taste: ["sweet", "tropical", "fruity", "vanilla"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "martini",
+    ice: "none",
+    garnish: "Metà di un maracuja, bicchierino di Prosecco a parte",
+    recipeIBA: {
+      ingredients: [
+        { amount: "5 cl", item: "Vodka alla vaniglia" },
+        { amount: "2 cl", item: "Passoa (liquore ai frutti della passione)" },
+        { amount: "5 cl", item: "Succo di maracuja (frutto della passione)" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di vaniglia" },
+        { amount: "5 cl", item: "Prosecco (a parte)" }
+      ],
+      method: "Shakerare tutti gli ingredienti tranne il Prosecco con ghiaccio. Filtrare in coppa. Servire il Prosecco in un bicchierino separato a lato.",
+      notes: "Il Prosecco viene bevuto a sorsi alternati al cocktail, non versato dentro. La metà di maracuja fresco sulla superficie è estetica e olfattiva."
+    },
+    recipeDifford: {
+      ingredients: [
+        { amount: "5 cl", item: "Vodka alla vaniglia" },
+        { amount: "1.5 cl", item: "Passoa" },
+        { amount: "4.5 cl", item: "Succo di maracuja fresco" },
+        { amount: "1 cl", item: "Succo di lime" },
+        { amount: "0.5 cl", item: "Sciroppo semplice" },
+        { amount: "5 cl", item: "Prosecco (a parte)" }
+      ],
+      method: "Shakerare vigorosamente. Doppia filtrazione in coppa martini fredda.",
+      notes: "Difford raccomanda maracuja fresco (non in polpa). Vodka Absolut Vanilla come prima scelta."
+    },
+    description: "Creato nel 2002, è diventato il cocktail più ordinato nel mondo anglosassone per anni. Dolce, esotico, visivamente perfetto per i social.",
+    history: "Creato da Douglas Ankrah al LAB Bar di Londra nel 2002. Il nome provocatorio contribuì alla sua notorietà immediata."
+  },
+
+  {
+    id: "tommy-margarita",
+    name: "Tommy's Margarita",
+    emoji: "🌵",
+    tagline: "Tequila, lime e agave: la Margarita purista e moderna",
+    iba: true, difford: true,
+    ibaCategory: "new_era",
+    nomadCategory: "light",
+    baseSpirits: ["tequila"],
+    ingredients: ["lime juice", "agave syrup"],
+    taste: ["sour", "refreshing", "agave", "clean"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "rocks",
+    ice: "cubed",
+    garnish: "Fetta di lime (senza bordo di sale)",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Tequila 100% Agave (Blanco o Reposado)" },
+        { amount: "3 cl", item: "Succo di lime fresco" },
+        { amount: "2 cl", item: "Sciroppo d'agave" }
+      ],
+      method: "Shakerare con ghiaccio abbondante. Filtrare in rocks glass con ghiaccio.",
+      notes: "L'agave al posto del triple sec elimina l'alcol aggiuntivo e porta più coerenza di sapore con la tequila. Filosofia: il terzo ingrediente deve esaltare, non mascherare il primo."
+    },
+    description: "Creata da Julio Bermejo a San Francisco negli anni '90, la Tommy's Margarita ha rivoluzionato il modo di pensare alle Margarite: purismo agave totale.",
+    history: "Creata da Julio Bermejo al Tommy's Mexican Restaurant di San Francisco negli anni '80-'90. Rivoluzionò l'approccio alla tequila nei bar americani."
+  },
+
+  {
+    id: "paper-plane",
+    name: "Paper Plane",
+    emoji: "✈️",
+    tagline: "Bourbon, Aperol, Amaro Nonino e lime: parti uguali, risultato magico",
+    iba: true, difford: true,
+    ibaCategory: "new_era",
+    nomadCategory: "aperitivi",
+    baseSpirits: ["bourbon"],
+    ingredients: ["aperol", "amaro nonino", "lemon juice"],
+    taste: ["bitter", "sour", "complex", "herbal"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "2.25 cl", item: "Bourbon" },
+        { amount: "2.25 cl", item: "Aperol" },
+        { amount: "2.25 cl", item: "Amaro Nonino Quintessentia" },
+        { amount: "2.25 cl", item: "Succo di limone fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Come il Naked and Famous: parti uguali. L'Amaro Nonino è fondamentale e non sostituibile (il suo profilo erbaceo friulano è specifico). Cocktail sorprendentemente bilanciato."
+    },
+    description: "Un capolavoro del cocktail moderno: quattro ingredienti in parti uguali che si bilanciano perfettamente. Il più importante cocktail degli anni 2000.",
+    history: "Creato da Sam Ross al Milk & Honey di New York nel 2008. È considerato il cocktail più influente del XXI secolo."
+  },
+
+  {
+    id: "spicy-fifty",
+    name: "Spicy Fifty",
+    emoji: "🌶️",
+    tagline: "Vodka al pepe, Elderflower, lime, vaniglia e chili: contemporaneo e vivace",
+    iba: true, difford: true,
+    ibaCategory: "new_era",
+    nomadCategory: "light",
+    baseSpirits: ["pepper vodka", "vodka"],
+    ingredients: ["elderflower cordial", "lime juice", "honey syrup", "chili"],
+    taste: ["spicy", "floral", "sweet", "crisp"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "martini",
+    ice: "none",
+    garnish: "Fettina di chili rosso",
+    recipe: {
+      ingredients: [
+        { amount: "5 cl", item: "Vodka al pepe (o vodka con 2-3 fette di chili)" },
+        { amount: "1.5 cl", item: "Elderflower Cordial (St-Germain)" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di miele" },
+        { amount: "1 fetta", item: "Chili rosso fresco (per macerazione)" }
+      ],
+      method: "Mettere il chili nella vodka per 2-3 minuti se non si usa vodka al pepe. Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa Martini.",
+      notes: "Il bilanciamento piccante-floreale-acido è la sua magia. Regolare la quantità di chili in base alla sua forza. St-Germain Elderflower come prima scelta."
+    },
+    description: "Un new era drink che combina il calore del pepe con la delicatezza floreale del fiore di sambuco. Sorprendente.",
+    history: "Creato da Vale Richards al 5 Cavendish Square di Londra. Aggiunto alla lista IBA."
+  },
+
+  {
+    id: "illegal-sour",
+    name: "Illegal Sour",
+    emoji: "🚫",
+    tagline: "Mezcal, Cointreau, lime e albume: un sour mezcal di carattere",
+    iba: true, difford: false,
+    ibaCategory: "new_era",
+    nomadCategory: "light",
+    baseSpirits: ["mezcal"],
+    ingredients: ["triple sec", "lime juice", "egg white"],
+    taste: ["smoky", "sour", "fruity", "silky"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Fetta di lime",
+    recipe: {
+      ingredients: [
+        { amount: "3.75 cl", item: "Mezcal joven" },
+        { amount: "1.5 cl", item: "Cointreau" },
+        { amount: "2.25 cl", item: "Succo di lime fresco" },
+        { amount: "0.5", item: "Albume d'uovo" }
+      ],
+      method: "Dry shake senza ghiaccio per 15 secondi. Aggiungere ghiaccio, shakerare di nuovo. Filtrare in coppa fredda.",
+      notes: "Il mezcal porta fumo e carattere terroso in un formato sour. Il fumo e la schiuma dell'albume creano un'esperienza sensoriale unica."
+    },
+    description: "Un sour con mezcal: il fumo si integra sorprendentemente bene con l'acidità del lime e la dolcezza del Cointreau.",
+    history: "New Era drink della lista IBA."
+  },
+
+  {
+    id: "french-martini",
+    name: "French Martini",
+    emoji: "🇫🇷",
+    tagline: "Vodka, Chambord e succo d'ananas: eleganza fruttata anni '90",
+    iba: true, difford: true,
+    ibaCategory: "new_era",
+    nomadCategory: "light",
+    baseSpirits: ["vodka"],
+    ingredients: ["chambord", "pineapple juice"],
+    taste: ["fruity", "sweet", "tropical"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "martini",
+    ice: "none",
+    garnish: "Mora o lampone, schiuma d'ananas",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Vodka" },
+        { amount: "1.5 cl", item: "Chambord (liquore al lampone)" },
+        { amount: "2.5 cl", item: "Succo d'ananas fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio abbondante. Filtrare in coppa Martini. La schiuma naturale dell'ananas creerà uno strato in superficie.",
+      notes: "Shakera energicamente per la schiuma d'ananas. Il Chambord (raspberries + blackberries + miele) è il suo ingrediente identificativo."
+    },
+    description: "Un moderno classic degli anni '90, privo del gin del Martini tradizionale. Fruttato, elegante, molto facile da bere.",
+    history: "Creato da Keith McNally al Balthazar di New York negli anni '80-'90."
+  },
+
+  {
+    id: "lemon-drop",
+    name: "Lemon Drop Martini",
+    emoji: "🍋",
+    tagline: "Vodka citrus, triple sec e limone: semplicità agrumata in formato Martini",
+    iba: true, difford: true,
+    ibaCategory: "new_era",
+    nomadCategory: "light",
+    baseSpirits: ["citrus vodka", "vodka"],
+    ingredients: ["triple sec", "lemon juice", "simple syrup"],
+    taste: ["sour", "citrus", "sweet", "clean"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "martini",
+    ice: "none",
+    garnish: "Bordo di zucchero, twist di limone",
+    recipe: {
+      ingredients: [
+        { amount: "4.5 cl", item: "Vodka al limone" },
+        { amount: "1.5 cl", item: "Triple Sec" },
+        { amount: "2.5 cl", item: "Succo di limone fresco" },
+        { amount: "1 cl", item: "Sciroppo di zucchero" }
+      ],
+      method: "Preparare il bordo di zucchero sulla coppa. Shakerare tutti gli ingredienti con ghiaccio. Filtrare nella coppa.",
+      notes: "Il bordo di zucchero è fondamentale: crea un contrasto dolce-acido ad ogni sorso. Usare vodka citrus per amplificare il profilo limone."
+    },
+    description: "Un Martini semplice e agrumato, molto popolare nei bar americani. Non sofisticato ma sempre soddisfacente.",
+    history: "Attribuito a Norman Jay Hobday al Henry Africa's di San Francisco (anni '70)."
+  },
+
+  /* ════════════════════════════════════
+     DIFFORD'S GUIDE EXCLUSIVES
+     (non in IBA ma iconici da Difford)
+  ════════════════════════════════════ */
+
+  {
+    id: "bee-sting",
+    name: "Bee's Knees",
+    emoji: "🐝",
+    tagline: "Gin, miele e limone: il cocktail del proibizionismo che camuffava il gusto del gin da contrabando",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["honey syrup", "lemon juice"],
+    taste: ["sour", "floral", "sweet", "clean"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Gin London Dry" },
+        { amount: "2.25 cl", item: "Sciroppo di miele (miele + acqua 1:1)" },
+        { amount: "2.25 cl", item: "Succo di limone fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Sciogliere il miele con acqua calda in rapporto 1:1 per creare lo sciroppo. Il miele crudo non si mescola bene. Usare un miele aromatico di qualità."
+    },
+    description: "Nato durante il Proibizionismo per mascherare il sapore del gin di scarsa qualità con miele e limone. Il risultato era così buono che è sopravvissuto al Proibizionismo.",
+    history: "Popolare durante il Proibizionismo americano (1920-1933)."
+  },
+
+  {
+    id: "cleopatra",
+    name: "Cleopatra",
+    emoji: "👑",
+    tagline: "Gin, Elderflower, cetriolo e lime: il cocktail del giardino inglese",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "aperitivi",
+    baseSpirits: ["gin"],
+    ingredients: ["elderflower cordial", "cucumber", "lime juice"],
+    taste: ["floral", "fresh", "crisp", "light"],
+    strength: "light",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fettine di cetriolo, foglie di menta",
+    recipe: {
+      ingredients: [
+        { amount: "5 cl", item: "Gin London Dry o Hendrick's" },
+        { amount: "2 cl", item: "St-Germain Elderflower" },
+        { amount: "2 cl", item: "Succo di lime fresco" },
+        { amount: "4 fette", item: "Cetriolo fresco" },
+        { amount: "q.b.", item: "Tonica premium" }
+      ],
+      method: "Pestare delicatamente il cetriolo. Shakerare gin, elderflower, lime e cetriolo. Filtrare in highball con ghiaccio. Completare con tonica.",
+      notes: "Hendrick's Gin (con note di cetriolo e rosa) è particolarmente indicato."
+    },
+    description: "Un cocktail estivo fresco e floreale. Il cetriolo e il fiore di sambuco sono il cuore verde dell'estate britannica.",
+    history: "Un cocktail contemporaneo della guida Difford."
+  },
+
+  {
+    id: "last-word",
+    name: "Last Word",
+    emoji: "🍀",
+    tagline: "Gin, Green Chartreuse, maraschino e lime: quattro ingredienti in perfetto equilibrio",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "classics",
+    baseSpirits: ["gin"],
+    ingredients: ["green chartreuse", "maraschino", "lime juice"],
+    taste: ["herbal", "sour", "floral", "complex"],
+    strength: "strong",
+    style: "short",
+    serve: "shaken",
+    glass: "coupe",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "2.25 cl", item: "Gin London Dry" },
+        { amount: "2.25 cl", item: "Green Chartreuse" },
+        { amount: "2.25 cl", item: "Liquore Maraschino" },
+        { amount: "2.25 cl", item: "Succo di lime fresco" }
+      ],
+      method: "Shakerare tutti gli ingredienti con ghiaccio. Filtrare in coppa fredda.",
+      notes: "Parti uguali: la formula magica. Il Green Chartreuse (55% alcol, 130 erbe) è potente ma qui si equilibra perfettamente. Il cocktail più citato nei libri di cocktail moderni."
+    },
+    description: "Riscoperto negli anni 2000 dopo decenni di oblio, il Last Word è diventato il cocktail di riferimento per chi studia il bilanciamento. Quattro parti uguali, armonia assoluta.",
+    history: "Creato al Detroit Athletic Club intorno alla Prima Guerra Mondiale. Quasi scomparso per decenni, riscoperto nel 2004 da Murray Stenson al Zig Zag Café di Seattle."
+  },
+
+  {
+    id: "bramble",
+    name: "Bramble",
+    emoji: "🫐",
+    tagline: "Gin, limone, zucchero e crème de mure: il cocktail delle more",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "light",
+    baseSpirits: ["gin"],
+    ingredients: ["lemon juice", "simple syrup", "creme de mure"],
+    taste: ["fruity", "sour", "berry", "fresh"],
+    strength: "medium",
+    style: "short",
+    serve: "built",
+    glass: "rocks",
+    ice: "crushed",
+    garnish: "Fetta di limone, more fresche",
+    recipe: {
+      ingredients: [
+        { amount: "4 cl", item: "Gin London Dry" },
+        { amount: "2.5 cl", item: "Succo di limone fresco" },
+        { amount: "1 cl", item: "Sciroppo di zucchero" },
+        { amount: "1.5 cl", item: "Crème de Mure (liquore di more)" }
+      ],
+      method: "Shakerare gin, limone e sciroppo con ghiaccio. Riempire il bicchiere rocks con ghiaccio tritato. Versare il cocktail. Aggiungere la crème de mure lentamente sopra (sinks/drizzle).",
+      notes: "La crème de mure deve essere versata lentamente sopra il ghiaccio per creare l'effetto drip viola sul bianco del cocktail. Non mescolare: l'effetto visivo è parte del cocktail."
+    },
+    description: "Un classico britannico moderno che sembra antico. Il drizzle di crème de mure viola sul ghiaccio bianco è una delle presentazioni più belle in mixology.",
+    history: "Creato da Dick Bradsell al Fred's Club di Londra nel 1984."
+  },
+
+  {
+    id: "pornstar-martini",
+    name: "Green Beast",
+    emoji: "🟢",
+    tagline: "Absinthe, cetriolo, lime e menta: fresco e potente",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "aperitivi",
+    baseSpirits: ["absinthe"],
+    ingredients: ["cucumber", "lime juice", "simple syrup", "fresh mint"],
+    taste: ["anise", "fresh", "herbal", "bitter"],
+    strength: "strong",
+    style: "long",
+    serve: "built",
+    glass: "wine",
+    ice: "cubed",
+    garnish: "Fette di cetriolo, foglie di menta",
+    recipe: {
+      ingredients: [
+        { amount: "1.5 cl", item: "Absinthe" },
+        { amount: "1.5 cl", item: "Succo di lime fresco" },
+        { amount: "1.5 cl", item: "Sciroppo di zucchero" },
+        { amount: "6 cl", item: "Acqua" },
+        { amount: "4 fette", item: "Cetriolo fresco" },
+        { amount: "foglie", item: "Menta fresca" }
+      ],
+      method: "Pestare cetriolo e menta nel bicchiere. Aggiungere absinthe, lime, sciroppo e acqua. Ghiaccio abbondante. Mescolare.",
+      notes: "L'absinthe diluito con acqua diventa verde torbido (effetto louche): è normale e parte del fascino visivo. La diluizione è essenziale."
+    },
+    description: "Il Green Beast dimostra che l'absinthe diluito con acqua e arricchito con erbe fresche e lime è di gran lunga più interessante di un semplice shot.",
+    history: "Ricetta moderna di Difford's Guide."
+  },
+
+  {
+    id: "penicillin",
+    name: "Penicillin",
+    emoji: "💊",
+    tagline: "Blended scotch, Islay scotch, limone, miele e zenzero: cura tutto",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "dark",
+    baseSpirits: ["scotch whisky"],
+    ingredients: ["lemon juice", "honey ginger syrup", "islay scotch"],
+    taste: ["smoky", "spicy", "sour", "sweet", "complex"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Zenzero candito, scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Blended Scotch (Famous Grouse, Dewar's)" },
+        { amount: "2.25 cl", item: "Succo di limone fresco" },
+        { amount: "2.25 cl", item: "Sciroppo miele-zenzero (miele 3:1 zenzero grattugiato)" },
+        { amount: "0.75 cl", item: "Islay Single Malt (Laphroaig o Ardbeg) - float" }
+      ],
+      method: "Shakerare blended scotch, limone e sciroppo miele-zenzero con ghiaccio. Filtrare in rocks glass con cubetto grande. Float di Islay scotch torbato in superficie.",
+      notes: "Il float di Islay torbato è la firma: profumo intenso di fumo e mare al primo sorso. Sciroppo miele-zenzero: frullare miele e zenzero grattugiato, poi filtrare."
+    },
+    description: "Un capolavoro del cocktail moderno creato a New York nel 2005. Equilibrio perfetto tra fumo, miele, zenzero e limone. Curativo nel nome e nell'effetto.",
+    history: "Creato da Sam Ross al Milk & Honey di New York nel 2005. Considerato uno dei migliori cocktail creati nel XXI secolo."
+  },
+
+  {
+    id: "new-york-sour",
+    name: "New York Sour",
+    emoji: "🍷",
+    tagline: "Whiskey Sour con float di vino rosso: colore e carattere",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "dark",
+    baseSpirits: ["bourbon"],
+    ingredients: ["lemon juice", "simple syrup", "red wine", "egg white"],
+    taste: ["sour", "sweet", "wine", "complex"],
+    strength: "medium",
+    style: "short",
+    serve: "shaken",
+    glass: "rocks",
+    ice: "cubed",
+    garnish: "Scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "5 cl", item: "Bourbon" },
+        { amount: "2.5 cl", item: "Succo di limone fresco" },
+        { amount: "2 cl", item: "Sciroppo di zucchero" },
+        { amount: "0.5", item: "Albume d'uovo" },
+        { amount: "1.5 cl", item: "Vino rosso secco (float)" }
+      ],
+      method: "Dry shake con albume. Wet shake con ghiaccio. Filtrare in rocks glass con ghiaccio. Far scorrere il vino rosso sul dorso del cucchiaio per creare il float.",
+      notes: "Usare un vino rosso tannico e secco per il float. L'effetto visivo (rosso sul bianco dell'albume) è parte fondamentale del cocktail."
+    },
+    description: "Un Whiskey Sour con un float di vino rosso: visivamente spettacolare, gustosamente complesso. Il vino aggiunge tannini e profondità.",
+    history: "Comparso per la prima volta a Chicago intorno al 1880. Riscoperto dai barman moderni."
+  },
+
+  {
+    id: "vieux-carre",
+    name: "Vieux Carré",
+    emoji: "🎷",
+    tagline: "Rye, Cognac, Vermouth, Bénédictine e bitters: New Orleans in un bicchiere",
+    iba: false, difford: true,
+    ibaCategory: null,
+    nomadCategory: "dark",
+    baseSpirits: ["rye whiskey", "cognac"],
+    ingredients: ["sweet vermouth", "benedictine", "angostura bitters", "peychauds bitters"],
+    taste: ["complex", "herbal", "bitter", "sweet", "spicy"],
+    strength: "strong",
+    style: "short",
+    serve: "stirred",
+    glass: "rocks",
+    ice: "large cube",
+    garnish: "Scorza di limone",
+    recipe: {
+      ingredients: [
+        { amount: "2.25 cl", item: "Rye Whiskey" },
+        { amount: "2.25 cl", item: "Cognac" },
+        { amount: "2.25 cl", item: "Vermouth rosso dolce" },
+        { amount: "1 tsp", item: "Bénédictine" },
+        { amount: "2 dash", item: "Angostura Bitters" },
+        { amount: "2 dash", item: "Peychaud's Bitters" }
+      ],
+      method: "Mescolare tutti gli ingredienti con ghiaccio abbondante. Filtrare in rocks glass con cubetto grande.",
+      notes: "Sei ingredienti che si sommano in modo sorprendente. Rappresenta la fusione culturale di New Orleans: spirito americano (rye), francese (cognac), europeo (Bénédictine)."
+    },
+    description: "Un cocktail che incarna la complessità culturale di New Orleans. Sei ingredienti, ciascuno fondamentale. Difficile da fare male se si usa qualità.",
+    history: "Creato da Walter Bergeron all'Hotel Monteleone di New Orleans negli anni '30. Prende il nome dal French Quarter della città."
+  },
+
+  /* ════════════════════════════════════
+     THE NOMAD — APERITIVI
+  ════════════════════════════════════ */
+
+  {
+    id: "spritz-veneziano",
+    name: "Spritz Veneziano",
+    emoji: "🇮🇹",
+    tagline: "Campari o Aperol, Prosecco e soda: l'aperitivo di Venezia",
+    iba: false, difford: false,
+    ibaCategory: null,
+    nomadCategory: "aperitivi",
+    baseSpirits: ["campari", "aperol"],
+    ingredients: ["prosecco", "soda water"],
+    taste: ["bitter", "sparkling", "refreshing", "fruity"],
+    strength: "light",
+    style: "sparkling",
+    serve: "built",
+    glass: "wine",
+    ice: "cubed",
+    garnish: "Fetta d'arancia, oliva verde",
+    recipe: {
+      ingredients: [
+        { amount: "6 cl", item: "Campari (o Aperol per versione più dolce)" },
+        { amount: "9 cl", item: "Prosecco" },
+        { amount: "3 cl", item: "Soda" }
+      ],
+      method: "Versare Prosecco nel bicchiere con ghiaccio. Aggiungere Campari/Aperol. Soda. Guarnire.",
+      notes: "La versione con Campari è più amara e tradizionale. Con Aperol è più dolce e arancione. Lo Spritz Select (con Select bitter veneziano) è la versione più autentica di Venezia."
+    },
+    description: "Lo Spritz nasce a Venezia nel XIX secolo come abitudine delle truppe austriache che diluivano il vino locale aggiungendo uno 'spritz' (spruzzo) d'acqua.",
+    history: "Radici nel XIX secolo veneto. Evoluto nel XX secolo con l'aggiunta di bitter e poi Prosecco."
+  },
+
+  /* ════════════════════════════════════
+     SOFT COCKTAILS
+  ════════════════════════════════════ */
+
+  {
+    id: "shirley-temple",
+    name: "Shirley Temple",
+    emoji: "🌸",
+    tagline: "Ginger ale, granadina e succo d'arancia: il mocktail classico",
+    iba: false, difford: false,
+    ibaCategory: null,
+    nomadCategory: "soft",
+    baseSpirits: [],
+    ingredients: ["ginger ale", "grenadine", "orange juice"],
+    taste: ["sweet", "fruity", "refreshing"],
+    strength: "none",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Ciliegia al maraschino, fetta d'arancia",
+    recipe: {
+      ingredients: [
+        { amount: "12 cl", item: "Ginger Ale" },
+        { amount: "2 cl", item: "Granadina" },
+        { amount: "4 cl", item: "Succo d'arancia fresco" }
+      ],
+      method: "Versare il succo d'arancia nel bicchiere con ghiaccio. Aggiungere il ginger ale. Far scivolare la granadina sul bordo.",
+      notes: "Non mescolare dopo la granadina per l'effetto alba. La versione Dirty Shirley aggiunge vodka."
+    },
+    description: "Il mocktail per eccellenza, creato in onore dell'attrice bambina Shirley Temple. Dolce, festivo, amato da grandi e piccini.",
+    history: "Creato negli anni '30 per la bambina prodigio Shirley Temple, che era troppo giovane per i cocktail degli adulti."
+  },
+
+  {
+    id: "virgin-mojito",
+    name: "Virgin Mojito",
+    emoji: "🌿",
+    tagline: "Menta, lime, zucchero e soda: il Mojito senz'alcol perfetto",
+    iba: false, difford: false,
+    ibaCategory: null,
+    nomadCategory: "soft",
+    baseSpirits: [],
+    ingredients: ["fresh mint", "lime juice", "simple syrup", "soda water"],
+    taste: ["refreshing", "minty", "sour"],
+    strength: "none",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "crushed",
+    garnish: "Rametto di menta, fetta di lime",
+    recipe: {
+      ingredients: [
+        { amount: "3 cl", item: "Succo di lime fresco" },
+        { amount: "2 cl", item: "Sciroppo di zucchero" },
+        { amount: "12 foglie", item: "Menta fresca" },
+        { amount: "12 cl", item: "Acqua di seltz" }
+      ],
+      method: "Pestare delicatamente la menta con lo sciroppo. Aggiungere il lime. Ghiaccio tritato. Seltz.",
+      notes: "L'acqua tonica (leggermente amara) può sostituire il seltz per un profilo più complesso."
+    },
+    description: "Il Virgin Mojito dimostra che i mocktail possono essere tanto soddisfacenti quanto i cocktail. La menta fresca e il lime non hanno bisogno di rum per brillare.",
+    history: "Variante analcolica del Mojito cubano."
+  },
+
+  {
+    id: "agua-fresca",
+    name: "Agua Fresca de Pepino",
+    emoji: "🥒",
+    tagline: "Cetriolo, lime, menta e acqua: idratazione messicana aromatica",
+    iba: false, difford: false,
+    ibaCategory: null,
+    nomadCategory: "soft",
+    baseSpirits: [],
+    ingredients: ["cucumber", "lime juice", "fresh mint", "simple syrup"],
+    taste: ["fresh", "crisp", "herbal", "light"],
+    strength: "none",
+    style: "long",
+    serve: "built",
+    glass: "highball",
+    ice: "cubed",
+    garnish: "Fette di cetriolo, foglie di menta",
+    recipe: {
+      ingredients: [
+        { amount: "6 fette", item: "Cetriolo fresco" },
+        { amount: "2 cl", item: "Succo di lime fresco" },
+        { amount: "1 cl", item: "Sciroppo di zucchero" },
+        { amount: "foglie", item: "Menta fresca" },
+        { amount: "15 cl", item: "Acqua" }
+      ],
+      method: "Frullare cetriolo, lime, sciroppo, menta e acqua. Filtrare. Servire su ghiaccio.",
+      notes: "Può essere arricchita con un poco di jalapeño per una versione piccante. Estiva e dissetante."
+    },
+    description: "Un mocktail messicano estivo, fresco e aromatico. Perfetto quando il caldo richiede idratazione e aromaticità insieme.",
+    history: "Tradizione messicana delle agua frescas, bevande di frutta, fiori o verdure con acqua."
+  },
+
+  /* ════════════════════════════════════
+     BASICS (basi di preparazione)
+  ════════════════════════════════════ */
+
+  {
+    id: "simple-syrup",
+    name: "Simple Syrup (Sciroppo di Zucchero)",
+    emoji: "🍯",
+    tagline: "La base dolce di ogni cocktail: due versioni",
+    iba: false, difford: false,
+    ibaCategory: null,
+    nomadCategory: "basics",
+    baseSpirits: [],
+    ingredients: ["sugar", "water"],
+    taste: ["sweet"],
+    strength: "none",
+    style: "short",
+    serve: "built",
+    glass: "none",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "200g", item: "Zucchero bianco semolato (per 1:1)" },
+        { amount: "200ml", item: "Acqua (per 1:1)" },
+        { amount: "oppure:", item: "" },
+        { amount: "200g", item: "Zucchero (per 2:1)" },
+        { amount: "100ml", item: "Acqua (per 2:1)" }
+      ],
+      method: "Versione a freddo: mescolare zucchero e acqua in un barattolo chiuso e agitare finché lo zucchero si scioglie completamente (circa 2 minuti di agitazione energica). Versione a caldo: scaldare acqua quasi a ebollizione, aggiungere lo zucchero, mescolare fino a scioglimento completo. Non fare bollire. Raffreddare.",
+      notes: "1:1 = più leggero, più facile da bilanciare. 2:1 (Rich Syrup) = più dolce, più concentrato, si usa in minori quantità. Si conserva in frigorifero fino a 2-4 settimane. Aggiungere un splash di vodka aumenta la conservazione. Alcune ricette specificano quale versione usare."
+    },
+    description: "La base di quasi ogni cocktail dolce. Imparare a farlo bene (e tenerlo sempre in frigorifero) è il primo passo verso la bartending di qualità.",
+    history: "Usato in cocktail da quando esistono i cocktail. Il bartender's guide di Jerry Thomas (1862) lo cita."
+  },
+
+  {
+    id: "orgeat",
+    name: "Orgeat (Sciroppo di Mandorle)",
+    emoji: "🌸",
+    tagline: "Il cuore del Mai Tai: sciroppo di mandorle aromatico",
+    iba: false, difford: false,
+    ibaCategory: null,
+    nomadCategory: "basics",
+    baseSpirits: [],
+    ingredients: ["almonds", "sugar", "orange flower water"],
+    taste: ["sweet", "nutty", "floral"],
+    strength: "none",
+    style: "short",
+    serve: "built",
+    glass: "none",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "200g", item: "Mandorle bianche pelate" },
+        { amount: "300g", item: "Zucchero semolato" },
+        { amount: "300ml", item: "Acqua" },
+        { amount: "1 tsp", item: "Acqua di fiori d'arancio" },
+        { amount: "0.5 tsp", item: "Estratto di mandorla (facoltativo)" }
+      ],
+      method: "Frullare le mandorle con metà dell'acqua. Filtrare attraverso un canovaccio, strizzando bene. Sciogliere lo zucchero nel latte di mandorla a fuoco medio. Non fare bollire. Quando si è raffreddato, aggiungere acqua di fiori d'arancio. Conservare in frigorifero.",
+      notes: "Alternativa rapida: usare orgeat commerciale (Monin, Small Hand Foods) che sono molto buoni. L'orgeat fatto in casa ha una freschezza e una complessità diversa. Si conserva 2-3 settimane in frigorifero."
+    },
+    description: "Essenziale per il Mai Tai e molti cocktail tiki. Il sapore di mandorla e fiori d'arancio è inconfondibile.",
+    history: "L'orgeat ha radici medievali come bevanda rinfrescante. Nel XIX secolo divenne ingrediente di cocktail."
+  },
+
+  {
+    id: "grenadine",
+    name: "Granadina (Grenadine)",
+    emoji: "🌹",
+    tagline: "Sciroppo di melograno fatto in casa: rosa e aromatica",
+    iba: false, difford: false,
+    ibaCategory: null,
+    nomadCategory: "basics",
+    baseSpirits: [],
+    ingredients: ["pomegranate juice", "sugar"],
+    taste: ["sweet", "tart", "fruity"],
+    strength: "none",
+    style: "short",
+    serve: "built",
+    glass: "none",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "250ml", item: "Succo di melograno fresco o premium" },
+        { amount: "250g", item: "Zucchero semolato" },
+        { amount: "1 cl", item: "Acqua di fiori d'arancio" },
+        { amount: "1 splash", item: "Vodka (conservante, facoltativo)" }
+      ],
+      method: "Scaldare succo di melograno e zucchero a fuoco medio finché lo zucchero si scioglie. Non fare bollire. Raffreddare. Aggiungere acqua di fiori d'arancio. Conservare in frigorifero.",
+      notes: "La granadina industriale (Grenadine Monin, Rose's) è spesso artificiale. La versione fatta in casa con melograno fresco è nettamente superiore. Si conserva 2-4 settimane. Ottima anche per i mocktail."
+    },
+    description: "La granadina fatta in casa trasforma cocktail come il Tequila Sunrise, il Shirley Temple e lo Shirley Temple in qualcosa di completamente diverso.",
+    history: "Grenadine deriva dal francese 'grenade' (melograno). Usata in cocktail dalla fine del XIX secolo."
+  },
+
+  {
+    id: "ginger-syrup",
+    name: "Sciroppo di Zenzero",
+    emoji: "🫚",
+    tagline: "Piccante e aromatico: la base dei cocktail speziati",
+    iba: false, difford: false,
+    ibaCategory: null,
+    nomadCategory: "basics",
+    baseSpirits: [],
+    ingredients: ["fresh ginger", "sugar", "water"],
+    taste: ["spicy", "sweet", "warm"],
+    strength: "none",
+    style: "short",
+    serve: "built",
+    glass: "none",
+    ice: "none",
+    garnish: "Nessuno",
+    recipe: {
+      ingredients: [
+        { amount: "100g", item: "Zenzero fresco sbucciato e affettato" },
+        { amount: "200g", item: "Zucchero semolato" },
+        { amount: "200ml", item: "Acqua" }
+      ],
+      method: "Scaldare acqua con lo zenzero per 10 minuti a fuoco basso. Aggiungere lo zucchero, mescolare finché si scioglie. Lasciare in infusione 30 minuti fuori dal fuoco. Filtrare e conservare in frigorifero.",
+      notes: "Più a lungo lo zenzero rimane nell'infusione, più il risultato è piccante. Usato nel Penicillin, Moscow Mule fatto in casa, e molti cocktail moderni."
+    },
+    description: "Uno sciroppo versatile che aggiunge calore e aromaticità. Fondamentale per chi vuole fare cocktail speziati senza ricorrere a ginger beer commerciale.",
+    history: "Preparazione di base della bartending moderna."
+  }
+
+];
+
+/* ══════════════════════════════════════════
+   INDEX per ricerca rapida
+══════════════════════════════════════════ */
+
+const COCKTAILS_BY_ID = Object.fromEntries(COCKTAILS.map(c => [c.id, c]));
+
+const IBA_UNFORGETTABLES = COCKTAILS.filter(c => c.ibaCategory === 'unforgettables');
+const IBA_CONTEMPORARY   = COCKTAILS.filter(c => c.ibaCategory === 'contemporary');
+const IBA_NEW_ERA        = COCKTAILS.filter(c => c.ibaCategory === 'new_era');
+
+const NOMAD_APERITIVI    = COCKTAILS.filter(c => c.nomadCategory === 'aperitivi');
+const NOMAD_LIGHT        = COCKTAILS.filter(c => c.nomadCategory === 'light');
+const NOMAD_DARK         = COCKTAILS.filter(c => c.nomadCategory === 'dark');
+const NOMAD_CLASSICS     = COCKTAILS.filter(c => c.nomadCategory === 'classics');
+const NOMAD_SOFT         = COCKTAILS.filter(c => c.nomadCategory === 'soft');
+const NOMAD_BASICS       = COCKTAILS.filter(c => c.nomadCategory === 'basics');

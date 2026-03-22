@@ -1,0 +1,455 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   components.css  –  Componenti UI riutilizzabili — Cocktail Bar
+══════════════════════════════════════════════════════════════════════════ */
+
+/* ══════════════════════════
+   CARD HOME (calc-card)
+══════════════════════════ */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 12px;
+}
+
+.calc-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.calc-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+.calc-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    border-color: var(--border-gold);
+}
+
+.calc-card:hover::before { opacity: 1; }
+
+.card-icon {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 14px;
+    display: block;
+    filter: drop-shadow(0 2px 8px rgba(201,168,76,0.3));
+}
+
+.card-body { flex: 1; }
+
+.card-body h2 {
+    font-family: var(--font-display-alt);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    border: none;
+    padding: 0;
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: 0.01em;
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 12px;
+    font-weight: 300;
+}
+
+.card-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.card-features li {
+    font-size: 0.8rem;
+    color: var(--text2);
+    font-weight: 400;
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+}
+
+.card-features li::before {
+    content: '—';
+    color: var(--gold);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.card-cta {
+    margin-top: 18px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-cta .arrow {
+    transition: transform 0.2s;
+}
+.calc-card:hover .arrow { transform: translateX(3px); }
+
+/* ══════════════════════════
+   SECTION LABEL
+══════════════════════════ */
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 40px 0 20px;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--silver3);
+}
+
+.section-label-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.section-label span {
+    white-space: nowrap;
+    color: var(--gold);
+}
+
+/* ══════════════════════════
+   RECIPE CARD (ricettario)
+══════════════════════════ */
+
+article.recipe-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+article.recipe-card:hover { border-color: var(--border-gold); }
+
+.recipe-toggle {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    color: var(--text);
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.recipe-toggle:hover { background: var(--surface2); }
+
+.recipe-emoji { font-size: 1.5rem; flex-shrink: 0; }
+
+.recipe-info { flex: 1; min-width: 0; }
+
+.recipe-info h3 {
+    font-family: var(--font-display-alt);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recipe-tagline {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 300;
+}
+
+.recipe-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--surface3);
+    color: var(--silver2);
+    border: 1px solid var(--border);
+}
+
+.badge--iba { background: rgba(201,168,76,0.12); color: var(--gold); border-color: var(--border-gold); }
+.badge--difford { background: rgba(100,160,255,0.1); color: #6fa0e0; border-color: rgba(100,160,255,0.2); }
+.badge--spirit { background: rgba(180,100,200,0.1); color: #c880e0; border-color: rgba(180,100,200,0.2); }
+.badge--light { background: rgba(100,200,160,0.1); color: #6ec8a0; border-color: rgba(100,200,160,0.2); }
+.badge--strong { background: rgba(230,100,80,0.1); color: #e08060; border-color: rgba(230,100,80,0.2); }
+.badge--sweet { background: rgba(230,160,80,0.1); color: #e0a060; border-color: rgba(230,160,80,0.2); }
+.badge--sour { background: rgba(200,230,80,0.1); color: #c0d060; border-color: rgba(200,230,80,0.2); }
+.badge--dry { background: rgba(160,180,200,0.1); color: #a0b4c8; border-color: rgba(160,180,200,0.2); }
+.badge--fruity { background: rgba(230,100,130,0.1); color: #e08090; border-color: rgba(230,100,130,0.2); }
+.badge--category { background: rgba(201,168,76,0.07); color: var(--silver2); border-color: var(--border-gold); }
+
+.recipe-chevron {
+    color: var(--muted);
+    font-size: 0.85rem;
+    transition: transform 0.25s;
+    flex-shrink: 0;
+}
+
+article.recipe-card.open .recipe-chevron { transform: rotate(180deg); }
+
+.recipe-body {
+    display: none;
+    padding: 0 20px 24px;
+    border-top: 1px solid var(--border-soft);
+}
+
+article.recipe-card.open .recipe-body { display: block; }
+
+/* ══════════════════════════
+   CARD GENERICA
+══════════════════════════ */
+
+.card,
+.input-section,
+.results-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+}
+
+.sub-card {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--surface2);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.sub-card--info {
+    background: rgba(201,168,76,0.05);
+    border-color: var(--border-gold);
+}
+
+.sub-card--info p {
+    font-size: 0.84rem;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+/* ══════════════════════════
+   BOTTONI
+══════════════════════════ */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+}
+
+.btn--primary {
+    background: var(--gold);
+    color: var(--bg);
+}
+.btn--primary:hover { background: var(--gold2); transform: translateY(-1px); }
+
+.btn--ghost {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--border-gold);
+}
+.btn--ghost:hover { background: var(--gold-pale); }
+
+/* ══════════════════════════
+   RESPONSIVE
+══════════════════════════ */
+
+@media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .recipe-toggle { padding: 14px 16px; }
+    .recipe-body { padding: 0 16px 20px; }
+}
+
+/* ══════════════════════════
+   EXTRA BADGES & TAGS (homepage / finder)
+══════════════════════════ */
+
+.badge--taste {
+    background: rgba(200,205,214,0.07);
+    color: var(--silver2);
+    border-color: rgba(200,205,214,0.12);
+    text-transform: capitalize;
+}
+
+.badge--strength {
+    background: rgba(230,100,80,0.08);
+    color: #d4806a;
+    border-color: rgba(230,100,80,0.18);
+}
+
+/* Spirit tags */
+.spirit-tag {
+    display: inline-block;
+    background: rgba(200,205,214,0.06);
+    border: 1px solid rgba(200,205,214,0.1);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.72rem;
+    color: var(--silver2);
+    font-family: var(--font-sans);
+    text-transform: lowercase;
+}
+
+/* Homepage card extras */
+.card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 8px 0 6px;
+}
+
+.card-spirits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+/* Section description */
+.section-desc {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    color: var(--silver2);
+    font-style: italic;
+    margin: -8px 0 16px;
+    text-align: center;
+}
+
+/* Empty section */
+.empty-section {
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    padding: 32px;
+    font-family: var(--font-serif);
+}
+
+/* Feature card (homepage) */
+.feature-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(201,168,76,0.1) 0%, rgba(201,168,76,0.04) 100%);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 16px;
+    padding: 24px 28px;
+    text-decoration: none;
+    margin-bottom: 40px;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+    border-color: rgba(201,168,76,0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.feature-body {
+    flex: 1;
+}
+
+.feature-body h2 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 6px;
+}
+
+.feature-body p {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    color: var(--silver2);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.feature-cta {
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+@media (max-width: 500px) {
+    .feature-card { flex-direction: column; text-align: center; gap: 12px; padding: 18px; }
+    .feature-cta { display: none; }
+    .card-badges, .card-spirits { display: none; }
+}

@@ -1,0 +1,145 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   core.css  –  Variabili globali, reset, tipografia — Cocktail Bar
+══════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Cinzel:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+    /* Palette principale — silver/grigio raffinato */
+    --bg:          #1a1c1e;
+    --bg2:         #141618;
+    --surface:     #222428;
+    --surface2:    #2a2d32;
+    --surface3:    #32363c;
+    --silver:      #c8cdd6;
+    --silver2:     #9aa0ac;
+    --silver3:     #6b7280;
+    --gold:        #c9a84c;
+    --gold2:       #e8c96a;
+    --gold-pale:   rgba(201,168,76,0.1);
+    --accent:      #c9a84c;
+    --accent2:     #e8c96a;
+    --text:        #e8eaed;
+    --text2:       #b8bdc6;
+    --muted:       #7a8090;
+    --border:      rgba(200,205,214,0.12);
+    --border-soft: rgba(255,255,255,0.06);
+    --border-gold: rgba(201,168,76,0.25);
+    --error:       #e05c4b;
+    --shadow:      0 4px 24px rgba(0,0,0,0.4);
+    --shadow-lg:   0 16px 56px rgba(0,0,0,0.5);
+    --shadow-sm:   0 2px 12px rgba(0,0,0,0.25);
+    --radius:      10px;
+    --radius-lg:   16px;
+
+    /* Palette estesa */
+    --paper:       #222428;
+    --paper2:      #2a2d32;
+    --ink:         #e8eaed;
+    --ink2:        #b8bdc6;
+    --accent-pale: rgba(201,168,76,0.08);
+
+    /* Font */
+    --font-display:     'Cinzel', 'Playfair Display', serif;
+    --font-display-alt: 'Cormorant Garamond', Georgia, serif;
+    --font-body:        'DM Sans', sans-serif;
+    --font-mono:        'DM Mono', monospace;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+body.calc-page {
+    padding: 20px 16px 60px;
+    background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.06) 0%, transparent 70%);
+}
+
+.container      { max-width: 1100px; margin: 0 auto; width: 100%; }
+.container--wide { max-width: 1200px; margin: 0 auto; width: 100%; }
+.container--home { max-width: 960px; width: 100%; }
+
+header {
+    text-align: center;
+    padding: 36px 0 32px;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-family: var(--font-display-alt);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--border);
+}
+
+h3 {
+    font-family: var(--font-display-alt);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.subtitle {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 300;
+}
+
+.divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 2px;
+    margin: 14px auto 0;
+}
+
+.back-nav { padding: 10px 0 0; margin-bottom: -10px; }
+.back-nav a {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.18s;
+}
+.back-nav a:hover { color: var(--gold); }
+
+@media (max-width: 768px) {
+    body.calc-page { padding: 12px 12px 40px; }
+    h2 { font-size: 1.05rem; }
+}
+@media (max-width: 420px) {
+    body.calc-page { padding: 10px 10px 40px; }
+}

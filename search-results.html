@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risultati ricerca — The Bar</title>
+    <link rel="stylesheet" href="core.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="search-results.css">
+    <script src="cocktails-data.js"></script>
+</head>
+<body>
+
+<div class="results-header">
+    <a href="index.html" class="back-link">← The Bar</a>
+    <div class="results-title" id="results-title">
+        Ricerca: <em id="query-display"></em>
+    </div>
+    <p class="results-meta" id="results-meta">Ricerca in corso…</p>
+
+    <div class="results-search-bar">
+        <div class="results-search-box">
+            <span style="opacity:0.5;font-size:1rem">🔍</span>
+            <input type="text" id="search-input" placeholder="Nuova ricerca…" autocomplete="off" spellcheck="false">
+            <button class="results-search-btn" id="search-btn">Cerca</button>
+        </div>
+    </div>
+</div>
+
+<main class="results-main" id="results-main">
+    <div class="results-loading">Caricamento cocktail…</div>
+</main>
+
+<script>
+(function () {
+
+    /* ── Normalizzazione ── */
+    function norm(s) {
+        return (s || '').toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/g, ' ');
+    }
+
+    /* ── Query dall'URL ── */
+    const params   = new URLSearchParams(location.search);
+    const rawQuery = params.get('q') || '';
+    document.getElementById('query-display').textContent = rawQuery;
+    document.getElementById('search-input').value = rawQuery;
+    document.title = rawQuery ? `"${rawQuery}" — The Bar` : 'Ricerca — The Bar';
+
+    /* ── Config sezioni ── */
+    const SECTION_CONFIG = {
+        unforgettables: { label: 'The Unforgettables', emoji: '✨' },
+        contemporary:   { label: 'The Contemporary Classics', emoji: '🍸' },
+        new_era:        { label: 'The New Era Drinks', emoji: '🚀' },
+        aperitivi:      { label: 'Aperitivi', emoji: '🥂' },
+        light:          { label: 'Light Spirited', emoji: '🌿' },
+        dark:           { label: 'Dark Spirited', emoji: '🌑' },
+        classics:       { label: 'Classics', emoji: '🏛️' },
+        soft:           { label: 'Soft Cocktails', emoji: '🌱' },
+        basics:         { label: 'Basics', emoji: '🧪' },
+        difford:        { label: 'Difford\'s Guide', emoji: '📖' },
+        none:           { label: 'Other', emoji: '🍸' }
+    };
+
+    /* ── Costruzione indice ── */
+    function buildIndex() {
+        return COCKTAILS.map(c => {
+            // Categoria principale per display
+            let mainCat = c.ibaCategory || c.nomadCategory || (c.difford ? 'difford' : 'none');
+            const sec = SECTION_CONFIG[mainCat] || SECTION_CONFIG.none;
+
+            // Keywords ricercabili
+            const keywords = [
+                c.name,
+                c.tagline || '',
+                c.description || '',
+                ...(c.baseSpirits || []),
+                ...(c.ingredients || []),
+                ...(c.taste || []),
+                c.strength || '',
+                c.style || '',
+                c.serve || '',
+                c.glass || '',
+                c.garnish || '',
+                // Ingredienti ricette
+                ...((c.recipeIBA?.ingredients || []).map(i => i.item)),
+                ...((c.recipeDifford?.ingredients || []).map(i => i.item)),
+                ...((c.recipe?.ingredients || []).map(i => i.item)),
+            ].join(' ');
+
+            return {
+                id: c.id,
+                title: c.name,
+                emoji: c.emoji,
+                tagline: c.tagline || '',
+                description: c.description || '',
+                keywords,
+                iba: c.iba,
+                difford: c.difford,
+                mainCat,
+                sectionLabel: sec.label,
+                sectionEmoji: sec.emoji,
+                url: `cocktail-recipe.html?id=${c.id}`
+            };
+        });
+    }
+
+    /* ── Score ── */
+    function scoreRecipe(recipe, tokens) {
+        const titleN = norm(recipe.title);
+        const kwN    = norm(recipe.keywords);
+        let score = 0;
+        for (const tok of tokens) {
+            if (titleN.includes(tok)) score += 10;
+            else if (kwN.includes(tok)) score += 2;
+            else return -1;
+        }
+        return score;
+    }
+
+    /* ── Render card ── */
+    function renderCard(recipe) {
+        return `
+        <a class="result-card" href="${recipe.url}">
+            <div class="result-emoji">${recipe.emoji}</div>
+            <div class="result-body">
+                <div class="result-title">${recipe.title}</div>
+                <div class="result-meta">
+                    <span class="result-tag result-tag--section">${recipe.sectionEmoji} ${recipe.sectionLabel}</span>
+                    ${recipe.iba ? '<span class="result-tag result-tag--iba">IBA</span>' : ''}
+                    ${recipe.difford ? '<span class="result-tag result-tag--difford">Difford\'s</span>' : ''}
+                </div>
+                <p class="result-desc">${recipe.tagline || recipe.description}</p>
+            </div>
+            <span class="result-arrow">→</span>
+        </a>`;
+    }
+
+    /* ── Render gruppo ── */
+    function renderGroup(label, emoji, list) {
+        const count = list.length;
+        return `
+        <div class="results-section">
+            <div class="results-section-header">
+                <div class="results-section-label">${emoji} ${label}</div>
+                <span class="results-section-count">${count} ${count === 1 ? 'cocktail' : 'cocktail'}</span>
+            </div>
+            ${list.map(r => renderCard(r.recipe)).join('')}
+        </div>`;
+    }
+
+    /* ── Ricerca ── */
+    function runSearch(index, query) {
+        const main = document.getElementById('results-main');
+        const meta = document.getElementById('results-meta');
+
+        if (!query.trim()) {
+            main.innerHTML = `<div class="results-empty"><div class="empty-icon">🔍</div><h2>Cosa cerchi?</h2><p>Inserisci il nome di un cocktail, uno spirit o un sapore.</p></div>`;
+            meta.textContent = '';
+            return;
+        }
+
+        const tokens = norm(query).split(/\s+/).filter(Boolean);
+        const scored = index
+            .map(r => ({ recipe: r, score: scoreRecipe(r, tokens) }))
+            .filter(x => x.score > 0)
+            .sort((a, b) => b.score - a.score);
+
+        if (scored.length === 0) {
+            main.innerHTML = `<div class="results-empty"><div class="empty-icon">🤷</div><h2>Nessun cocktail trovato</h2><p>Nessun risultato per "<strong>${query}</strong>".<br>Prova con uno spirit, un gusto o un nome diverso.</p></div>`;
+            meta.textContent = `0 risultati`;
+            return;
+        }
+
+        meta.textContent = `${scored.length} cocktail trovati`;
+
+        // Raggruppa per sezione
+        const groups = {};
+        scored.forEach(item => {
+            const key = item.recipe.mainCat;
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(item);
+        });
+
+        // Ordine sezioni
+        const ORDER = ['unforgettables','contemporary','new_era','aperitivi','light','dark','classics','soft','basics','difford','none'];
+        const html = ORDER
+            .filter(k => groups[k])
+            .map(k => {
+                const sec = SECTION_CONFIG[k] || SECTION_CONFIG.none;
+                return renderGroup(sec.label, sec.emoji, groups[k]);
+            })
+            .join('');
+
+        main.innerHTML = html;
+    }
+
+    /* ── Init ── */
+    const index = buildIndex();
+    runSearch(index, rawQuery);
+
+    /* ── Search input ── */
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+
+    function doSearch() {
+        const q = searchInput.value.trim();
+        if (q) {
+            history.replaceState(null, '', '?q=' + encodeURIComponent(q));
+            document.getElementById('query-display').textContent = q;
+            document.title = `"${q}" — The Bar`;
+            runSearch(index, q);
+        }
+    }
+
+    searchBtn.addEventListener('click', doSearch);
+    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+})();
+</script>
+
+</body>
+</html>
