@@ -2,10 +2,7 @@
    category-style.css  –  Pagine di categoria cocktail
 ══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Nav ── */
-.cat-nav {
-    padding: 20px 0 0;
-}
+/* ── Back link ── */
 .back-link {
     color: var(--silver2);
     text-decoration: none;
