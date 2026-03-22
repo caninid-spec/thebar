@@ -453,3 +453,21 @@ article.recipe-card.open .recipe-body { display: block; }
     .feature-cta { display: none; }
     .card-badges, .card-spirits { display: none; }
 }
+
+/* Card count label */
+.card-count {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: 8px;
+}
+
+/* All Cocktails card accent */
+.calc-card--all {
+    border-color: rgba(201,168,76,0.2);
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, var(--surface) 60%);
+}
+.calc-card--all:hover {
+    border-color: var(--gold);
+}
