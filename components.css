@@ -149,8 +149,8 @@
     border: 1px solid var(--border);
 }
 /* Fonte */
-.badge--iba     { background: rgba(184,149,42,0.12); color: var(--gold);  border-color: var(--border-gold); }
-.badge--difford { background: rgba(60,100,200,0.08);  color: #4a70bb;     border-color: rgba(60,100,200,0.2); }
+.badge--iba     { background: rgba(184,149,42,0.12); color: var(--gold-readable);  border-color: var(--border-gold); }
+.badge--difford { background: rgba(60,100,200,0.08);  color: #2B4F9E;               border-color: rgba(60,100,200,0.2); }
 /* Gusto */
 .badge--taste   { background: rgba(4,57,39,0.06);   color: var(--text2); border-color: var(--border); text-transform: capitalize; }
 .badge--sweet   { background: rgba(200,120,40,0.10); color: #8B5A1A;     border-color: rgba(200,120,40,0.22); }
@@ -182,7 +182,7 @@
 .spirit-tag--match {
     background: var(--gold-pale);
     border-color: var(--border-gold);
-    color: var(--gold);
+    color: var(--gold-readable);
 }
 
 /* ══════════════════════════
@@ -204,8 +204,17 @@ article.recipe-card--highlight {
 }
 
 .recipe-toggle {
+    /* Reset stili nativi del <button> */
+    appearance: none;
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    /* Layout */
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px; cursor: pointer; user-select: none; gap: 12px;
+    padding: 16px 20px; cursor: pointer; gap: 12px;
     transition: background 0.15s;
 }
 .recipe-toggle:hover { background: var(--surface2); }
@@ -214,12 +223,12 @@ article.recipe-card--highlight {
 .recipe-toggle-left  { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
 .recipe-toggle-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
-.recipe-emoji { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
+/* .recipe-emoji rimosso — le emoji cocktail non sono più mostrate nelle card */
 
 .recipe-toggle-info { min-width: 0; }
 .recipe-toggle-info h3 {
     font-family: var(--font-display);
-    font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase;
+    font-size: 0.95rem; letter-spacing: 0.02em;
     color: var(--text); margin: 0 0 3px; display: block;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
@@ -256,7 +265,7 @@ article.recipe-card.open .recipe-body { display: block; }
 .body-ingredients { margin-bottom: 18px; }
 .ing-version-label {
     font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--gold); margin-bottom: 10px; font-family: var(--font-display);
+    color: var(--gold-readable); margin-bottom: 10px; font-family: var(--font-display);
     display: block;
 }
 .ing-row {
@@ -332,4 +341,278 @@ article.recipe-card.open .recipe-body { display: block; }
 @media (max-width: 500px) {
     .feature-card { flex-direction: column; text-align: center; gap: 12px; padding: 18px; }
     .feature-cta { display: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PAGE HEADER  —  componente base per tutti gli header verdi del sito
+   Usato da: category.html, cocktail-finder.html, cocktail-recipe.html
+   
+   Struttura HTML attesa:
+     <header class="page-header [page-header--MODIFIER]">
+       <span class="page-header__icon">emoji</span>
+       <h1 class="page-header__title">Titolo</h1>
+       <p class="page-header__subtitle">Sottotitolo</p>
+       <div class="page-header__meta">info extra</div>   ← opzionale
+     </header>
+══════════════════════════════════════════════════════════════════════════ */
+
+.page-header {
+    background: var(--green-deep);
+    text-align: center;
+    padding: 36px 20px 32px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 3px solid transparent;
+    border-image: var(--gold-gradient-h) 1;
+}
+
+/* Alone luminoso radiale — presente su tutte le varianti */
+.page-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% -20%, rgba(11,102,70,0.4) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.page-header__icon {
+    font-size: 2.8rem;
+    display: block;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 2px 12px rgba(212,175,55,0.40));
+    position: relative;
+}
+
+.page-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    letter-spacing: 0.04em;
+    margin: 0 0 10px;
+    position: relative;
+    background: var(--gold-gradient-h);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-header__subtitle {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--muted-inv);
+    font-style: italic;
+    margin: 0 0 10px;
+    position: relative;
+}
+
+.page-header__meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted-inv);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    position: relative;
+}
+
+/* ── Modificatori ──────────────────────────────────────────────────── */
+
+/* Hero (cocktail-recipe.html): padding più generoso, icona più grande */
+.page-header--hero {
+    padding: 56px 24px 44px;
+}
+.page-header--hero .page-header__icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 24px rgba(212,175,55,0.45));
+}
+.page-header--hero .page-header__title {
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    margin-bottom: 12px;
+}
+.page-header--hero .page-header__subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+/* Sticky (search-results.html): compatto, appiccicato in cima */
+.page-header--sticky {
+    position: sticky; top: 0; z-index: 50;
+    padding: 14px 24px 12px;
+    text-align: left;
+    border-bottom: 2px solid var(--gold3);
+    border-image: none;
+}
+.page-header--sticky .page-header__title {
+    font-size: 0.88rem;
+    margin-bottom: 2px;
+}
+.page-header--sticky .page-header__subtitle {
+    font-size: 0.75rem;
+    margin-bottom: 10px;
+    font-style: normal;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CARD  —  componente base per tutte le card cocktail
+   
+   Varianti:
+     .card--recipe   accordion nelle pagine categoria / all cocktails
+     .card--list     riga orizzontale nella pagina search-results
+     .card--grid     tile nella griglia del finder
+══════════════════════════════════════════════════════════════════════════ */
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.18s, transform 0.15s, box-shadow 0.18s;
+    text-decoration: none;
+    color: var(--text);
+}
+.card:hover {
+    border-color: var(--border-gold);
+    box-shadow: var(--shadow), var(--shadow-gold);
+}
+
+/* ── .card--recipe: accordion espandibile (category, all-cocktails) ── */
+/* Nota: article.recipe-card rimane invariato per retrocompatibilità;
+   .card--recipe è il nome canonico per i nuovi contesti             */
+.card--recipe {
+    display: block;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+.card--recipe:hover { transform: none; } /* l'hover è gestito dal toggle interno */
+
+/* ── .card--list: riga orizzontale (search-results) ── */
+.card--list {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+}
+.card--list:hover { transform: translateX(3px); }
+
+.card--list .card__emoji  { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
+.card--list .card__body   { flex: 1; min-width: 0; }
+.card--list .card__title  {
+    font-family: var(--font-display); font-size: 0.88rem;
+    letter-spacing: 0.02em;
+    color: var(--text); margin-bottom: 4px;
+}
+.card--list .card__meta   { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 5px; }
+.card--list .card__desc   {
+    margin: 0; font-size: 0.82rem; color: var(--muted);
+    font-style: italic; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; font-family: var(--font-serif);
+}
+.card--list .card__arrow  {
+    color: var(--muted); font-size: 1rem; flex-shrink: 0;
+    transition: color 0.15s, transform 0.15s;
+}
+.card--list:hover .card__arrow { color: var(--gold); transform: translateX(3px); }
+
+/* ── .card--grid: tile nella griglia (finder) ── */
+.card--grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px;
+}
+.card--grid:hover { transform: translateY(-2px); }
+
+.card--grid .card__top    { display: flex; align-items: flex-start; gap: 12px; }
+.card--grid .card__emoji  { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+.card--grid .card__info   { flex: 1; min-width: 0; }
+.card--grid .card__title  {
+    font-family: var(--font-display); font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    color: var(--text); margin-bottom: 3px;
+}
+.card--grid .card__desc   {
+    font-family: var(--font-serif); font-size: 0.82rem;
+    color: var(--muted); font-style: italic; line-height: 1.4;
+}
+.card--grid .card__tags   { display: flex; flex-wrap: wrap; gap: 4px; }
+.card--grid .card__spirits { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+
+/* ── Tag inline nelle card--list (ex .result-tag) ── */
+.card__tag          { font-size: 0.68rem; padding: 2px 8px; border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); color: var(--text2); }
+.card__tag--section { background: transparent; color: var(--muted); border-color: transparent; }
+.card__tag--iba     { background: var(--gold-pale); border-color: var(--border-gold); color: var(--gold-readable); }
+.card__tag--difford { background: rgba(60,100,200,0.08); border-color: rgba(60,100,200,0.2); color: #2B4F9E; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SEARCH FILTER BANNER  —  attivato da body.is-filtering
+   Sostituisce il CSS iniettato dinamicamente da search-filter.js.
+══════════════════════════════════════════════════════════════════════════ */
+
+#search-filter-banner {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(4,57,39,0.97);
+    border-bottom: 1px solid rgba(212,175,55,0.20);
+    padding: 10px 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.sfb-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.sfb-icon { font-size: 0.9rem; }
+.sfb-text {
+    flex: 1;
+    font-size: 0.82rem;
+    color: var(--muted-inv);
+    min-width: 0;
+    font-family: var(--font-sans);
+}
+.sfb-text strong { color: var(--gold-bright); }
+.sfb-link {
+    font-size: 0.78rem;
+    color: var(--gold-bright);
+    text-decoration: none;
+    white-space: nowrap;
+    font-weight: 500;
+    font-family: var(--font-sans);
+    transition: opacity 0.15s;
+}
+.sfb-link:hover { opacity: 0.75; text-decoration: underline; }
+.sfb-clear {
+    background: none;
+    border: 1px solid rgba(212,175,55,0.30);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.75rem;
+    color: var(--muted-inv);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.sfb-clear:hover {
+    background: var(--gold-pale);
+    border-color: var(--border-gold);
+    color: var(--gold-bright);
+}
+
+/* Card non-matching — attivate da body.is-filtering */
+body.is-filtering article.recipe-card.sf-nomatch {
+    opacity: 0.2;
+    filter: grayscale(0.5);
+    pointer-events: none;
+    transition: opacity 0.25s, filter 0.25s;
+}
+body.is-filtering article.recipe-card.sf-match {
+    opacity: 1;
+    border-color: var(--border-gold) !important;
+    box-shadow: 0 0 0 2px var(--gold-pale);
+    transition: opacity 0.25s;
 }

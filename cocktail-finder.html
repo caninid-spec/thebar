@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="core.css">
     <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="finder-style.css">
-    <script src="cocktails-data.js"></script>
+    <script src="config.js"></script>
 </head>
 <body>
 
@@ -15,10 +15,10 @@
     <a href="index.html" class="back-link">← The Bar</a>
 </nav>
 
-<header class="finder-header">
-        <div class="finder-icon">🎯</div>
-        <h1>Trova il tuo cocktail</h1>
-        <p class="finder-subtitle">Cosa hai nel bar? Che voglia hai stasera?</p>
+<header class="page-header">
+        <span class="page-header__icon">🎯</span>
+        <h1 class="page-header__title">Trova il tuo cocktail</h1>
+        <p class="page-header__subtitle">Cosa hai nel bar? Che voglia hai stasera?</p>
 </header>
 
 <div class="container" style="padding: 28px 20px 60px;">
@@ -260,7 +260,7 @@
             return;
         }
 
-        const scored = COCKTAILS
+        const scored = (window._finderCocktails || [])
             .filter(c => c.strength !== 'none') // Escludi basics senza alcol come ingrediente
             .map(c => ({ c, score: scorecocktail(c) }))
             .filter(x => x.score > 0)
@@ -284,29 +284,33 @@
             <div class="results-hint">Ordinati per compatibilità</div>
         </div>
         <div class="results-grid">
-            ${scored.map(({ c, score }) => `
-            <a href="cocktail-recipe.html?id=${c.id}" class="result-card">
-                <div class="result-top">
-                    <span class="result-emoji">${c.emoji}</span>
-                    <div class="result-info">
-                        <div class="result-name">${c.name}</div>
-                        <div class="result-tagline">${c.tagline}</div>
+            ${scored.map(({ c }) => `
+            <a href="cocktail-recipe.html?id=${c.id}" class="card card--grid">
+                <div class="card__top">
+                    <div class="card__info">
+                        <div class="card__title">${c.name}</div>
+                        <div class="card__desc">${c.tagline}</div>
                     </div>
                 </div>
-                <div class="result-tags">
+                <div class="card__tags">
                     ${c.iba ? '<span class="badge badge--iba">IBA</span>' : ''}
                     ${c.difford && !c.iba ? '<span class="badge badge--difford">Difford\'s</span>' : ''}
                     ${c.strength && c.strength !== 'none' ? `<span class="badge badge--strength">${STRENGTH_LABEL[c.strength]||c.strength}</span>` : ''}
                     ${c.style ? `<span class="badge badge--style">${STYLE_LABEL[c.style]||c.style}</span>` : ''}
                     ${(c.taste||[]).slice(0,2).map(t=>`<span class="badge badge--taste">${t}</span>`).join('')}
                 </div>
-                <div class="result-spirits">
+                <div class="card__spirits">
                     ${(c.baseSpirits||[]).map(s=>`<span class="spirit-tag ${[...selected.spirits,...selected.extras].some(sel=>s.toLowerCase().includes(sel)||sel.includes(s.toLowerCase())) ? 'spirit-tag--match':''}">${s}</span>`).join('')}
                 </div>
             </a>
             `).join('')}
         </div>`;
     }
+
+    /* ── Precarica i dati in background al mount ── */
+    TheBarConfig.loadCocktails().then(cocktails => {
+        window._finderCocktails = cocktails;
+    });
 
 })();
 </script>

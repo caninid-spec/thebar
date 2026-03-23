@@ -38,7 +38,7 @@
    }
 ══════════════════════════════════════════════════════════════════════════ */
 
-const COCKTAILS = [
+window.COCKTAILS = [
 
   /* ════════════════════════════════════
      IBA — THE UNFORGETTABLES
@@ -3141,15 +3141,15 @@ const COCKTAILS = [
    INDEX per ricerca rapida
 ══════════════════════════════════════════ */
 
-const COCKTAILS_BY_ID = Object.fromEntries(COCKTAILS.map(c => [c.id, c]));
+window.COCKTAILS_BY_ID = Object.fromEntries(COCKTAILS.map(c => [c.id, c]));
 
-const IBA_UNFORGETTABLES = COCKTAILS.filter(c => c.ibaCategory === 'unforgettables');
-const IBA_CONTEMPORARY   = COCKTAILS.filter(c => c.ibaCategory === 'contemporary');
-const IBA_NEW_ERA        = COCKTAILS.filter(c => c.ibaCategory === 'new_era');
+window.IBA_UNFORGETTABLES = COCKTAILS.filter(c => c.ibaCategory === 'unforgettables');
+window.IBA_CONTEMPORARY = COCKTAILS.filter(c => c.ibaCategory === 'contemporary');
+window.IBA_NEW_ERA = COCKTAILS.filter(c => c.ibaCategory === 'new_era');
 
-const NOMAD_APERITIVI    = COCKTAILS.filter(c => c.nomadCategory === 'aperitivi');
-const NOMAD_LIGHT        = COCKTAILS.filter(c => c.nomadCategory === 'light');
-const NOMAD_DARK         = COCKTAILS.filter(c => c.nomadCategory === 'dark');
-const NOMAD_CLASSICS     = COCKTAILS.filter(c => c.nomadCategory === 'classics');
-const NOMAD_SOFT         = COCKTAILS.filter(c => c.nomadCategory === 'soft');
-const NOMAD_BASICS       = COCKTAILS.filter(c => c.nomadCategory === 'basics');
+window.NOMAD_APERITIVI = COCKTAILS.filter(c => c.nomadCategory === 'aperitivi');
+window.NOMAD_LIGHT = COCKTAILS.filter(c => c.nomadCategory === 'light');
+window.NOMAD_DARK = COCKTAILS.filter(c => c.nomadCategory === 'dark');
+window.NOMAD_CLASSICS = COCKTAILS.filter(c => c.nomadCategory === 'classics');
+window.NOMAD_SOFT = COCKTAILS.filter(c => c.nomadCategory === 'soft');
+window.NOMAD_BASICS = COCKTAILS.filter(c => c.nomadCategory === 'basics');

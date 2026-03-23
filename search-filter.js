@@ -1,16 +1,20 @@
 /* ══════════════════════════════════════════════════════════════════════════
    search-filter.js  –  Filtro cocktail da URL (?search=query)
-   Da includere nelle pagine di categoria.
-   
+   Da includere nelle pagine di categoria (dopo components.css).
+
    Funzionamento:
    - Legge ?search= dall'URL
+   - Aggiunge body.is-filtering (attiva stili in components.css)
    - Mostra solo i cocktail che matchano (altri in opacity ridotta)
    - Scrolla e apre automaticamente il primo trovato
-   - Mostra un banner con info ricerca e tasto "mostra tutto"
+   - Mostra un banner con info ricerca e tasto "Mostra tutto"
+
+   Nota: nessun CSS viene iniettato via JS — tutti gli stili sono
+   in components.css e vengono attivati dalla classe body.is-filtering.
 ══════════════════════════════════════════════════════════════════════════ */
 
 (function () {
-    const params = new URLSearchParams(location.search);
+    const params   = new URLSearchParams(location.search);
     const rawQuery = params.get('search') || '';
     if (!rawQuery.trim()) return;
 
@@ -24,62 +28,75 @@
     const tokens = norm(rawQuery).split(/\s+/).filter(Boolean);
 
     function matchesArticle(article) {
-        const title = article.querySelector('h3')?.textContent || '';
+        const title  = article.querySelector('h3')?.textContent || '';
         const tagline = article.querySelector('.recipe-tagline')?.textContent || '';
-        const desc = article.querySelector('.recipe-desc')?.textContent || '';
-        const cat = article.dataset.category || '';
-        const ings = Array.from(article.querySelectorAll('.ing-item')).map(el => el.textContent).join(' ');
-        const text = norm([title, tagline, desc, cat, ings].join(' '));
+        const desc   = article.querySelector('.recipe-desc')?.textContent || '';
+        const cat    = article.dataset.category || '';
+        const ings   = Array.from(article.querySelectorAll('.ing-item')).map(el => el.textContent).join(' ');
+        const text   = norm([title, tagline, desc, cat, ings].join(' '));
         return tokens.every(t => text.includes(t));
     }
 
-    /* ── Crea banner ── */
+    /* ── Banner informativo ── */
     function injectBanner() {
         const banner = document.createElement('div');
         banner.id = 'search-filter-banner';
+        banner.setAttribute('role', 'status');
+        banner.setAttribute('aria-live', 'polite');
         banner.innerHTML = `
             <div class="sfb-inner">
-                <span class="sfb-icon">🔍</span>
+                <span class="sfb-icon" aria-hidden="true">🔍</span>
                 <span class="sfb-text">Risultati per <strong>"${rawQuery}"</strong></span>
-                <a href="#" class="sfb-link" id="sfb-results-link">Tutti i risultati →</a>
-                <button class="sfb-clear" id="sfb-clear-btn">✕ Mostra tutto</button>
+                <a href="search-results.html?q=${encodeURIComponent(rawQuery)}"
+                   class="sfb-link">Tutti i risultati →</a>
+                <button class="sfb-clear" id="sfb-clear-btn"
+                        aria-label="Rimuovi filtro e mostra tutti i cocktail">
+                    ✕ Mostra tutto
+                </button>
             </div>`;
         document.body.insertBefore(banner, document.body.firstChild);
 
-        document.getElementById('sfb-results-link').addEventListener('click', e => {
-            e.preventDefault();
-            window.location.href = 'search-results.html?q=' + encodeURIComponent(rawQuery);
-        });
-
         document.getElementById('sfb-clear-btn').addEventListener('click', () => {
-            history.back();
+            /* Ricarica la pagina senza parametri di ricerca — più robusto
+               di history.back() quando si arriva da un link diretto */
+            window.location.href = window.location.pathname;
         });
     }
 
     /* ── Applica filtro ── */
     function applyFilter() {
-        const articles = Array.from(document.querySelectorAll('article.recipe-card'));
+        /* Attiva gli stili definiti in components.css */
+        document.body.classList.add('is-filtering');
+
+        const articles  = Array.from(document.querySelectorAll('article.recipe-card'));
         if (!articles.length) return;
 
-        let firstMatch = null;
-        let matchCount = 0;
+        let firstMatch  = null;
+        let matchCount  = 0;
 
         articles.forEach(art => {
-            if (matchesArticle(art)) {
-                art.classList.add('sf-match');
-                art.classList.remove('sf-nomatch');
+            const isMatch = matchesArticle(art);
+            art.classList.toggle('sf-match',   isMatch);
+            art.classList.toggle('sf-nomatch', !isMatch);
+            if (isMatch) {
                 if (!firstMatch) firstMatch = art;
                 matchCount++;
-            } else {
-                art.classList.add('sf-nomatch');
-                art.classList.remove('sf-match');
             }
         });
 
+        /* Aggiorna il testo del banner con il conteggio */
+        const textEl = document.querySelector('.sfb-text');
+        if (textEl) {
+            const n = matchCount;
+            textEl.innerHTML = `<strong>"${rawQuery}"</strong> — ${n} cocktail trovati`;
+        }
+
+        /* Scrolla al primo match e lo apre */
         if (firstMatch) {
             setTimeout(() => {
                 firstMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 if (!firstMatch.classList.contains('open')) {
+                    /* Supporta sia <button> che <div role="button"> */
                     const toggle = firstMatch.querySelector('.recipe-toggle');
                     if (toggle) toggle.click();
                 }
@@ -89,80 +106,8 @@
         return matchCount;
     }
 
-    /* ── CSS dinamico (dark theme override) ── */
-    function injectStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            #search-filter-banner {
-                position: sticky;
-                top: 0;
-                z-index: 100;
-                background: rgba(9,21,16,0.97);
-                border-bottom: 1px solid rgba(192,208,196,0.25);
-                padding: 10px 20px;
-                backdrop-filter: blur(10px);
-            }
-            .sfb-inner {
-                max-width: 900px;
-                margin: 0 auto;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                flex-wrap: wrap;
-            }
-            .sfb-icon { font-size: 0.9rem; }
-            .sfb-text {
-                flex: 1;
-                font-size: 0.82rem;
-                color: var(--silver2, #9aa0ac);
-                min-width: 0;
-                font-family: var(--font-sans, sans-serif);
-            }
-            .sfb-text strong { color: var(--gold, #c0d0c4); }
-            .sfb-link {
-                font-size: 0.78rem;
-                color: var(--gold, #c0d0c4);
-                text-decoration: none;
-                white-space: nowrap;
-                font-weight: 500;
-                font-family: var(--font-sans, sans-serif);
-            }
-            .sfb-link:hover { text-decoration: underline; }
-            .sfb-clear {
-                background: none;
-                border: 1px solid rgba(192,208,196,0.25);
-                border-radius: 20px;
-                padding: 3px 12px;
-                font-size: 0.75rem;
-                color: var(--muted, #5a6070);
-                cursor: pointer;
-                font-family: var(--font-sans, sans-serif);
-                white-space: nowrap;
-                transition: background 0.15s, color 0.15s;
-            }
-            .sfb-clear:hover {
-                background: rgba(192,208,196,0.1);
-                color: var(--gold, #c0d0c4);
-            }
-            article.recipe-card.sf-nomatch {
-                opacity: 0.2;
-                filter: grayscale(0.5);
-                pointer-events: none;
-                transition: opacity 0.2s;
-            }
-            article.recipe-card.sf-match {
-                opacity: 1;
-                border-color: rgba(192,208,196,0.4) !important;
-                box-shadow: 0 0 0 2px rgba(192,208,196,0.1);
-                transition: opacity 0.2s;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
     /* ── Init ── */
     function init() {
-        injectStyles();
         injectBanner();
         applyFilter();
     }

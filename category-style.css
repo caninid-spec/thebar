@@ -1,56 +1,28 @@
 /* ══════════════════════════════════════════════════════════════════════════
-   category-style.css  –  Header pagine di categoria
+   category-style.css  –  Pagine di categoria cocktail
+   L'header usa il componente base .page-header (components.css).
+   Qui restano solo gli stili specifici del layout post-header.
 ══════════════════════════════════════════════════════════════════════════ */
 
-/* Header verde — a tutta larghezza, già fuori dal .container */
-.cat-header {
-    background: var(--green-deep);
-    text-align: center;
-    padding: 36px 20px 32px;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 3px solid var(--gold3);
+/* Filtro pill (cocktail-all.html) */
+.all-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
 }
-.cat-header::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 80% at 50% -20%, rgba(11,102,70,0.4) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-.cat-emoji {
-    font-size: 2.8rem;
-    display: block;
-    margin-bottom: 12px;
-    filter: drop-shadow(0 2px 12px rgba(212,175,55,0.40));
-    position: relative;
-}
-.cat-title {
+.filter-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
     font-family: var(--font-display);
-    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    margin: 0 0 10px;
-    position: relative;
-    background: var(--gold-gradient-h);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text2);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
-.cat-subtitle {
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    color: var(--muted-inv);
-    font-style: italic;
-    margin: 0 0 10px;
-    position: relative;
-}
-.cat-count {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--muted-inv);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.7;
-    position: relative;
-}
+.filter-pill:hover  { background: var(--gold-pale); border-color: var(--border-gold); color: var(--text); }
+.filter-pill.active { background: var(--green-deep); border-color: var(--green-deep); color: var(--gold-bright); }

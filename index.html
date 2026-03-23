@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="core.css">
     <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="home-style.css">
-    <script src="cocktails-data.js"></script>
+    <script src="config.js"></script>
     <script src="search-index.js"></script>
 </head>
 <body>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="cards-grid">
-        <a href="cocktail-unforgettables.html" class="calc-card">
+        <a href="category.html?name=unforgettables" class="calc-card">
             <div class="card-icon">✨</div>
             <div class="card-body">
                 <h2>The Unforgettables</h2>
@@ -63,7 +63,7 @@
             </div>
             <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
         </a>
-        <a href="cocktail-contemporary.html" class="calc-card">
+        <a href="category.html?name=contemporary" class="calc-card">
             <div class="card-icon">🍸</div>
             <div class="card-body">
                 <h2>The Contemporary Classics</h2>
@@ -72,7 +72,7 @@
             </div>
             <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
         </a>
-        <a href="cocktail-new-era.html" class="calc-card">
+        <a href="category.html?name=new_era" class="calc-card">
             <div class="card-icon">🚀</div>
             <div class="card-body">
                 <h2>The New Era Drinks</h2>
@@ -91,7 +91,7 @@
     </div>
 
     <div class="cards-grid">
-        <a href="cocktail-aperitivi.html" class="calc-card">
+        <a href="category.html?name=aperitivi" class="calc-card">
             <div class="card-icon">🥂</div>
             <div class="card-body">
                 <h2>Aperitivi</h2>
@@ -100,7 +100,7 @@
             </div>
             <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
         </a>
-        <a href="cocktail-light.html" class="calc-card">
+        <a href="category.html?name=light" class="calc-card">
             <div class="card-icon">🌿</div>
             <div class="card-body">
                 <h2>Light Spirited</h2>
@@ -109,7 +109,7 @@
             </div>
             <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
         </a>
-        <a href="cocktail-dark.html" class="calc-card">
+        <a href="category.html?name=dark" class="calc-card">
             <div class="card-icon">🌑</div>
             <div class="card-body">
                 <h2>Dark Spirited</h2>
@@ -118,7 +118,7 @@
             </div>
             <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
         </a>
-        <a href="cocktail-classics.html" class="calc-card">
+        <a href="category.html?name=classics" class="calc-card">
             <div class="card-icon">🏛️</div>
             <div class="card-body">
                 <h2>Classics</h2>
@@ -127,7 +127,7 @@
             </div>
             <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
         </a>
-        <a href="cocktail-soft.html" class="calc-card">
+        <a href="category.html?name=soft" class="calc-card">
             <div class="card-icon">🌱</div>
             <div class="card-body">
                 <h2>Soft Cocktails</h2>
@@ -136,7 +136,7 @@
             </div>
             <div class="card-cta">Apri sezione <span class="arrow">→</span></div>
         </a>
-        <a href="cocktail-basics.html" class="calc-card">
+        <a href="category.html?name=basics" class="calc-card">
             <div class="card-icon">🧪</div>
             <div class="card-body">
                 <h2>Basics</h2>
@@ -176,20 +176,23 @@
 <script>
 (function () {
     const COUNTS = [
-        { id: 'count-unforgettables', list: IBA_UNFORGETTABLES },
-        { id: 'count-contemporary',   list: IBA_CONTEMPORARY },
-        { id: 'count-new-era',        list: IBA_NEW_ERA },
-        { id: 'count-aperitivi',      list: NOMAD_APERITIVI },
-        { id: 'count-light',          list: NOMAD_LIGHT },
-        { id: 'count-dark',           list: NOMAD_DARK },
-        { id: 'count-classics',       list: NOMAD_CLASSICS },
-        { id: 'count-soft',           list: NOMAD_SOFT },
-        { id: 'count-basics',         list: NOMAD_BASICS },
-        { id: 'count-all',            list: COCKTAILS },
+        { id: 'count-unforgettables', key: 'unforgettables', filter: c => c.ibaCategory === 'unforgettables' },
+        { id: 'count-contemporary',   key: 'contemporary',   filter: c => c.ibaCategory === 'contemporary' },
+        { id: 'count-new-era',        key: 'new_era',        filter: c => c.ibaCategory === 'new_era' },
+        { id: 'count-aperitivi',      key: 'aperitivi',      filter: c => c.nomadCategory === 'aperitivi' },
+        { id: 'count-light',          key: 'light',          filter: c => c.nomadCategory === 'light' },
+        { id: 'count-dark',           key: 'dark',           filter: c => c.nomadCategory === 'dark' },
+        { id: 'count-classics',       key: 'classics',       filter: c => c.nomadCategory === 'classics' },
+        { id: 'count-soft',           key: 'soft',           filter: c => c.nomadCategory === 'soft' },
+        { id: 'count-basics',         key: 'basics',         filter: c => c.nomadCategory === 'basics' },
+        { id: 'count-all',            key: null,             filter: () => true },
     ];
-    COUNTS.forEach(({ id, list }) => {
-        const el = document.getElementById(id);
-        if (el && list) el.textContent = list.length + ' cocktail';
+
+    TheBarConfig.loadCocktails().then(cocktails => {
+        COUNTS.forEach(({ id, filter }) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = cocktails.filter(filter).length + ' cocktail';
+        });
     });
 })();
 </script>

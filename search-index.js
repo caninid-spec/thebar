@@ -13,18 +13,10 @@ function norm(s) {
         .replace(/[^a-z0-9\s]/g, ' ');
 }
 
-/* ── Config categorie ── */
-const CATEGORY_PAGES = {
-    unforgettables: { label: 'The Unforgettables', emoji: '✨', url: 'cocktail-unforgettables.html' },
-    contemporary:   { label: 'The Contemporary Classics', emoji: '🍸', url: 'cocktail-contemporary.html' },
-    new_era:        { label: 'The New Era Drinks', emoji: '🚀', url: 'cocktail-new-era.html' },
-    aperitivi:      { label: 'Aperitivi', emoji: '🥂', url: 'cocktail-aperitivi.html' },
-    light:          { label: 'Light Spirited', emoji: '🌿', url: 'cocktail-light.html' },
-    dark:           { label: 'Dark Spirited', emoji: '🌑', url: 'cocktail-dark.html' },
-    classics:       { label: 'Classics', emoji: '🏛️', url: 'cocktail-classics.html' },
-    soft:           { label: 'Soft Cocktails', emoji: '🌱', url: 'cocktail-soft.html' },
-    basics:         { label: 'Basics', emoji: '🧪', url: 'cocktail-basics.html' }
-};
+/* ── Config categorie — letta da TheBarConfig (config.js) ── */
+const CATEGORY_PAGES = window.TheBarConfig
+    ? window.TheBarConfig.CATEGORY_PAGES
+    : {};
 
 /* ── Costruzione indice da COCKTAILS ── */
 function buildIndex() {
@@ -65,8 +57,8 @@ function buildIndex() {
             ].join(' '),
             // URL pagina singola ricetta
             recipeUrl: `cocktail-recipe.html?id=${c.id}`,
-            // URL categoria principale
-            categoryUrl: page ? page.url + `?highlight=${c.id}` : `cocktail-recipe.html?id=${c.id}`,
+            // URL categoria principale (aggiunge &highlight= al URL già parametrico)
+            categoryUrl: page ? page.url + `&highlight=${c.id}` : `cocktail-recipe.html?id=${c.id}`,
             categoryLabel: page ? page.label : '',
             categoryEmoji: page ? page.emoji : ''
         };
@@ -83,11 +75,14 @@ function initSearch() {
     if (!input || !dropdown) return;
 
     let index = [];
-    // Attendi che COCKTAILS sia disponibile
-    if (typeof COCKTAILS !== 'undefined') {
+    // Carica i dati via TheBarConfig (asincrono, con cache)
+    if (window.TheBarConfig) {
+        window.TheBarConfig.loadCocktails().then(() => {
+            index = buildIndex();
+        });
+    } else if (typeof COCKTAILS !== 'undefined') {
+        // Fallback: dati già presenti come variabile globale
         index = buildIndex();
-    } else {
-        window.addEventListener('load', () => { index = buildIndex(); });
     }
 
     let debounceTimer = null;
@@ -99,7 +94,6 @@ function initSearch() {
         }
         dropdown.innerHTML = results.slice(0, 8).map(r => `
             <a class="sd-item" href="${r.recipeUrl}">
-                <span class="sd-emoji">${r.emoji}</span>
                 <div class="sd-body">
                     <div class="sd-title">${r.title}</div>
                     <div class="sd-meta">${r.categoryEmoji} ${r.categoryLabel || 'Cocktail'}</div>
@@ -202,6 +196,8 @@ function initSearch() {
 
 /* ── Expose utilities ── */
 window.CocktailSearch = { buildIndex, norm, CATEGORY_PAGES };
+// Retrocompatibilità: anche TheBarConfig espone CATEGORY_PAGES
+if (window.TheBarConfig) window.TheBarConfig.CATEGORY_PAGES = CATEGORY_PAGES;
 
 /* ── Auto-init ── */
 if (document.readyState === 'loading') {

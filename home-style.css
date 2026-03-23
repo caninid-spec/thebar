@@ -39,7 +39,7 @@ header::before {
 
 header h1 {
     font-size: clamp(2.2rem, 7vw, 4rem);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
     line-height: 1.05;
     position: relative;
     background: var(--gold-gradient-h);
@@ -139,8 +139,8 @@ header h1 {
 .sd-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 9px 16px;
+    gap: 12px;
+    padding: 10px 16px;
     cursor: pointer;
     text-decoration: none;
     border-bottom: 1px solid var(--border-soft);
@@ -150,7 +150,7 @@ header h1 {
 .sd-item:hover, .sd-item.active { background: var(--surface2); }
 .sd-item:last-child { border-bottom: none; }
 
-.sd-emoji { font-size: 1.2rem; flex-shrink: 0; }
+/* .sd-emoji rimosso — le emoji non vengono più mostrate nel dropdown */
 .sd-body { flex: 1; min-width: 0; }
 .sd-title {
     font-family: var(--font-display-alt);
@@ -165,8 +165,8 @@ header h1 {
     font-size: 0.62rem; padding: 1px 7px; border-radius: 20px;
     font-weight: 600; letter-spacing: 0.05em; flex-shrink: 0;
 }
-.sd-badge--iba     { background: var(--gold-pale); color: var(--gold); border: 1px solid var(--border-gold); }
-.sd-badge--difford { background: rgba(60,100,200,0.10); color: #3A5AAA; border: 1px solid rgba(60,100,200,0.2); }
+.sd-badge--iba     { background: var(--gold-pale); color: var(--gold-readable); border: 1px solid var(--border-gold); }
+.sd-badge--difford { background: rgba(60,100,200,0.10); color: #2B4F9E; border: 1px solid rgba(60,100,200,0.2); }
 
 .sd-more {
     display: block; text-align: center; padding: 10px;

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="core.css">
     <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="recipe-style.css">
-    <script src="cocktails-data.js"></script>
+    <script src="config.js"></script>
 </head>
 <body>
 
@@ -22,12 +22,11 @@
     </nav>
 
     <!-- Hero -->
-    <div class="recipe-hero" id="recipe-hero">
-        <div class="hero-emoji" id="hero-emoji">🍸</div>
-        <h1 class="hero-title" id="hero-title">—</h1>
-        <p class="hero-tagline" id="hero-tagline"></p>
-        <div class="hero-badges" id="hero-badges"></div>
-    </div>
+    <header class="page-header page-header--hero" id="recipe-hero">
+        <h1 class="page-header__title" id="hero-title">—</h1>
+        <p class="page-header__subtitle" id="hero-tagline"></p>
+        <div class="page-header__meta" id="hero-badges"></div>
+    </header>
 
     <!-- Content -->
     <div class="recipe-content container-narrow">
@@ -54,123 +53,126 @@
 <script>
 (function () {
 
-    /* ── Leggi id dall'URL ── */
     const params = new URLSearchParams(location.search);
-    const id = params.get('id');
+    const id     = params.get('id');
 
-    if (!id || !COCKTAILS_BY_ID[id]) {
-        document.getElementById('hero-title').textContent = 'Cocktail non trovato';
+    if (!id) {
+        document.getElementById('hero-title').textContent   = 'Cocktail non trovato';
         document.getElementById('hero-tagline').textContent = 'Torna alla home per cercare un cocktail.';
         return;
     }
 
-    const c = COCKTAILS_BY_ID[id];
+    /* ── Label localizzate da TheBarConfig ── */
+    const { SERVE_LABEL } = TheBarConfig;
 
-    /* ── Aggiorna title pagina ── */
-    document.title = `${c.name} — The Bar`;
-
-    /* ── Hero ── */
-    document.getElementById('hero-emoji').textContent = c.emoji;
-    document.getElementById('hero-title').textContent = c.name;
-    document.getElementById('hero-tagline').textContent = c.tagline;
-
-    /* ── Badges ── */
-    const badgesEl = document.getElementById('hero-badges');
-    const badges = [];
-    if (c.iba)    badges.push('<span class="badge badge--iba">IBA Official</span>');
-    if (c.difford) badges.push('<span class="badge badge--difford">Difford\'s Guide</span>');
-    (c.taste || []).forEach(t => badges.push(`<span class="badge badge--taste">${t}</span>`));
-    if (c.strength && c.strength !== 'none') {
-        const sl = { light:'Leggero', medium:'Medio', strong:'Forte', 'spirit-forward':'Spirit-forward' };
-        badges.push(`<span class="badge badge--strength">${sl[c.strength]||c.strength}</span>`);
-    }
-    badgesEl.innerHTML = badges.join('');
-
-    /* ── Specs tecnici ── */
-    const specsEl = document.getElementById('recipe-specs');
     const GLASS_LABEL = {
         coupe:'Coppa', rocks:'Rocks / Old Fashioned', highball:'Highball', flute:'Flute', martini:'Martini',
         'nick&nora':'Nick & Nora', hurricane:'Hurricane', mule:'Mule Mug', wine:'Calice da vino',
         shot:'Shot', champagne:'Flute Champagne', none:'—'
     };
-    const ICE_LABEL = { none:'Niente ghiaccio', cubed:'Cubetti', 'large cube':'Cubo grande', crushed:'Ghiaccio tritato', sphere:'Sfera', blended:'Frullato' };
-    const SERVE_LABEL = { stirred:'Mescolato', shaken:'Shakeraro', built:'Costruito nel bicchiere', blended:'Frullato' };
+    const ICE_LABEL   = { none:'Niente ghiaccio', cubed:'Cubetti', 'large cube':'Cubo grande', crushed:'Ghiaccio tritato', sphere:'Sfera', blended:'Frullato' };
     const STYLE_LABEL = { short:'Short drink', long:'Long drink', shot:'Shot', sparkling:'Sparkling' };
 
-    specsEl.innerHTML = `
-    <div class="specs-grid">
-        ${c.glass && c.glass !== 'none' ? `<div class="spec-item"><div class="spec-label">Bicchiere</div><div class="spec-value">${GLASS_LABEL[c.glass]||c.glass}</div></div>` : ''}
-        ${c.serve ? `<div class="spec-item"><div class="spec-label">Preparazione</div><div class="spec-value">${SERVE_LABEL[c.serve]||c.serve}</div></div>` : ''}
-        ${c.ice ? `<div class="spec-item"><div class="spec-label">Ghiaccio</div><div class="spec-value">${ICE_LABEL[c.ice]||c.ice}</div></div>` : ''}
-        ${c.style ? `<div class="spec-item"><div class="spec-label">Stile</div><div class="spec-value">${STYLE_LABEL[c.style]||c.style}</div></div>` : ''}
-        ${c.garnish && c.garnish !== 'Nessuno' ? `<div class="spec-item spec-item--wide"><div class="spec-label">Guarnizione</div><div class="spec-value">${c.garnish}</div></div>` : ''}
-        ${c.baseSpirits && c.baseSpirits.length ? `<div class="spec-item spec-item--wide"><div class="spec-label">Spirits</div><div class="spec-value">${c.baseSpirits.map(s=>`<span class="spirit-tag">${s}</span>`).join('')}</div></div>` : ''}
-    </div>`;
+    /* ── Caricamento asincrono ── */
+    TheBarConfig.loadCocktails().then(() => {
 
-    /* ── Ricette (tab IBA / Difford o unica) ── */
-    const tabsEl = document.getElementById('recipe-tabs');
+        const c = window.COCKTAILS_BY_ID?.[id];
 
-    function renderIngredients(ing) {
-        return ing.map(i => `
-            <div class="ing-row">
-                <span class="ing-amount">${i.amount}</span>
-                <span class="ing-item">${i.item}</span>
-            </div>`).join('');
-    }
+        if (!c) {
+            document.getElementById('hero-title').textContent   = 'Cocktail non trovato';
+            document.getElementById('hero-tagline').textContent = 'ID non valido. Torna alla home.';
+            return;
+        }
 
-    function renderRecipeBlock(recipe, label) {
-        return `
-        <div class="recipe-block">
-            ${label ? `<div class="recipe-block-label">${label}</div>` : ''}
-            <div class="ingredients-list">
-                ${renderIngredients(recipe.ingredients || [])}
-            </div>
-            <div class="method-block">
-                <div class="method-label">Metodo</div>
-                <p class="method-text">${recipe.method || ''}</p>
-            </div>
-            ${recipe.notes ? `<div class="notes-block"><span class="notes-icon">💡</span><p>${recipe.notes}</p></div>` : ''}
-        </div>`;
-    }
+        document.title = `${c.name} — The Bar`;
 
-    if (c.recipeIBA && c.recipeDifford) {
-        // Due versioni: tab
-        tabsEl.innerHTML = `
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="iba">✨ Versione IBA</button>
-            <button class="tab-btn" data-tab="difford">📖 Versione Difford's</button>
-        </div>
-        <div class="tab-panel active" id="panel-iba">
-            ${renderRecipeBlock(c.recipeIBA)}
-        </div>
-        <div class="tab-panel" id="panel-difford">
-            ${renderRecipeBlock(c.recipeDifford)}
+        /* ── Hero ── */
+        document.getElementById('hero-title').textContent   = c.name;
+        document.getElementById('hero-tagline').textContent = c.tagline;
+
+        /* ── Badges ── */
+        const badges = [];
+        if (c.iba)    badges.push('<span class="badge badge--iba">IBA Official</span>');
+        if (c.difford) badges.push('<span class="badge badge--difford">Difford\'s Guide</span>');
+        (c.taste || []).forEach(t => badges.push(`<span class="badge badge--taste">${t}</span>`));
+        if (c.strength && c.strength !== 'none') {
+            const sl = { light:'Leggero', medium:'Medio', strong:'Forte', 'spirit-forward':'Spirit-forward' };
+            badges.push(`<span class="badge badge--strength">${sl[c.strength] || c.strength}</span>`);
+        }
+        document.getElementById('hero-badges').innerHTML = badges.join('');
+
+        /* ── Specs ── */
+        document.getElementById('recipe-specs').innerHTML = `
+        <div class="specs-grid">
+            ${c.glass && c.glass !== 'none' ? `<div class="spec-item"><div class="spec-label">Bicchiere</div><div class="spec-value">${GLASS_LABEL[c.glass] || c.glass}</div></div>` : ''}
+            ${c.serve ? `<div class="spec-item"><div class="spec-label">Preparazione</div><div class="spec-value">${SERVE_LABEL[c.serve] || c.serve}</div></div>` : ''}
+            ${c.ice ? `<div class="spec-item"><div class="spec-label">Ghiaccio</div><div class="spec-value">${ICE_LABEL[c.ice] || c.ice}</div></div>` : ''}
+            ${c.style ? `<div class="spec-item"><div class="spec-label">Stile</div><div class="spec-value">${STYLE_LABEL[c.style] || c.style}</div></div>` : ''}
+            ${c.garnish && c.garnish !== 'Nessuno' ? `<div class="spec-item spec-item--wide"><div class="spec-label">Guarnizione</div><div class="spec-value">${c.garnish}</div></div>` : ''}
+            ${c.baseSpirits?.length ? `<div class="spec-item spec-item--wide"><div class="spec-label">Spirits</div><div class="spec-value">${c.baseSpirits.map(s => `<span class="spirit-tag">${s}</span>`).join('')}</div></div>` : ''}
         </div>`;
 
-        tabsEl.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                tabsEl.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                tabsEl.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+        /* ── Ricette ── */
+        const tabsEl = document.getElementById('recipe-tabs');
+
+        function renderIngredients(ing) {
+            return ing.map(i => `
+                <div class="ing-row">
+                    <span class="ing-amount">${i.amount}</span>
+                    <span class="ing-item">${i.item}</span>
+                </div>`).join('');
+        }
+
+        function renderRecipeBlock(recipe, label) {
+            return `
+            <div class="recipe-block">
+                ${label ? `<div class="recipe-block-label">${label}</div>` : ''}
+                <div class="ingredients-list">${renderIngredients(recipe.ingredients || [])}</div>
+                <div class="method-block">
+                    <div class="method-label">Metodo</div>
+                    <p class="method-text">${recipe.method || ''}</p>
+                </div>
+                ${recipe.notes ? `<div class="notes-block"><span class="notes-icon">💡</span><p>${recipe.notes}</p></div>` : ''}
+            </div>`;
+        }
+
+        if (c.recipeIBA && c.recipeDifford) {
+            tabsEl.innerHTML = `
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="iba">✨ Versione IBA</button>
+                <button class="tab-btn" data-tab="difford">📖 Versione Difford's</button>
+            </div>
+            <div class="tab-panel active" id="panel-iba">${renderRecipeBlock(c.recipeIBA)}</div>
+            <div class="tab-panel" id="panel-difford">${renderRecipeBlock(c.recipeDifford)}</div>`;
+
+            tabsEl.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabsEl.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    tabsEl.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+                });
             });
-        });
-    } else if (c.recipeIBA) {
-        tabsEl.innerHTML = `<div class="recipe-single-label">✨ Versione IBA</div>` + renderRecipeBlock(c.recipeIBA);
-    } else if (c.recipeDifford) {
-        tabsEl.innerHTML = `<div class="recipe-single-label">📖 Versione Difford's Guide</div>` + renderRecipeBlock(c.recipeDifford);
-    } else if (c.recipe) {
-        tabsEl.innerHTML = renderRecipeBlock(c.recipe);
-    }
+        } else if (c.recipeIBA) {
+            tabsEl.innerHTML = `<div class="recipe-single-label">✨ Versione IBA</div>` + renderRecipeBlock(c.recipeIBA);
+        } else if (c.recipeDifford) {
+            tabsEl.innerHTML = `<div class="recipe-single-label">📖 Versione Difford's Guide</div>` + renderRecipeBlock(c.recipeDifford);
+        } else if (c.recipe) {
+            tabsEl.innerHTML = renderRecipeBlock(c.recipe);
+        }
 
-    /* ── Descrizione e storia ── */
-    const textEl = document.getElementById('recipe-text');
-    const parts = [];
-    if (c.description) parts.push(`<p class="recipe-description">${c.description}</p>`);
-    if (c.history) parts.push(`<div class="history-block"><div class="history-label">📜 Storia</div><p>${c.history}</p></div>`);
-    textEl.innerHTML = parts.join('');
+        /* ── Descrizione e storia ── */
+        const parts = [];
+        if (c.description) parts.push(`<p class="recipe-description">${c.description}</p>`);
+        if (c.history) parts.push(`<div class="history-block"><div class="history-label">📜 Storia</div><p>${c.history}</p></div>`);
+        document.getElementById('recipe-text').innerHTML = parts.join('');
 
-    /* ── Nav search mini ── */
+    }).catch(() => {
+        document.getElementById('hero-title').textContent   = 'Errore di caricamento';
+        document.getElementById('hero-tagline').textContent = 'Impossibile caricare i dati. Riprova.';
+    });
+
+    /* ── Nav search mini (non dipende dai dati) ── */
     const navSearch = document.getElementById('nav-search');
     if (navSearch) {
         navSearch.addEventListener('keydown', e => {
