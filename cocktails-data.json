@@ -328,6 +328,55 @@
       "history": "L'Aperol esiste dal 1919 (Casa Barbieri, Padova). Il boom globale dell'Aperol Spritz è avvenuto intorno al 2003-2010 grazie a una campagna marketing efficacissima."
     },
     {
+      "id": "arnold-palmer",
+      "name": "Arnold Palmer",
+      "emoji": "🍋",
+      "tagline": "Metà tè freddo, metà limonata: il classico americano per eccellenza",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "iced tea",
+        "lemonade",
+        "lemon juice",
+        "sugar syrup"
+      ],
+      "taste": [
+        "citrus",
+        "fresh",
+        "sweet",
+        "light"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "built",
+      "glass": "highball",
+      "ice": "cubed",
+      "garnish": "Fettina di limone e rametto di menta",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "12 cl",
+            "item": "Tè nero freddo (non zuccherato)"
+          },
+          {
+            "amount": "8 cl",
+            "item": "Limonata fresca (3 cl succo di limone + 5 cl acqua + 1 cl sciroppo)"
+          },
+          {
+            "amount": "1 cl",
+            "item": "Sciroppo di zucchero (se la limonata non è dolcificata)"
+          }
+        ],
+        "method": "Preparare il tè nero e lasciarlo raffreddare completamente. Preparare la limonata fresca. In un highball con ghiaccio, versare prima la limonata poi il tè lentamente per creare un effetto stratificato. Mescolare leggermente prima di servire.",
+        "notes": "Il segreto è usare tè forte e ben freddo e limonata con limone fresco — non succo in bottiglia. Il rapporto 60/40 tè-limonata è quello originale, ma si può adattare al gusto."
+      },
+      "description": "Il leggendario golfista Arnold Palmer era solito ordinare questa combinazione nei ristoranti degli anni Sessanta, e così il drink prese il suo nome. Semplice, dissetante e con una complessità sottile che lo distingue da qualsiasi succo commerciale.",
+      "history": "La storia narra che Palmer ordinò questa bevanda in un ristorante del Kansas nel 1960; una signora seduta vicino a lui sentì l'ordine e chiese 'lo stesso dell'Arnold Palmer'. Il nome rimase. Oggi è uno dei drink analcolici più ordinati al mondo."
+    },
+    {
       "id": "aviation",
       "name": "Aviation",
       "emoji": "✈️",
@@ -1218,6 +1267,64 @@
       },
       "description": "Un classico elegante e teatrale. La zolletta di zucchero che si discioglie lentamente è parte dello spettacolo.",
       "history": "Presente nel bartender's guide di Jerry Thomas (1862). Uno dei cocktail più antichi ancora in uso."
+    },
+    {
+      "id": "citrus-cooler",
+      "name": "Citrus Cooler",
+      "emoji": "🍊",
+      "tagline": "Arancia, pompelmo e zenzero: freschezza agrumata in ogni sorso",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "orange juice",
+        "grapefruit juice",
+        "ginger syrup",
+        "lime juice",
+        "soda water"
+      ],
+      "taste": [
+        "citrus",
+        "fresh",
+        "spicy",
+        "light"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "built",
+      "glass": "highball",
+      "ice": "cubed",
+      "garnish": "Fettina di arancia e scorza di pompelmo",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "6 cl",
+            "item": "Succo di arancia fresco"
+          },
+          {
+            "amount": "4 cl",
+            "item": "Succo di pompelmo rosa fresco"
+          },
+          {
+            "amount": "2 cl",
+            "item": "Succo di lime fresco"
+          },
+          {
+            "amount": "1.5 cl",
+            "item": "Sciroppo di zenzero"
+          },
+          {
+            "amount": "q.b.",
+            "item": "Soda water per completare"
+          }
+        ],
+        "method": "In un highball con ghiaccio abbondante, versare i succhi freschi e lo sciroppo di zenzero. Mescolare delicatamente. Completare con soda. Guarnire con una fettina di arancia e una scorza di pompelmo.",
+        "notes": "Usare esclusivamente succhi freschi — quelli in brick appiattiscono completamente il profilo aromatico. Lo sciroppo di zenzero fatto in casa (vedere la scheda Basics) aggiunge una nota piccante che bilancia la dolcezza dell'arancia."
+      },
+      "description": "Un aperitivo analcolico costruito come un vero cocktail da bar: tre agrumi in equilibrio, con il calore sottile dello zenzero a fare da filo conduttore. Funziona egregiamente come alternativa a un Aperol Spritz o a un Mimosa.",
+      "history": "Variazione moderna sui classici punch agli agrumi delle cucine del Sud americano, rielaborata in chiave cocktail bar contemporaneo. Nessun inventore specifico — è diventato un classico di repertorio per ogni bartender attento ai menu analcolici."
     },
     {
       "id": "cleopatra",
@@ -2557,6 +2664,63 @@
       "history": "Creato per Ernest Hemingway dal barman Constantino Ribalaigua al Floridita di L'Avana. Hemingway era solito berlo senza zucchero in versione 'Papa Doble'."
     },
     {
+      "id": "hibiscus-lemonade",
+      "name": "Hibiscus Lemonade",
+      "emoji": "🌺",
+      "tagline": "Fiori di ibisco, limone e menta: la limonata che non ti aspetti",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "hibiscus syrup",
+        "lemon juice",
+        "mint",
+        "soda water"
+      ],
+      "taste": [
+        "floral",
+        "citrus",
+        "sweet",
+        "fresh"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "built",
+      "glass": "highball",
+      "ice": "cubed",
+      "garnish": "Rametto di menta e fettina di limone",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "3 cl",
+            "item": "Sciroppo di ibisco (o infuso concentrato di fiori secchi)"
+          },
+          {
+            "amount": "3 cl",
+            "item": "Succo di limone fresco"
+          },
+          {
+            "amount": "1 cl",
+            "item": "Sciroppo di zucchero semplice"
+          },
+          {
+            "amount": "5-6",
+            "item": "Foglie di menta fresca"
+          },
+          {
+            "amount": "q.b.",
+            "item": "Acqua frizzante fredda"
+          }
+        ],
+        "method": "Pestare delicatamente la menta con lo sciroppo di zucchero. Aggiungere sciroppo di ibisco, limone e ghiaccio. Shakerare brevemente. Filtrare in un highball con ghiaccio fresco. Completare con acqua frizzante.",
+        "notes": "Lo sciroppo di ibisco si prepara con fiori secchi di Hibiscus sabdariffa, acqua e zucchero (stessa tecnica del tè). Il colore rosso cremisi intenso rende questo drink visivamente spettacolare. L'ibisco apporta un'acidità naturale che riduce la necessità di limone."
+      },
+      "description": "L'ibisco è uno degli ingredienti più utilizzati nella miscelazione moderna zero-proof: la sua acidità naturale, il colore vivissimo e il profilo floreale-fruttato lo rendono perfetto come base analcolica. Questa versione con menta e limone è fresca, elegante e mai banale.",
+      "history": "L'acqua di ibisco (agua de Jamaica) è una bevanda tradizionale diffusa in Messico, Africa occidentale e Medio Oriente da secoli. La sua traduzione in formato cocktail da bar è relativamente recente, ma si è affermata rapidamente nei menu zero-proof dei migliori locali mondiali."
+    },
+    {
       "id": "horse-neck",
       "name": "Horse's Neck",
       "emoji": "🐴",
@@ -3531,6 +3695,59 @@
       "history": "Il Mint Julep ha radici nel XVIII secolo. Divenne la bevanda del Kentucky Derby nel 1938."
     },
     {
+      "id": "mock-mule",
+      "name": "Mock Mule",
+      "emoji": "🫚",
+      "tagline": "Il Moscow Mule senza vodka: zenzero, lime e niente rimpianti",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "ginger beer",
+        "lime juice",
+        "ginger syrup",
+        "cucumber"
+      ],
+      "taste": [
+        "spicy",
+        "citrus",
+        "fresh",
+        "dry"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "built",
+      "glass": "mule",
+      "ice": "cubed",
+      "garnish": "Fettina di lime, fettina di cetriolo e radice di zenzero fresco",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "2 cl",
+            "item": "Succo di lime fresco"
+          },
+          {
+            "amount": "1.5 cl",
+            "item": "Sciroppo di zenzero (fatto in casa o Fever-Tree)"
+          },
+          {
+            "amount": "3",
+            "item": "Fettine di cetriolo fresco"
+          },
+          {
+            "amount": "q.b.",
+            "item": "Ginger beer piccante (es. Fever-Tree Spicy Ginger Beer)"
+          }
+        ],
+        "method": "In un mule mug (o highball) con ghiaccio, pestare delicatamente le fettine di cetriolo con lo sciroppo di zenzero. Aggiungere il succo di lime. Completare con ginger beer ben fredda. Mescolare una volta. Guarnire con lime, cetriolo e zenzero fresco.",
+        "notes": "La scelta della ginger beer è determinante: quelle artigianali con zenzero vero danno un piccante autentico che le versioni commerciali non hanno. Il cetriolo aggiunge una nota fresca e vegetale che compensa l'assenza della vodka."
+      },
+      "description": "Il Moscow Mule è uno dei cocktail più semplici da declinare in versione analcolica — perché la vodka, in realtà, aggiunge poco al sapore. Il vero protagonista è sempre stato lo zenzero. Questa versione lo porta al centro, aggiungendo cetriolo per profondità.",
+      "history": "Il concetto di 'mule analcolico' nasce naturalmente dalla struttura del Moscow Mule, inventato negli anni Quaranta mescolando vodka Smirnoff con la neonata ginger beer Cock 'n' Bull. La versione zero-proof dimostra che senza vodka il risultato è, se possibile, ancora più interessante."
+    },
+    {
       "id": "mojito",
       "name": "Mojito",
       "emoji": "🌿",
@@ -3896,6 +4113,64 @@
       },
       "description": "Un Whiskey Sour con un float di vino rosso: visivamente spettacolare, gustosamente complesso. Il vino aggiunge tannini e profondità.",
       "history": "Comparso per la prima volta a Chicago intorno al 1880. Riscoperto dai barman moderni."
+    },
+    {
+      "id": "nojito",
+      "name": "Nojito",
+      "emoji": "🌿",
+      "tagline": "Il Mojito analcolico che non scende a compromessi",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "mint",
+        "lime juice",
+        "sugar syrup",
+        "soda water",
+        "apple juice"
+      ],
+      "taste": [
+        "fresh",
+        "herbal",
+        "citrus",
+        "sweet"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "built",
+      "glass": "highball",
+      "ice": "crushed",
+      "garnish": "Rametto di menta abbondante e fettina di lime",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "10-12",
+            "item": "Foglie di menta fresca"
+          },
+          {
+            "amount": "3 cl",
+            "item": "Succo di lime fresco"
+          },
+          {
+            "amount": "1.5 cl",
+            "item": "Sciroppo di zucchero di canna"
+          },
+          {
+            "amount": "3 cl",
+            "item": "Succo di mela non filtrato (corpo e dolcezza)"
+          },
+          {
+            "amount": "q.b.",
+            "item": "Soda water fredda per completare"
+          }
+        ],
+        "method": "Pestare delicatamente la menta con lo sciroppo nel bicchiere highball. Aggiungere il succo di lime, il succo di mela e ghiaccio tritato abbondante. Completare con soda e mescolare dal basso verso l'alto. Aggiungere altro ghiaccio tritato in superficie e guarnire con menta abbondante.",
+        "notes": "Il succo di mela non filtrato è il segreto: aggiunge corpo, una dolcezza naturale e una leggera acidità che compensano l'assenza del rum. Evitare i succhi chiari e filtrati — danno un risultato troppo acquoso."
+      },
+      "description": "Il nome è ovvio, ma il risultato non è una semplice sottrazione. Il succo di mela non filtrato fornisce la struttura che il rum avrebbe dato, rendendo il Nojito un cocktail completo e soddisfacente, non una versione dimezzata del suo modello.",
+      "history": "Il Nojito si è diffuso nei menu dei bar moderni parallelamente alla crescita del movimento 'mindful drinking'. La versione con succo di mela come sostituto del rum è attribuita a diversi bartender contemporanei che volevano un risultato di pari dignità rispetto all'originale."
     },
     {
       "id": "old-cuban",
@@ -4447,6 +4722,64 @@
       },
       "description": "La Piña Colada è il cocktail dei sogni vacanzieri. Dolce, cremosa, tropicale. Il cocktail nazionale di Puerto Rico.",
       "history": "Dichiarata cocktail nazionale di Puerto Rico nel 1978. Creata da Ramon 'Monchito' Marrero al Caribe Hilton di San Juan nel 1954."
+    },
+    {
+      "id": "pineapple-jalapeño-cooler",
+      "name": "Pineapple Jalapeño Cooler",
+      "emoji": "🍍",
+      "tagline": "Ananas tropicale e jalapeño piccante: dolce e fuoco senza alcol",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "pineapple juice",
+        "jalapeño",
+        "lime juice",
+        "agave syrup",
+        "soda water"
+      ],
+      "taste": [
+        "tropical",
+        "spicy",
+        "citrus",
+        "sweet"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "shaken",
+      "glass": "highball",
+      "ice": "cubed",
+      "garnish": "Rondella di jalapeño e foglia di ananas",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "8 cl",
+            "item": "Succo di ananas fresco o premium"
+          },
+          {
+            "amount": "2 cl",
+            "item": "Succo di lime fresco"
+          },
+          {
+            "amount": "1.5 cl",
+            "item": "Sciroppo di agave"
+          },
+          {
+            "amount": "2-3",
+            "item": "Rondelle di jalapeño fresco (semi rimossi)"
+          },
+          {
+            "amount": "q.b.",
+            "item": "Soda water per completare"
+          }
+        ],
+        "method": "Pestare delicatamente il jalapeño con lo sciroppo di agave in uno shaker. Aggiungere succo di ananas, lime e ghiaccio. Shakerare bene. Doppia filtrazione in un highball con ghiaccio fresco. Completare con soda. Guarnire con una rondella di jalapeño.",
+        "notes": "La doppia filtrazione rimuove i frammenti di jalapeño mantenendo il calore. Per calibrare il piccante: 2 rondelle per un risultato delicato, 4 per chi ama il fuoco. L'ananas fresco è nettamente superiore al succo in cartone."
+      },
+      "description": "L'abbinamento ananas-jalapeño è uno dei più riusciti nella miscelazione moderna: la dolcezza tropicale e il calore persistente si amplificano a vicenda. Senza alcol, questo contrasto diventa ancora più nitido e pulito.",
+      "history": "Nato dalla grande ondata dei cocktail speziati degli anni 2020, è diventato uno standard nei menu zero-proof dei bar californiani e tex-mex prima di diffondersi globalmente. La struttura ricorda il Picante de la Casa, di cui è la controparte analcolica naturale."
     },
     {
       "id": "pisco-sour",
@@ -5332,6 +5665,59 @@
       "history": "Rivendicato sia da Chicago (South Side) che da Long Island (Southside Club). La versione più accreditata lo colloca nel contesto del proibizionismo americano, anche se il cocktail era già conosciuto in precedenza nei club dell'élite."
     },
     {
+      "id": "sparkling-elderflower",
+      "name": "Sparkling Elderflower",
+      "emoji": "🌸",
+      "tagline": "Sambuco, cetriolo e tonica: l'aperitivo floreale per chi non beve",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "elderflower cordial",
+        "cucumber",
+        "lime juice",
+        "tonic water"
+      ],
+      "taste": [
+        "floral",
+        "fresh",
+        "light",
+        "dry"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "built",
+      "glass": "wine",
+      "ice": "cubed",
+      "garnish": "Fettine di cetriolo e fiori commestibili (se disponibili)",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "4 cl",
+            "item": "Cordiale di fiori di sambuco (es. Belvoir o St-Germain analcolico)"
+          },
+          {
+            "amount": "1.5 cl",
+            "item": "Succo di lime fresco"
+          },
+          {
+            "amount": "4",
+            "item": "Fettine sottili di cetriolo fresco"
+          },
+          {
+            "amount": "q.b.",
+            "item": "Acqua tonica premium fredda (es. Fever-Tree)"
+          }
+        ],
+        "method": "In un calice da vino con ghiaccio, versare il cordiale di sambuco e il succo di lime. Aggiungere le fettine di cetriolo. Completare delicatamente con acqua tonica. Mescolare una volta con delicatezza per non disperdere le bollicine.",
+        "notes": "Il cetriolo non va pestato — deve solo aromatizzare per infusione a freddo. L'acqua tonica aggiunge amaro naturale che sostituisce la funzione del gin. Usare una tonica di qualità: la differenza è enorme."
+      },
+      "description": "La combinazione sambuco-cetriolo-tonica è diventata un pilastro dei menu analcolici premium. Ha la leggerezza floreale dell'Hugo Spritz e la struttura amara del Gin & Tonic, senza nessuno dei due alcolici.",
+      "history": "Emerso nei bar britannici negli anni 2010, dove il cordiale di sambuco Elderflower è un ingrediente da dispensa molto più diffuso che in Italia. Oggi è il riferimento per i menu 'zero-proof sophisticated' in tutto il mondo."
+    },
+    {
       "id": "spicy-fifty",
       "name": "Spicy Fifty",
       "emoji": "🌶️",
@@ -5484,6 +5870,64 @@
       },
       "description": "Un digestivo classico degli anni '40-'50. Semplice ma efficace: la menta pulisce il palato dopo un pasto.",
       "history": "Popolare negli anni '40-'50, associato all'era dei grandi alberghi americani."
+    },
+    {
+      "id": "strawberry-basil-smash",
+      "name": "Strawberry Basil Smash",
+      "emoji": "🍓",
+      "tagline": "Fragole fresche e basilico: il Smash analcolico dell'estate",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "fresh strawberries",
+        "fresh basil",
+        "lemon juice",
+        "sugar syrup",
+        "soda water"
+      ],
+      "taste": [
+        "fruity",
+        "herbal",
+        "citrus",
+        "sweet"
+      ],
+      "strength": "none",
+      "style": "short",
+      "serve": "shaken",
+      "glass": "rocks",
+      "ice": "cubed",
+      "garnish": "Fragola fresca e foglia di basilico",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "4-5",
+            "item": "Fragole fresche mature (tagliate a metà)"
+          },
+          {
+            "amount": "5-6",
+            "item": "Foglie di basilico fresco"
+          },
+          {
+            "amount": "2.5 cl",
+            "item": "Succo di limone fresco"
+          },
+          {
+            "amount": "2 cl",
+            "item": "Sciroppo di zucchero semplice"
+          },
+          {
+            "amount": "3 cl",
+            "item": "Acqua frizzante"
+          }
+        ],
+        "method": "Pestare le fragole con il basilico e lo sciroppo in uno shaker fino a ottenere una purea grossolana. Aggiungere il succo di limone e ghiaccio abbondante. Shakerare vigorosamente. Doppia filtrazione in un rocks glass con ghiaccio. Aggiungere un splash di acqua frizzante.",
+        "notes": "La doppia filtrazione è essenziale per rimuovere i semi delle fragole. Usare fragole profumate e mature: le fragole insapori danno un risultato deludente. Il basilico aggiunge una complessità verde che impedisce al drink di essere stucchevole."
+      },
+      "description": "La struttura del Gin Basil Smash reinterpretata con fragole al posto del gin. La freschezza erbacea del basilico bilancia la dolcezza delle fragole in modo sorprendentemente sofisticato — un drink che non sa di 'succo di frutta'.",
+      "history": "Diretta evoluzione del Gin Basil Smash di Jörg Meyer (2008), declinata in versione analcolica dai bartender che volevano portare la stessa tecnica nei menu zero-proof. La fragola sostituisce il gin mantenendo il ruolo del basilico invariato."
     },
     {
       "id": "tequila-sunrise",
@@ -5877,6 +6321,121 @@
       },
       "description": "Il Virgin Mojito dimostra che i mocktail possono essere tanto soddisfacenti quanto i cocktail. La menta fresca e il lime non hanno bisogno di rum per brillare.",
       "history": "Variante analcolica del Mojito cubano."
+    },
+    {
+      "id": "virgin-paloma",
+      "name": "Virgin Paloma",
+      "emoji": "🍋",
+      "tagline": "Pompelmo, lime e sale: la Paloma analcolica del Messico",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "grapefruit juice",
+        "lime juice",
+        "agave syrup",
+        "soda water"
+      ],
+      "taste": [
+        "citrus",
+        "fresh",
+        "bitter",
+        "light"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "built",
+      "glass": "highball",
+      "ice": "cubed",
+      "garnish": "Fettina di pompelmo e bordo di sale",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "8 cl",
+            "item": "Succo di pompelmo rosa fresco"
+          },
+          {
+            "amount": "2 cl",
+            "item": "Succo di lime fresco"
+          },
+          {
+            "amount": "1.5 cl",
+            "item": "Sciroppo di agave"
+          },
+          {
+            "amount": "1 pizzico",
+            "item": "Sale fino"
+          },
+          {
+            "amount": "q.b.",
+            "item": "Soda water per completare"
+          }
+        ],
+        "method": "Bagnare il bordo di un highball con succo di lime e immergerlo nel sale. Riempire di ghiaccio. Versare il succo di pompelmo, il lime, lo sciroppo di agave e il pizzico di sale. Mescolare delicatamente. Completare con soda. Guarnire con una fettina di pompelmo.",
+        "notes": "Il sale non è opzionale: è l'ingrediente che trasforma un semplice succo di pompelmo in qualcosa di complesso. Sopprime l'amaro in eccesso e amplifica il profilo aromatico. Il pompelmo rosa è preferibile per colore e dolcezza equilibrata."
+      },
+      "description": "La Paloma è già uno dei cocktail più semplici — rimuovere la tequila lascia quasi invariata l'esperienza gustativa. Il pompelmo, il lime, l'agave e il sale erano già i protagonisti. Questa versione lo dimostra chiaramente.",
+      "history": "Contropartita naturale della Paloma (cocktail nazionale messicano), sviluppata spontaneamente in ogni bar che proponeva la versione alcolica. La Virgin Paloma si trova oggi su qualsiasi menu zero-proof di un ristorante messicano di qualità."
+    },
+    {
+      "id": "watermelon-mint-cooler",
+      "name": "Watermelon Mint Cooler",
+      "emoji": "🍉",
+      "tagline": "Anguria fresca, menta e lime: l'estate in un bicchiere",
+      "iba": false,
+      "difford": false,
+      "ibaCategory": null,
+      "nomadCategory": "soft",
+      "baseSpirits": [],
+      "ingredients": [
+        "watermelon juice",
+        "mint",
+        "lime juice",
+        "sugar syrup",
+        "soda water"
+      ],
+      "taste": [
+        "fruity",
+        "fresh",
+        "sweet",
+        "herbal"
+      ],
+      "strength": "none",
+      "style": "long",
+      "serve": "shaken",
+      "glass": "highball",
+      "ice": "crushed",
+      "garnish": "Cubo di anguria e rametto di menta",
+      "recipe": {
+        "ingredients": [
+          {
+            "amount": "10 cl",
+            "item": "Succo di anguria fresco (frullata e filtrata)"
+          },
+          {
+            "amount": "2 cl",
+            "item": "Succo di lime fresco"
+          },
+          {
+            "amount": "1 cl",
+            "item": "Sciroppo di zucchero semplice"
+          },
+          {
+            "amount": "7-8",
+            "item": "Foglie di menta fresca"
+          },
+          {
+            "amount": "q.b.",
+            "item": "Soda water per completare"
+          }
+        ],
+        "method": "Pestare delicatamente la menta con lo sciroppo. Aggiungere il succo di anguria, il lime e ghiaccio. Shakerare. Filtrare in un highball con ghiaccio tritato. Completare con un tocco di soda. Guarnire con un cubo di anguria e menta fresca.",
+        "notes": "Il succo di anguria va preparato al momento: frullare la polpa privata dei semi e filtrare attraverso un colino fine. L'anguria matura ha abbastanza zucchero naturale da richiedere poco o nessuno sciroppo aggiunto."
+      },
+      "description": "L'anguria è una delle migliori basi per i cocktail analcolici estivi: alta percentuale d'acqua, dolcezza naturale intensa e un colore spettacolare. Con la menta e il lime diventa un drink che regge il confronto con qualsiasi Long Island al bar vicino.",
+      "history": "Popolarizzato nella cultura dei brunch californiani degli anni 2010, è diventato una presenza fissa nei menu estivi zero-proof di tutto il mondo. La sua semplicità e l'impatto visivo lo rendono uno dei mocktail più fotografati e condivisi sui social."
     },
     {
       "id": "whiskey-sour",

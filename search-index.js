@@ -56,9 +56,9 @@ function buildIndex() {
                 c.serve || ''
             ].join(' '),
             // URL pagina singola ricetta
-            recipeUrl: `cocktail-recipe.html?id=${c.id}`,
+            recipeUrl: `cocktail-recipe.html?id=${c.id}&from=search`,
             // URL categoria principale (aggiunge &highlight= al URL già parametrico)
-            categoryUrl: page ? page.url + `&highlight=${c.id}` : `cocktail-recipe.html?id=${c.id}`,
+            categoryUrl: page ? page.url + `&highlight=${c.id}` : `cocktail-recipe.html?id=${c.id}&from=search`,
             categoryLabel: page ? page.label : '',
             categoryEmoji: page ? page.emoji : ''
         };

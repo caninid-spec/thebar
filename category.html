@@ -125,12 +125,12 @@
                     </div>` : ''}
                     ${hasDouble ? `
                     <div class="double-version-hint">
-                        <a href="cocktail-recipe.html?id=${c.id}" class="btn btn--ghost">
+                        <a href="cocktail-recipe.html?id=${c.id}&from=${catKey}" class="btn btn--ghost">
                             📖 Vedi entrambe le versioni IBA & Difford's →
                         </a>
                     </div>` : `
                     <div class="recipe-full-link">
-                        <a href="cocktail-recipe.html?id=${c.id}" class="btn btn--ghost">Scheda completa →</a>
+                        <a href="cocktail-recipe.html?id=${c.id}&from=${catKey}" class="btn btn--ghost">Scheda completa →</a>
                     </div>`}
                     ${c.description ? `<p class="recipe-desc">${c.description}</p>` : ''}
                 </div>

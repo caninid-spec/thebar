@@ -11,8 +11,68 @@
     background: rgba(4,57,39,0.97);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border-bottom: 2px solid var(--gold3);
-    padding: 12px 24px;
+    padding: 10px 24px;
     display: flex; align-items: center; gap: 16px;
+}
+
+/* ── Breadcrumb: contenitore dei pill ── */
+.recipe-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* Pill base — sia "← The Bar" che il secondo */
+.breadcrumb-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    /* Pill primario: contorno oro sottile */
+    background: transparent;
+    color: var(--muted-inv);
+    border: 1px solid rgba(212,175,55,0.25);
+}
+.breadcrumb-pill:hover {
+    background: rgba(212,175,55,0.12);
+    border-color: rgba(212,175,55,0.50);
+    color: var(--gold-bright);
+}
+
+/* Separatore visivo tra i due pill */
+.recipe-breadcrumb .breadcrumb-pill + .breadcrumb-pill::before {
+    content: '/';
+    position: absolute;
+    left: -10px;
+    color: rgba(212,175,55,0.30);
+    font-size: 0.7rem;
+    pointer-events: none;
+}
+.recipe-breadcrumb {
+    position: relative;
+}
+.recipe-breadcrumb .breadcrumb-pill + .breadcrumb-pill {
+    margin-left: 8px;
+    position: relative;
+}
+
+/* Pill secondario: leggermente più evidente (categoria di provenienza) */
+.breadcrumb-pill--secondary {
+    background: rgba(212,175,55,0.08);
+    border-color: rgba(212,175,55,0.35);
+    color: var(--text-inv2);
+}
+.breadcrumb-pill--secondary:hover {
+    background: rgba(212,175,55,0.18);
+    border-color: var(--gold-bright);
+    color: var(--gold-bright);
 }
 .nav-search-mini { flex: 1; max-width: 360px; margin-left: auto; }
 .nav-search-mini input {
@@ -99,7 +159,8 @@
 
 /* ── Responsive ── */
 @media (max-width: 500px) {
-    .recipe-nav { padding: 10px 14px; }
+    .recipe-nav { padding: 8px 14px; gap: 10px; }
+    .breadcrumb-pill { font-size: 0.70rem; padding: 3px 9px; }
     .page-header--hero { padding: 36px 16px 28px; }
     .container-narrow { padding: 20px 16px 40px; }
     .recipe-block { padding: 16px; }

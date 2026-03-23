@@ -15,7 +15,10 @@
 
     <!-- Nav -->
     <nav class="recipe-nav">
-        <a href="index.html" class="back-link">← The Bar</a>
+        <div class="recipe-breadcrumb" id="recipe-breadcrumb">
+            <a href="index.html" class="breadcrumb-pill">← The Bar</a>
+            <!-- Il secondo pill viene iniettato da JS se ?from= è presente -->
+        </div>
         <div class="nav-search-mini">
             <input type="text" id="nav-search" placeholder="Cerca cocktail…" autocomplete="off">
         </div>
@@ -55,12 +58,49 @@
 
     const params = new URLSearchParams(location.search);
     const id     = params.get('id');
+    const from   = params.get('from'); // categoria/contesto di provenienza
 
     if (!id) {
         document.getElementById('hero-title').textContent   = 'Cocktail non trovato';
         document.getElementById('hero-tagline').textContent = 'Torna alla home per cercare un cocktail.';
         return;
     }
+
+    /* ── Breadcrumb: costruisce il secondo pill se ?from= è presente ── */
+    (function buildBreadcrumb() {
+        if (!from) return; // solo "← The Bar", nessun secondo pill
+
+        const CATEGORIES = TheBarConfig.CATEGORY_PAGES;
+
+        /* Mappa chiave → { label, url } per ogni contesto di provenienza */
+        const FROM_MAP = {
+            // Categorie Nomad
+            aperitivi:      { label: 'Aperitivi',                 url: 'category.html?name=aperitivi' },
+            light:          { label: 'Light Spirited',            url: 'category.html?name=light' },
+            dark:           { label: 'Dark Spirited',             url: 'category.html?name=dark' },
+            classics:       { label: 'Classics',                  url: 'category.html?name=classics' },
+            soft:           { label: 'Soft Cocktails',            url: 'category.html?name=soft' },
+            basics:         { label: 'Basics',                    url: 'category.html?name=basics' },
+            // Categorie IBA
+            unforgettables: { label: 'The Unforgettables',        url: 'category.html?name=unforgettables' },
+            contemporary:   { label: 'The Contemporary Classics', url: 'category.html?name=contemporary' },
+            new_era:        { label: 'The New Era Drinks',        url: 'category.html?name=new_era' },
+            // Contesti speciali
+            all:            { label: 'All Cocktails',             url: 'cocktail-all.html' },
+            search:         { label: 'Ricerca',                   url: 'search-results.html' },
+            finder:         { label: 'Trova il cocktail',         url: 'cocktail-finder.html' },
+        };
+
+        const origin = FROM_MAP[from];
+        if (!origin) return;
+
+        const breadcrumb = document.getElementById('recipe-breadcrumb');
+        const pill = document.createElement('a');
+        pill.href = origin.url;
+        pill.className = 'breadcrumb-pill breadcrumb-pill--secondary';
+        pill.textContent = '← ' + origin.label;
+        breadcrumb.appendChild(pill);
+    })();
 
     /* ── Label localizzate da TheBarConfig ── */
     const { SERVE_LABEL } = TheBarConfig;
