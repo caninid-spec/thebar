@@ -130,19 +130,26 @@ window.TheBarConfig = {
 
     /* Popola le variabili globali e aggiorna la cache interna */
     _hydrate(cocktails) {
-        window.COCKTAILS       = cocktails;
-        window.COCKTAILS_BY_ID = Object.fromEntries(cocktails.map(c => [c.id, c]));
-        window.IBA_UNFORGETTABLES = cocktails.filter(c => c.ibaCategory === 'unforgettables');
-        window.IBA_CONTEMPORARY   = cocktails.filter(c => c.ibaCategory === 'contemporary');
-        window.IBA_NEW_ERA        = cocktails.filter(c => c.ibaCategory === 'new_era');
-        window.NOMAD_APERITIVI    = cocktails.filter(c => c.nomadCategory === 'aperitivi');
-        window.NOMAD_LIGHT        = cocktails.filter(c => c.nomadCategory === 'light');
-        window.NOMAD_DARK         = cocktails.filter(c => c.nomadCategory === 'dark');
-        window.NOMAD_CLASSICS     = cocktails.filter(c => c.nomadCategory === 'classics');
-        window.NOMAD_SOFT         = cocktails.filter(c => c.nomadCategory === 'soft');
-        window.NOMAD_BASICS       = cocktails.filter(c => c.nomadCategory === 'basics');
-        this._cocktailsCache = cocktails;
-        return cocktails;
+        /* Ordinamento alfabetico per nome — applicato una volta sola qui,
+           si propaga automaticamente a tutte le liste e pagine del sito.
+           localeCompare con 'it' gestisce correttamente accenti e caratteri speciali. */
+        const sorted = [...cocktails].sort((a, b) =>
+            a.name.localeCompare(b.name, 'it', { sensitivity: 'base' })
+        );
+
+        window.COCKTAILS       = sorted;
+        window.COCKTAILS_BY_ID = Object.fromEntries(sorted.map(c => [c.id, c]));
+        window.IBA_UNFORGETTABLES = sorted.filter(c => c.ibaCategory === 'unforgettables');
+        window.IBA_CONTEMPORARY   = sorted.filter(c => c.ibaCategory === 'contemporary');
+        window.IBA_NEW_ERA        = sorted.filter(c => c.ibaCategory === 'new_era');
+        window.NOMAD_APERITIVI    = sorted.filter(c => c.nomadCategory === 'aperitivi');
+        window.NOMAD_LIGHT        = sorted.filter(c => c.nomadCategory === 'light');
+        window.NOMAD_DARK         = sorted.filter(c => c.nomadCategory === 'dark');
+        window.NOMAD_CLASSICS     = sorted.filter(c => c.nomadCategory === 'classics');
+        window.NOMAD_SOFT         = sorted.filter(c => c.nomadCategory === 'soft');
+        window.NOMAD_BASICS       = sorted.filter(c => c.nomadCategory === 'basics');
+        this._cocktailsCache = sorted;
+        return sorted;
     },
 
     /* Fallback: inietta cocktails-data.js come <script> quando fetch non disponibile */
