@@ -1,15 +1,18 @@
 /* ═══════════════════════════════════════════════════════════════════════
    sw.js  –  Service Worker per The Bar PWA
-   Strategia: Cache-first per asset statici, Network-first per HTML,
+   Strategia: Cache-first per tutto (asset statici + HTML),
               Stale-while-revalidate per Google Fonts
+   Fix offline: URL normalizzati, cache-first anche per HTML,
+                match con ignoreSearch per pagine con query string
 ═══════════════════════════════════════════════════════════════════════ */
 
-const CACHE_NAME    = 'thebar-v1';
-const FONTS_CACHE   = 'thebar-fonts-v1';
-const OFFLINE_PAGE  = 'offline.html';
+const CACHE_NAME   = 'thebar-v2';   // versione incrementata per forzare re-install
+const FONTS_CACHE  = 'thebar-fonts-v1';
+const OFFLINE_PAGE = 'offline.html';
 
 const PRECACHE_ASSETS = [
   // Pagine
+  './',
   'index.html',
   'category.html',
   'cocktail-all.html',
@@ -45,13 +48,14 @@ const PRECACHE_ASSETS = [
 
 /* ── INSTALL: pre-caching di tutti gli asset ── */
 self.addEventListener('install', event => {
-  console.log('[SW] Installing…');
+  console.log('[SW] Installing...');
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       console.log('[SW] Pre-caching assets');
       return Promise.allSettled(
         PRECACHE_ASSETS.map(url =>
-          cache.add(url).catch(err => console.warn(`[SW] Failed to cache: ${url}`, err))
+          cache.add(new Request(url, { cache: 'reload' }))
+            .catch(err => console.warn('[SW] Failed to cache:', url, err))
         )
       );
     }).then(() => {
@@ -63,7 +67,7 @@ self.addEventListener('install', event => {
 
 /* ── ACTIVATE: pulizia vecchie cache ── */
 self.addEventListener('activate', event => {
-  console.log('[SW] Activating…');
+  console.log('[SW] Activating...');
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
@@ -95,23 +99,23 @@ self.addEventListener('fetch', event => {
   // Ignora altre richieste cross-origin
   if (url.origin !== self.location.origin) return;
 
-  // File HTML: Network-first con fallback cache → offline.html
-  if (request.headers.get('accept')?.includes('text/html') ||
-      url.pathname.endsWith('.html') ||
-      url.pathname === '/') {
-    event.respondWith(networkFirstHTML(request));
-    return;
-  }
-
-  // Tutto il resto (CSS, JS, immagini, JSON, dati): Cache-first
-  event.respondWith(cacheFirst(request));
+  // Tutto il resto: Cache-first con fallback rete -> offline.html per HTML
+  event.respondWith(cacheFirst(request, url));
 });
 
-/* ── Cache-first ── */
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
+/* ── Cache-first (HTML, CSS, JS, JSON, immagini) ── */
+async function cacheFirst(request, url) {
+  // Per le pagine HTML usa ignoreSearch: true
+  // cosi' category.html?name=aperitivi trova category.html in cache
+  const isHTML = request.headers.get('accept')?.includes('text/html')
+              || url.pathname.endsWith('.html')
+              || url.pathname === '/'
+              || url.pathname === '';
+
+  const cached = await caches.match(request, { ignoreSearch: isHTML });
   if (cached) return cached;
 
+  // Non in cache: prova la rete
   try {
     const response = await fetch(request);
     if (response.ok) {
@@ -120,31 +124,18 @@ async function cacheFirst(request) {
     }
     return response;
   } catch {
+    // Offline e non in cache
+    if (isHTML) {
+      const offlinePage = await caches.match(OFFLINE_PAGE);
+      return offlinePage || new Response('<h1>Offline</h1>', {
+        headers: { 'Content-Type': 'text/html' }
+      });
+    }
     return new Response('', { status: 408, statusText: 'Offline' });
   }
 }
 
-/* ── Network-first con fallback a cache e offline.html ── */
-async function networkFirstHTML(request) {
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
-      return response;
-    }
-  } catch { /* offline */ }
-
-  const cached = await caches.match(request);
-  if (cached) return cached;
-
-  const offlinePage = await caches.match(OFFLINE_PAGE);
-  return offlinePage || new Response('<h1>Offline</h1>', {
-    headers: { 'Content-Type': 'text/html' }
-  });
-}
-
-/* ── Stale-while-revalidate (usato per Google Fonts) ── */
+/* ── Stale-while-revalidate (Google Fonts) ── */
 async function staleWhileRevalidate(request, cacheName) {
   const cache  = await caches.open(cacheName);
   const cached = await cache.match(request);
