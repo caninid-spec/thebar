@@ -1,187 +1,197 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="thebar.ico" type="image/x-icon">
-    <meta name="theme-color" content="#043927" />
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="The Bar">
-    <title>Categoria — The Bar</title>
-    <link rel="stylesheet" href="core.css">
-    <link rel="stylesheet" href="components.css">
-    <link rel="stylesheet" href="category-style.css">
-    <script src="config.js"></script>
-    <script src="search-index.js"></script>
-</head>
-<body>
-
-<nav class="hub-nav">
-    <a href="index.html" class="back-link">← The Bar</a>
-</nav>
-
-<header class="page-header">
-    <div class="page-header__icon" id="cat-emoji">🍸</div>
-    <h1 class="page-header__title" id="cat-title">Categoria</h1>
-    <p class="page-header__subtitle" id="cat-subtitle"></p>
-    <div class="page-header__meta" id="cat-count"></div>
-</header>
-
-<div class="container" style="padding: 32px 20px 60px;">
-<main>
-    <div id="recipes-container"></div>
-</main>
-</div>
-
-<footer>
-    <p>The Bar · <a href="index.html">← Home</a></p>
-</footer>
-
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="thebar.ico" type="image/x-icon">
+    <meta name="theme-color" content="#043927" />
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="The Bar">
+    <title>Categoria — The Bar</title>
+    <link rel="stylesheet" href="core.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="category-style.css">
+    <script src="config.js"></script>
+    <script src="search-index.js"></script>
+</head>
+<body>
+
+<nav class="hub-nav">
+    <a href="index.html" class="back-link">← The Bar</a>
+</nav>
+
+<header class="page-header">
+    <div class="page-header__icon" id="cat-emoji">🍸</div>
+    <h1 class="page-header__title" id="cat-title">Categoria</h1>
+    <p class="page-header__subtitle" id="cat-subtitle"></p>
+    <div class="page-header__meta" id="cat-count"></div>
+</header>
+
+<div class="container" style="padding: 32px 20px 60px;">
+<main>
+    <div id="recipes-container"></div>
+</main>
+</div>
+
+<footer>
+    <p>The Bar · <a href="index.html">← Home</a></p>
+</footer>
+
+<script>
+(function () {
+
+    const params    = new URLSearchParams(location.search);
+    const catKey    = params.get('name') || 'unforgettables';
+    const highlight = params.get('highlight');
+    const catMeta   = TheBarConfig.CATEGORY_PAGES[catKey];
+
+    /* ── Categoria non trovata ── */
+    if (!catMeta) {
+        document.getElementById('cat-title').textContent = 'Categoria non trovata';
+        TheBarConfig.showError('recipes-container', 'Categoria non valida.');
+        return;
+    }
+
+    /* ── Imposta header subito (senza attendere i dati) ── */
+    document.title = `${catMeta.label} — The Bar`;
+    document.getElementById('cat-emoji').textContent     = catMeta.emoji;
+    document.getElementById('cat-title').textContent     = catMeta.label;
+    document.getElementById('cat-subtitle').textContent  = catMeta.subtitle || '';
+
+    /* ── Spinner mentre i dati arrivano ── */
+    TheBarConfig.showLoader('recipes-container');
+
+    /* ── Costanti da config centrale ── */
+    const { GLASS_EMOJI, SERVE_LABEL } = TheBarConfig;
+
+    /* ── Caricamento asincrono ── */
+    TheBarConfig.loadCocktails().then(cocktails => {
+
+        const list = cocktails.filter(c =>
+            c.ibaCategory === catKey || c.nomadCategory === catKey
+        );
+
+        document.getElementById('cat-count').textContent = `${list.length} cocktail`;
+
+        function renderIngredientsList(c) {
+            const recipe = c.recipeIBA || c.recipeDifford || c.recipe;
+            if (!recipe || !recipe.ingredients) return '';
+            const label = c.recipeIBA ? '✨ IBA' : (c.recipeDifford ? "📖 Difford's" : '');
+            return `
+            <div class="body-ingredients">
+                ${label ? `<div class="ing-version-label">${label}</div>` : ''}
+                ${recipe.ingredients.map(i => `
+                <div class="ing-row">
+                    <span class="ing-amount">${i.amount}</span>
+                    <span class="ing-item">${i.item}</span>
+                </div>`).join('')}
+            </div>`;
+        }
+
+        function renderRecipeCard(c) {
+            const hasDouble = c.recipeIBA && c.recipeDifford;
+            const recipe    = c.recipeIBA || c.recipeDifford || c.recipe;
+
+            const badges = [];
+            if (c.iba)              badges.push('<span class="badge badge--iba">IBA</span>');
+            if (c.difford && !c.iba) badges.push('<span class="badge badge--difford">Difford\'s</span>');
+            if (hasDouble)          badges.push('<span class="badge badge--double">2 versioni</span>');
+
+            return `
+            <article class="recipe-card ${highlight === c.id ? 'recipe-card--highlight' : ''}"
+                     data-category="${c.ibaCategory || ''} ${c.nomadCategory || ''}"
+                     id="card-${c.id}">
+                <button class="recipe-toggle" type="button" aria-expanded="false">
+                    <div class="recipe-toggle-left">
+                        <div class="recipe-toggle-info">
+                            <h3>${c.name}</h3>
+                            <p class="recipe-tagline">${c.tagline}</p>
+                        </div>
+                    </div>
+                    <div class="recipe-toggle-right">
+                        <div class="recipe-badges">${badges.join('')}</div>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </button>
+                <div class="recipe-body">
+                    <div class="quick-specs">
+                        ${c.glass && c.glass !== 'none' ? `<span class="qs-item">${GLASS_EMOJI[c.glass] || ''} ${c.glass}</span>` : ''}
+                        ${c.serve ? `<span class="qs-item">⚗️ ${SERVE_LABEL[c.serve] || c.serve}</span>` : ''}
+                        ${c.ice && c.ice !== 'none' ? `<span class="qs-item">🧊 ${c.ice}</span>` : ''}
+                        ${c.garnish && c.garnish !== 'Nessuno' ? `<span class="qs-item">🌿 ${c.garnish}</span>` : ''}
+                    </div>
+                    ${renderIngredientsList(c)}
+                    ${recipe ? `
+                    <div class="body-method">
+                        <span class="method-mini-label">Metodo</span>
+                        <p>${recipe.method}</p>
+                        ${recipe.notes ? `<p class="method-notes">💡 ${recipe.notes}</p>` : ''}
+                    </div>` : ''}
+                    ${hasDouble ? `
+                    <div class="double-version-hint">
+                        <a href="cocktail-recipe.html?id=${c.id}&from=${catKey}" class="btn btn--ghost">
+                            📖 Vedi entrambe le versioni IBA & Difford's →
+                        </a>
+                    </div>` : `
+                    <div class="recipe-full-link">
+                        <a href="cocktail-recipe.html?id=${c.id}&from=${catKey}" class="btn btn--ghost">Scheda completa →</a>
+                    </div>`}
+                    ${c.description ? `<p class="recipe-desc">${c.description}</p>` : ''}
+                </div>
+            </article>`;
+        }
+
+        const container = document.getElementById('recipes-container');
+        if (!list.length) {
+            container.innerHTML = '<p class="empty-section">Nessuna ricetta in questa categoria.</p>';
+        } else {
+            container.innerHTML = list.map(renderRecipeCard).join('');
+        }
+
+        /* ── Toggle card ── */
+        container.querySelectorAll('.recipe-toggle').forEach(toggle => {
+            const open = () => {
+                const card   = toggle.closest('.recipe-card');
+                const isOpen = card.classList.toggle('open');
+                toggle.setAttribute('aria-expanded', isOpen);
+                const icon = toggle.querySelector('.toggle-icon');
+                if (icon) icon.textContent = isOpen ? '▲' : '▼';
+            };
+            toggle.addEventListener('click', open);
+            /* Space già gestito nativamente da <button>;
+               Enter pure — manteniamo solo per coerenza esplicita */
+            toggle.addEventListener('keydown', e => {
+                if (e.key === ' ') { e.preventDefault(); open(); }
+            });
+        });
+
+        /* ── Auto-apri highlight ── */
+        if (highlight) {
+            const card = document.getElementById('card-' + highlight);
+            if (card) {
+                card.classList.add('open');
+                const icon = card.querySelector('.toggle-icon');
+                if (icon) icon.textContent = '▲';
+                setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+            }
+        }
+
+    }).catch(() => TheBarConfig.showError('recipes-container'));
+
+})();
+</script>
+
 <script>
-(function () {
-
-    const params    = new URLSearchParams(location.search);
-    const catKey    = params.get('name') || 'unforgettables';
-    const highlight = params.get('highlight');
-    const catMeta   = TheBarConfig.CATEGORY_PAGES[catKey];
-
-    /* ── Categoria non trovata ── */
-    if (!catMeta) {
-        document.getElementById('cat-title').textContent = 'Categoria non trovata';
-        TheBarConfig.showError('recipes-container', 'Categoria non valida.');
-        return;
-    }
-
-    /* ── Imposta header subito (senza attendere i dati) ── */
-    document.title = `${catMeta.label} — The Bar`;
-    document.getElementById('cat-emoji').textContent     = catMeta.emoji;
-    document.getElementById('cat-title').textContent     = catMeta.label;
-    document.getElementById('cat-subtitle').textContent  = catMeta.subtitle || '';
-
-    /* ── Spinner mentre i dati arrivano ── */
-    TheBarConfig.showLoader('recipes-container');
-
-    /* ── Costanti da config centrale ── */
-    const { GLASS_EMOJI, SERVE_LABEL } = TheBarConfig;
-
-    /* ── Caricamento asincrono ── */
-    TheBarConfig.loadCocktails().then(cocktails => {
-
-        const list = cocktails.filter(c =>
-            c.ibaCategory === catKey || c.nomadCategory === catKey
-        );
-
-        document.getElementById('cat-count').textContent = `${list.length} cocktail`;
-
-        function renderIngredientsList(c) {
-            const recipe = c.recipeIBA || c.recipeDifford || c.recipe;
-            if (!recipe || !recipe.ingredients) return '';
-            const label = c.recipeIBA ? '✨ IBA' : (c.recipeDifford ? "📖 Difford's" : '');
-            return `
-            <div class="body-ingredients">
-                ${label ? `<div class="ing-version-label">${label}</div>` : ''}
-                ${recipe.ingredients.map(i => `
-                <div class="ing-row">
-                    <span class="ing-amount">${i.amount}</span>
-                    <span class="ing-item">${i.item}</span>
-                </div>`).join('')}
-            </div>`;
-        }
-
-        function renderRecipeCard(c) {
-            const hasDouble = c.recipeIBA && c.recipeDifford;
-            const recipe    = c.recipeIBA || c.recipeDifford || c.recipe;
-
-            const badges = [];
-            if (c.iba)              badges.push('<span class="badge badge--iba">IBA</span>');
-            if (c.difford && !c.iba) badges.push('<span class="badge badge--difford">Difford\'s</span>');
-            if (hasDouble)          badges.push('<span class="badge badge--double">2 versioni</span>');
-
-            return `
-            <article class="recipe-card ${highlight === c.id ? 'recipe-card--highlight' : ''}"
-                     data-category="${c.ibaCategory || ''} ${c.nomadCategory || ''}"
-                     id="card-${c.id}">
-                <button class="recipe-toggle" type="button" aria-expanded="false">
-                    <div class="recipe-toggle-left">
-                        <div class="recipe-toggle-info">
-                            <h3>${c.name}</h3>
-                            <p class="recipe-tagline">${c.tagline}</p>
-                        </div>
-                    </div>
-                    <div class="recipe-toggle-right">
-                        <div class="recipe-badges">${badges.join('')}</div>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                </button>
-                <div class="recipe-body">
-                    <div class="quick-specs">
-                        ${c.glass && c.glass !== 'none' ? `<span class="qs-item">${GLASS_EMOJI[c.glass] || ''} ${c.glass}</span>` : ''}
-                        ${c.serve ? `<span class="qs-item">⚗️ ${SERVE_LABEL[c.serve] || c.serve}</span>` : ''}
-                        ${c.ice && c.ice !== 'none' ? `<span class="qs-item">🧊 ${c.ice}</span>` : ''}
-                        ${c.garnish && c.garnish !== 'Nessuno' ? `<span class="qs-item">🌿 ${c.garnish}</span>` : ''}
-                    </div>
-                    ${renderIngredientsList(c)}
-                    ${recipe ? `
-                    <div class="body-method">
-                        <span class="method-mini-label">Metodo</span>
-                        <p>${recipe.method}</p>
-                        ${recipe.notes ? `<p class="method-notes">💡 ${recipe.notes}</p>` : ''}
-                    </div>` : ''}
-                    ${hasDouble ? `
-                    <div class="double-version-hint">
-                        <a href="cocktail-recipe.html?id=${c.id}&from=${catKey}" class="btn btn--ghost">
-                            📖 Vedi entrambe le versioni IBA & Difford's →
-                        </a>
-                    </div>` : `
-                    <div class="recipe-full-link">
-                        <a href="cocktail-recipe.html?id=${c.id}&from=${catKey}" class="btn btn--ghost">Scheda completa →</a>
-                    </div>`}
-                    ${c.description ? `<p class="recipe-desc">${c.description}</p>` : ''}
-                </div>
-            </article>`;
-        }
-
-        const container = document.getElementById('recipes-container');
-        if (!list.length) {
-            container.innerHTML = '<p class="empty-section">Nessuna ricetta in questa categoria.</p>';
-        } else {
-            container.innerHTML = list.map(renderRecipeCard).join('');
-        }
-
-        /* ── Toggle card ── */
-        container.querySelectorAll('.recipe-toggle').forEach(toggle => {
-            const open = () => {
-                const card   = toggle.closest('.recipe-card');
-                const isOpen = card.classList.toggle('open');
-                toggle.setAttribute('aria-expanded', isOpen);
-                const icon = toggle.querySelector('.toggle-icon');
-                if (icon) icon.textContent = isOpen ? '▲' : '▼';
-            };
-            toggle.addEventListener('click', open);
-            /* Space già gestito nativamente da <button>;
-               Enter pure — manteniamo solo per coerenza esplicita */
-            toggle.addEventListener('keydown', e => {
-                if (e.key === ' ') { e.preventDefault(); open(); }
-            });
-        });
-
-        /* ── Auto-apri highlight ── */
-        if (highlight) {
-            const card = document.getElementById('card-' + highlight);
-            if (card) {
-                card.classList.add('open');
-                const icon = card.querySelector('.toggle-icon');
-                if (icon) icon.textContent = '▲';
-                setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
-            }
-        }
-
-    }).catch(() => TheBarConfig.showError('recipes-container'));
-
-})();
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js")
+        .then(reg => console.log("[PWA] SW registrato:", reg.scope))
+        .catch(err => console.warn("[PWA] SW non registrato:", err));
+    });
+  }
 </script>
 
-</body>
-</html>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline – The Bar</title>
+    <meta name="theme-color" content="#043927">
+    <style>
+        /* Font di sistema — zero dipendenze esterne, garantiti offline */
+        :root {
+            --font-serif: Georgia, 'Times New Roman', Times, serif;
+            --font-sans:  'Helvetica Neue', Arial, 'Segoe UI', system-ui, sans-serif;
+            --font-mono:  'Courier New', Courier, monospace;
+            --green-dark: #043927;
+            --green-mid:  #0a5c3e;
+            --gold:       #c9a84c;
+            --text-light: #d4c9a8;
+            --text-muted: #7a9e8a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--green-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+        }
+
+        .subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--gold);
+            padding: 0.75rem 2rem;
+            border-radius: 4px;
+            border: 1px solid var(--gold);
+            font-family: var(--font-sans);
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--gold);
+            color: var(--green-dark);
+        }
+
+        .hint {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .divider {
+            width: 40px;
+            height: 1px;
+            background: var(--gold);
+            margin: 1.5rem auto;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="icon">🍸</span>
+        <h1>The Bar</h1>
+        <p class="subtitle">Nessuna connessione</p>
+        <div class="divider"></div>
+        <p>Sei offline. Le pagine già visitate sono disponibili nella cache del dispositivo.</p>
+        <button class="btn" onclick="window.location.href='index.html'">Vai alla home</button>
+        <p class="hint">
+            Oppure premi <strong style="color: var(--gold);">indietro</strong> per tornare a una pagina già caricata.
+        </p>
+    </div>
+</body>
+</html>

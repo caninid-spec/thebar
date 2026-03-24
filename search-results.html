@@ -1,206 +1,216 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="thebar.ico" type="image/x-icon">
-    <meta name="theme-color" content="#043927" />
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="The Bar">
-    <title>Risultati ricerca — The Bar</title>
-    <link rel="stylesheet" href="core.css">
-    <link rel="stylesheet" href="components.css">
-    <link rel="stylesheet" href="search-results.css">
-    <script src="config.js"></script>
-</head>
-<body>
-    <!-- Nav -->
-    <nav class="hub-nav">
-        <a href="index.html" class="back-link">← The Bar</a>
-    </nav>
-<header class="page-header page-header--sticky">
-    <div class="page-header__title" id="results-title">
-        Ricerca: <em id="query-display" style="color:var(--gold-bright);font-style:normal"></em>
-    </div>
-    <p class="page-header__subtitle" id="results-meta">Ricerca in corso…</p>
-    <div class="results-search-bar">
-        <div class="results-search-box">
-            <span style="opacity:0.5;font-size:1rem">🔍</span>
-            <input type="text" id="search-input" placeholder="Nuova ricerca…" autocomplete="off" spellcheck="false">
-            <button class="results-search-btn" id="search-btn">Cerca</button>
-        </div>
-    </div>
-</header>
-
-<main class="results-main" id="results-main">
-    <div class="results-loading">Caricamento cocktail…</div>
-</main>
-
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="thebar.ico" type="image/x-icon">
+    <meta name="theme-color" content="#043927" />
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="The Bar">
+    <title>Risultati ricerca — The Bar</title>
+    <link rel="stylesheet" href="core.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="search-results.css">
+    <script src="config.js"></script>
+</head>
+<body>
+    <!-- Nav -->
+    <nav class="hub-nav">
+        <a href="index.html" class="back-link">← The Bar</a>
+    </nav>
+<header class="page-header page-header--sticky">
+    <div class="page-header__title" id="results-title">
+        Ricerca: <em id="query-display" style="color:var(--gold-bright);font-style:normal"></em>
+    </div>
+    <p class="page-header__subtitle" id="results-meta">Ricerca in corso…</p>
+    <div class="results-search-bar">
+        <div class="results-search-box">
+            <span style="opacity:0.5;font-size:1rem">🔍</span>
+            <input type="text" id="search-input" placeholder="Nuova ricerca…" autocomplete="off" spellcheck="false">
+            <button class="results-search-btn" id="search-btn">Cerca</button>
+        </div>
+    </div>
+</header>
+
+<main class="results-main" id="results-main">
+    <div class="results-loading">Caricamento cocktail…</div>
+</main>
+
+<script>
+(function () {
+
+    /* ── Normalizzazione ── */
+    function norm(s) {
+        return (s || '').toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/g, ' ');
+    }
+
+    /* ── Query dall'URL ── */
+    const params   = new URLSearchParams(location.search);
+    const rawQuery = params.get('q') || '';
+    document.getElementById('query-display').textContent = rawQuery;
+    document.getElementById('search-input').value = rawQuery;
+    document.title = rawQuery ? `"${rawQuery}" — The Bar` : 'Ricerca — The Bar';
+
+    /* ── Config sezioni: letta da TheBarConfig + entry extra ── */
+    const SECTION_CONFIG = Object.fromEntries(
+        Object.entries(TheBarConfig.CATEGORY_PAGES).map(([k, v]) => [k, { label: v.label, emoji: v.emoji }])
+    );
+    SECTION_CONFIG.difford = { label: "Difford's Guide", emoji: '📖' };
+    SECTION_CONFIG.none    = { label: 'Other',           emoji: '🍸' };
+
+    /* ── Costruzione indice ── */
+    function buildIndex(cocktails) {
+        return cocktails.map(c => {
+            const mainCat = c.ibaCategory || c.nomadCategory || (c.difford ? 'difford' : 'none');
+            const sec     = SECTION_CONFIG[mainCat] || SECTION_CONFIG.none;
+            const keywords = [
+                c.name, c.tagline || '', c.description || '',
+                ...(c.baseSpirits || []), ...(c.ingredients || []), ...(c.taste || []),
+                c.strength || '', c.style || '', c.serve || '', c.glass || '', c.garnish || '',
+                ...((c.recipeIBA?.ingredients    || []).map(i => i.item)),
+                ...((c.recipeDifford?.ingredients || []).map(i => i.item)),
+                ...((c.recipe?.ingredients        || []).map(i => i.item)),
+            ].join(' ');
+            return {
+                id: c.id, title: c.name, emoji: c.emoji,
+                tagline: c.tagline || '', description: c.description || '',
+                keywords, iba: c.iba, difford: c.difford, mainCat,
+                sectionLabel: sec.label, sectionEmoji: sec.emoji,
+                url: `cocktail-recipe.html?id=${c.id}&from=search`
+            };
+        });
+    }
+
+    /* ── Score ── */
+    function scoreRecipe(recipe, tokens) {
+        const titleN = norm(recipe.title);
+        const kwN    = norm(recipe.keywords);
+        let score = 0;
+        for (const tok of tokens) {
+            if      (titleN.includes(tok)) score += 10;
+            else if (kwN.includes(tok))    score += 2;
+            else return -1;
+        }
+        return score;
+    }
+
+    /* ── Render card ── */
+    function renderCard(recipe) {
+        return `
+        <a class="card card--list" href="${recipe.url}">
+            <div class="card__body">
+                <div class="card__title">${recipe.title}</div>
+                <div class="card__meta">
+                    <span class="card__tag card__tag--section">${recipe.sectionEmoji} ${recipe.sectionLabel}</span>
+                    ${recipe.iba    ? '<span class="card__tag card__tag--iba">IBA</span>' : ''}
+                    ${recipe.difford ? '<span class="card__tag card__tag--difford">Difford\'s</span>' : ''}
+                </div>
+                <p class="card__desc">${recipe.tagline || recipe.description}</p>
+            </div>
+            <span class="card__arrow">→</span>
+        </a>`;
+    }
+
+    /* ── Render gruppo ── */
+    function renderGroup(label, emoji, list) {
+        return `
+        <div class="results-section">
+            <div class="results-section-header">
+                <div class="results-section-label">${emoji} ${label}</div>
+                <span class="results-section-count">${list.length} cocktail</span>
+            </div>
+            ${list.map(r => renderCard(r.recipe)).join('')}
+        </div>`;
+    }
+
+    /* ── Ricerca ── */
+    function runSearch(index, query) {
+        const main = document.getElementById('results-main');
+        const meta = document.getElementById('results-meta');
+
+        if (!query.trim()) {
+            main.innerHTML = `<div class="results-empty"><div class="empty-icon">🔍</div><h2>Cosa cerchi?</h2><p>Inserisci il nome di un cocktail, uno spirit o un sapore.</p></div>`;
+            meta.textContent = '';
+            return;
+        }
+
+        const tokens = norm(query).split(/\s+/).filter(Boolean);
+        const scored = index
+            .map(r => ({ recipe: r, score: scoreRecipe(r, tokens) }))
+            .filter(x => x.score > 0)
+            .sort((a, b) => b.score - a.score);
+
+        if (!scored.length) {
+            main.innerHTML = `<div class="results-empty"><div class="empty-icon">🤷</div><h2>Nessun cocktail trovato</h2><p>Nessun risultato per "<strong>${query}</strong>".<br>Prova con uno spirit, un gusto o un nome diverso.</p></div>`;
+            meta.textContent = '0 risultati';
+            return;
+        }
+
+        meta.textContent = `${scored.length} cocktail trovati`;
+
+        const groups = {};
+        scored.forEach(item => {
+            const key = item.recipe.mainCat;
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(item);
+        });
+
+        // Ordine sezioni — derivato da CATEGORY_PAGES + extra
+        const ORDER = [...Object.keys(TheBarConfig.CATEGORY_PAGES), 'difford', 'none'];
+        main.innerHTML = ORDER
+            .filter(k => groups[k])
+            .map(k => {
+                const sec = SECTION_CONFIG[k] || SECTION_CONFIG.none;
+                return renderGroup(sec.label, sec.emoji, groups[k]);
+            })
+            .join('');
+    }
+
+    /* ── Search input ── */
+    const searchInput = document.getElementById('search-input');
+    const searchBtn   = document.getElementById('search-btn');
+    let index = [];
+
+    function doSearch() {
+        const q = searchInput.value.trim();
+        if (q) {
+            history.replaceState(null, '', '?q=' + encodeURIComponent(q));
+            document.getElementById('query-display').textContent = q;
+            document.title = `"${q}" — The Bar`;
+            runSearch(index, q);
+        }
+    }
+
+    searchBtn.addEventListener('click', doSearch);
+    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+    /* ── Caricamento asincrono ── */
+    TheBarConfig.showLoader('results-main', 'Caricamento risultati…');
+    TheBarConfig.loadCocktails().then(cocktails => {
+        index = buildIndex(cocktails);
+        runSearch(index, rawQuery);
+    }).catch(() => TheBarConfig.showError('results-main'));
+
+})();
+</script>
+
+<footer>
+    <p>The Bar · <a href="index.html">← Home</a></p>
+</footer>
+
 <script>
-(function () {
-
-    /* ── Normalizzazione ── */
-    function norm(s) {
-        return (s || '').toLowerCase()
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9\s]/g, ' ');
-    }
-
-    /* ── Query dall'URL ── */
-    const params   = new URLSearchParams(location.search);
-    const rawQuery = params.get('q') || '';
-    document.getElementById('query-display').textContent = rawQuery;
-    document.getElementById('search-input').value = rawQuery;
-    document.title = rawQuery ? `"${rawQuery}" — The Bar` : 'Ricerca — The Bar';
-
-    /* ── Config sezioni: letta da TheBarConfig + entry extra ── */
-    const SECTION_CONFIG = Object.fromEntries(
-        Object.entries(TheBarConfig.CATEGORY_PAGES).map(([k, v]) => [k, { label: v.label, emoji: v.emoji }])
-    );
-    SECTION_CONFIG.difford = { label: "Difford's Guide", emoji: '📖' };
-    SECTION_CONFIG.none    = { label: 'Other',           emoji: '🍸' };
-
-    /* ── Costruzione indice ── */
-    function buildIndex(cocktails) {
-        return cocktails.map(c => {
-            const mainCat = c.ibaCategory || c.nomadCategory || (c.difford ? 'difford' : 'none');
-            const sec     = SECTION_CONFIG[mainCat] || SECTION_CONFIG.none;
-            const keywords = [
-                c.name, c.tagline || '', c.description || '',
-                ...(c.baseSpirits || []), ...(c.ingredients || []), ...(c.taste || []),
-                c.strength || '', c.style || '', c.serve || '', c.glass || '', c.garnish || '',
-                ...((c.recipeIBA?.ingredients    || []).map(i => i.item)),
-                ...((c.recipeDifford?.ingredients || []).map(i => i.item)),
-                ...((c.recipe?.ingredients        || []).map(i => i.item)),
-            ].join(' ');
-            return {
-                id: c.id, title: c.name, emoji: c.emoji,
-                tagline: c.tagline || '', description: c.description || '',
-                keywords, iba: c.iba, difford: c.difford, mainCat,
-                sectionLabel: sec.label, sectionEmoji: sec.emoji,
-                url: `cocktail-recipe.html?id=${c.id}&from=search`
-            };
-        });
-    }
-
-    /* ── Score ── */
-    function scoreRecipe(recipe, tokens) {
-        const titleN = norm(recipe.title);
-        const kwN    = norm(recipe.keywords);
-        let score = 0;
-        for (const tok of tokens) {
-            if      (titleN.includes(tok)) score += 10;
-            else if (kwN.includes(tok))    score += 2;
-            else return -1;
-        }
-        return score;
-    }
-
-    /* ── Render card ── */
-    function renderCard(recipe) {
-        return `
-        <a class="card card--list" href="${recipe.url}">
-            <div class="card__body">
-                <div class="card__title">${recipe.title}</div>
-                <div class="card__meta">
-                    <span class="card__tag card__tag--section">${recipe.sectionEmoji} ${recipe.sectionLabel}</span>
-                    ${recipe.iba    ? '<span class="card__tag card__tag--iba">IBA</span>' : ''}
-                    ${recipe.difford ? '<span class="card__tag card__tag--difford">Difford\'s</span>' : ''}
-                </div>
-                <p class="card__desc">${recipe.tagline || recipe.description}</p>
-            </div>
-            <span class="card__arrow">→</span>
-        </a>`;
-    }
-
-    /* ── Render gruppo ── */
-    function renderGroup(label, emoji, list) {
-        return `
-        <div class="results-section">
-            <div class="results-section-header">
-                <div class="results-section-label">${emoji} ${label}</div>
-                <span class="results-section-count">${list.length} cocktail</span>
-            </div>
-            ${list.map(r => renderCard(r.recipe)).join('')}
-        </div>`;
-    }
-
-    /* ── Ricerca ── */
-    function runSearch(index, query) {
-        const main = document.getElementById('results-main');
-        const meta = document.getElementById('results-meta');
-
-        if (!query.trim()) {
-            main.innerHTML = `<div class="results-empty"><div class="empty-icon">🔍</div><h2>Cosa cerchi?</h2><p>Inserisci il nome di un cocktail, uno spirit o un sapore.</p></div>`;
-            meta.textContent = '';
-            return;
-        }
-
-        const tokens = norm(query).split(/\s+/).filter(Boolean);
-        const scored = index
-            .map(r => ({ recipe: r, score: scoreRecipe(r, tokens) }))
-            .filter(x => x.score > 0)
-            .sort((a, b) => b.score - a.score);
-
-        if (!scored.length) {
-            main.innerHTML = `<div class="results-empty"><div class="empty-icon">🤷</div><h2>Nessun cocktail trovato</h2><p>Nessun risultato per "<strong>${query}</strong>".<br>Prova con uno spirit, un gusto o un nome diverso.</p></div>`;
-            meta.textContent = '0 risultati';
-            return;
-        }
-
-        meta.textContent = `${scored.length} cocktail trovati`;
-
-        const groups = {};
-        scored.forEach(item => {
-            const key = item.recipe.mainCat;
-            if (!groups[key]) groups[key] = [];
-            groups[key].push(item);
-        });
-
-        // Ordine sezioni — derivato da CATEGORY_PAGES + extra
-        const ORDER = [...Object.keys(TheBarConfig.CATEGORY_PAGES), 'difford', 'none'];
-        main.innerHTML = ORDER
-            .filter(k => groups[k])
-            .map(k => {
-                const sec = SECTION_CONFIG[k] || SECTION_CONFIG.none;
-                return renderGroup(sec.label, sec.emoji, groups[k]);
-            })
-            .join('');
-    }
-
-    /* ── Search input ── */
-    const searchInput = document.getElementById('search-input');
-    const searchBtn   = document.getElementById('search-btn');
-    let index = [];
-
-    function doSearch() {
-        const q = searchInput.value.trim();
-        if (q) {
-            history.replaceState(null, '', '?q=' + encodeURIComponent(q));
-            document.getElementById('query-display').textContent = q;
-            document.title = `"${q}" — The Bar`;
-            runSearch(index, q);
-        }
-    }
-
-    searchBtn.addEventListener('click', doSearch);
-    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-
-    /* ── Caricamento asincrono ── */
-    TheBarConfig.showLoader('results-main', 'Caricamento risultati…');
-    TheBarConfig.loadCocktails().then(cocktails => {
-        index = buildIndex(cocktails);
-        runSearch(index, rawQuery);
-    }).catch(() => TheBarConfig.showError('results-main'));
-
-})();
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js")
+        .then(reg => console.log("[PWA] SW registrato:", reg.scope))
+        .catch(err => console.warn("[PWA] SW non registrato:", err));
+    });
+  }
 </script>
 
-<footer>
-    <p>The Bar · <a href="index.html">← Home</a></p>
-</footer>
-
-</body>
-</html>
+</body>
+</html>

@@ -1,325 +1,335 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="thebar.ico" type="image/x-icon">
-    <meta name="theme-color" content="#043927" />
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="The Bar">
-    <title>Trova il tuo cocktail — The Bar</title>
-    <link rel="stylesheet" href="core.css">
-    <link rel="stylesheet" href="components.css">
-    <link rel="stylesheet" href="finder-style.css">
-    <script src="config.js"></script>
-</head>
-<body>
-
-<nav class="hub-nav">
-    <a href="index.html" class="back-link">← The Bar</a>
-</nav>
-
-<header class="page-header">
-        <span class="page-header__icon">🎯</span>
-        <h1 class="page-header__title">Trova il tuo cocktail</h1>
-        <p class="page-header__subtitle">Cosa hai nel bar? Che voglia hai stasera?</p>
-</header>
-
-<div class="container" style="padding: 28px 20px 60px;">
-
-    <div class="finder-form">
-
-        <!-- ── SPIRITS ── -->
-        <section class="filter-section">
-            <h2 class="filter-title">🍶 Spirits disponibili</h2>
-            <p class="filter-hint">Seleziona cosa hai nel tuo bar</p>
-            <div class="filter-chips" id="chips-spirits">
-                <!-- generato da JS -->
-            </div>
-        </section>
-
-        <!-- ── INGREDIENTI EXTRA ── -->
-        <section class="filter-section">
-            <h2 class="filter-title">🧃 Altro nel frigo / dispensa</h2>
-            <p class="filter-hint">Soda, succhi, vermut, liquori…</p>
-            <div class="filter-chips" id="chips-extras">
-                <!-- generato da JS -->
-            </div>
-        </section>
-
-        <!-- ── GUSTO ── -->
-        <section class="filter-section">
-            <h2 class="filter-title">👅 Che voglia hai?</h2>
-            <p class="filter-hint">Puoi scegliere più di uno</p>
-            <div class="filter-chips" id="chips-taste">
-                <!-- generato da JS -->
-            </div>
-        </section>
-
-        <!-- ── STRENGTH ── -->
-        <section class="filter-section">
-            <h2 class="filter-title">⚡ Intensità</h2>
-            <div class="filter-chips" id="chips-strength">
-                <!-- generato da JS -->
-            </div>
-        </section>
-
-        <!-- ── STYLE ── -->
-        <section class="filter-section">
-            <h2 class="filter-title">🥂 Formato</h2>
-            <div class="filter-chips" id="chips-style">
-                <!-- generato da JS -->
-            </div>
-        </section>
-
-    </div>
-
-    <!-- Risultati -->
-    <div class="finder-results" id="finder-results">
-        <div class="results-placeholder">
-            <div class="placeholder-icon">🍸</div>
-            <p>Seleziona almeno uno spirit per vedere i cocktail disponibili</p>
-        </div>
-    </div>
-
-</div>
-
-<footer>
-    <p>The Bar · <a href="index.html">← Home</a></p>
-</footer>
-
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="thebar.ico" type="image/x-icon">
+    <meta name="theme-color" content="#043927" />
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="The Bar">
+    <title>Trova il tuo cocktail — The Bar</title>
+    <link rel="stylesheet" href="core.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="finder-style.css">
+    <script src="config.js"></script>
+</head>
+<body>
+
+<nav class="hub-nav">
+    <a href="index.html" class="back-link">← The Bar</a>
+</nav>
+
+<header class="page-header">
+        <span class="page-header__icon">🎯</span>
+        <h1 class="page-header__title">Trova il tuo cocktail</h1>
+        <p class="page-header__subtitle">Cosa hai nel bar? Che voglia hai stasera?</p>
+</header>
+
+<div class="container" style="padding: 28px 20px 60px;">
+
+    <div class="finder-form">
+
+        <!-- ── SPIRITS ── -->
+        <section class="filter-section">
+            <h2 class="filter-title">🍶 Spirits disponibili</h2>
+            <p class="filter-hint">Seleziona cosa hai nel tuo bar</p>
+            <div class="filter-chips" id="chips-spirits">
+                <!-- generato da JS -->
+            </div>
+        </section>
+
+        <!-- ── INGREDIENTI EXTRA ── -->
+        <section class="filter-section">
+            <h2 class="filter-title">🧃 Altro nel frigo / dispensa</h2>
+            <p class="filter-hint">Soda, succhi, vermut, liquori…</p>
+            <div class="filter-chips" id="chips-extras">
+                <!-- generato da JS -->
+            </div>
+        </section>
+
+        <!-- ── GUSTO ── -->
+        <section class="filter-section">
+            <h2 class="filter-title">👅 Che voglia hai?</h2>
+            <p class="filter-hint">Puoi scegliere più di uno</p>
+            <div class="filter-chips" id="chips-taste">
+                <!-- generato da JS -->
+            </div>
+        </section>
+
+        <!-- ── STRENGTH ── -->
+        <section class="filter-section">
+            <h2 class="filter-title">⚡ Intensità</h2>
+            <div class="filter-chips" id="chips-strength">
+                <!-- generato da JS -->
+            </div>
+        </section>
+
+        <!-- ── STYLE ── -->
+        <section class="filter-section">
+            <h2 class="filter-title">🥂 Formato</h2>
+            <div class="filter-chips" id="chips-style">
+                <!-- generato da JS -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Risultati -->
+    <div class="finder-results" id="finder-results">
+        <div class="results-placeholder">
+            <div class="placeholder-icon">🍸</div>
+            <p>Seleziona almeno uno spirit per vedere i cocktail disponibili</p>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>The Bar · <a href="index.html">← Home</a></p>
+</footer>
+
+<script>
+(function () {
+
+    /* ── Dati filtri ── */
+    const SPIRITS = [
+        { id: 'gin',          label: 'Gin',           emoji: '🌿' },
+        { id: 'vodka',        label: 'Vodka',         emoji: '🧊' },
+        { id: 'rum',          label: 'Rum',           emoji: '🌴' },
+        { id: 'tequila',      label: 'Tequila',       emoji: '🌵' },
+        { id: 'mezcal',       label: 'Mezcal',        emoji: '💨' },
+        { id: 'bourbon',      label: 'Bourbon',       emoji: '🥃' },
+        { id: 'scotch',       label: 'Scotch',        emoji: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
+        { id: 'rye',          label: 'Rye Whiskey',   emoji: '🌾' },
+        { id: 'cognac',       label: 'Cognac',        emoji: '🍇' },
+        { id: 'brandy',       label: 'Brandy',        emoji: '🍷' },
+        { id: 'pisco',        label: 'Pisco',         emoji: '🍑' },
+        { id: 'cachaça',      label: 'Cachaça',       emoji: '🎋' },
+        { id: 'absinthe',     label: 'Assenzio',      emoji: '💚' },
+        { id: 'champagne',    label: 'Champagne',     emoji: '🥂' },
+        { id: 'prosecco',     label: 'Prosecco',      emoji: '🍾' },
+    ];
+
+    const EXTRAS = [
+        { id: 'campari',        label: 'Campari',         emoji: '🔴' },
+        { id: 'aperol',         label: 'Aperol',          emoji: '🟠' },
+        { id: 'sweet vermouth', label: 'Vermouth rosso',  emoji: '🍷' },
+        { id: 'dry vermouth',   label: 'Vermouth dry',    emoji: '🥂' },
+        { id: 'triple sec',     label: 'Triple Sec',      emoji: '🍊' },
+        { id: 'kahlua',         label: 'Kahlúa',          emoji: '☕' },
+        { id: 'baileys',        label: 'Bailey\'s',       emoji: '🥛' },
+        { id: 'amaretto',       label: 'Amaretto',        emoji: '🍑' },
+        { id: 'blue curacao',   label: 'Blue Curaçao',    emoji: '💙' },
+        { id: 'peach schnapps', label: 'Peach Schnapps',  emoji: '🍑' },
+        { id: 'coconut cream',  label: 'Crema di cocco',  emoji: '🥥' },
+        { id: 'lime juice',     label: 'Lime / limone',   emoji: '🍋' },
+        { id: 'lemon juice',    label: 'Succo limone',    emoji: '🍋' },
+        { id: 'orange juice',   label: 'Succo d\'arancia',emoji: '🍊' },
+        { id: 'cranberry juice',label: 'Cranberry',       emoji: '🍒' },
+        { id: 'pineapple juice',label: 'Ananas',          emoji: '🍍' },
+        { id: 'grapefruit juice',label: 'Pompelmo',       emoji: '🍈' },
+        { id: 'soda water',     label: 'Soda',            emoji: '💧' },
+        { id: 'ginger beer',    label: 'Ginger Beer',     emoji: '🫚' },
+        { id: 'cola',           label: 'Cola',            emoji: '🥤' },
+        { id: 'cream',          label: 'Panna',           emoji: '🥛' },
+        { id: 'egg white',      label: 'Albume',          emoji: '🥚' },
+        { id: 'espresso',       label: 'Espresso',        emoji: '☕' },
+    ];
+
+    const TASTES = [
+        { id: 'bitter',     label: 'Amaro',       emoji: '🌑' },
+        { id: 'sweet',      label: 'Dolce',       emoji: '🍬' },
+        { id: 'sour',       label: 'Acido',       emoji: '🍋' },
+        { id: 'dry',        label: 'Secco',       emoji: '🏜️' },
+        { id: 'fruity',     label: 'Fruttato',    emoji: '🍓' },
+        { id: 'refreshing', label: 'Rinfrescante',emoji: '❄️' },
+        { id: 'smoky',      label: 'Affumicato',  emoji: '💨' },
+        { id: 'spicy',      label: 'Speziato',    emoji: '🌶️' },
+        { id: 'creamy',     label: 'Cremoso',     emoji: '🥛' },
+        { id: 'herbal',     label: 'Erbaceo',     emoji: '🌿' },
+        { id: 'tropical',   label: 'Tropicale',   emoji: '🌺' },
+        { id: 'complex',    label: 'Complesso',   emoji: '🎭' },
+        { id: 'floral',     label: 'Floreale',    emoji: '🌸' },
+        { id: 'coffee',     label: 'Caffè',       emoji: '☕' },
+    ];
+
+    const STRENGTHS = [
+        { id: 'light',          label: 'Leggero',         emoji: '🌤️' },
+        { id: 'medium',         label: 'Medio',           emoji: '⚖️' },
+        { id: 'strong',         label: 'Forte',           emoji: '💪' },
+        { id: 'spirit-forward', label: 'Spirit-forward',  emoji: '🔥' },
+    ];
+
+    const STYLES = [
+        { id: 'short',     label: 'Short drink',  emoji: '🥃' },
+        { id: 'long',      label: 'Long drink',   emoji: '🥤' },
+        { id: 'sparkling', label: 'Sparkling',    emoji: '🥂' },
+        { id: 'shot',      label: 'Shot',         emoji: '🔫' },
+    ];
+
+    /* ── State ── */
+    const selected = {
+        spirits: new Set(),
+        extras: new Set(),
+        taste: new Set(),
+        strength: new Set(),
+        style: new Set()
+    };
+
+    /* ── Render chips ── */
+    function renderChips(containerId, items, stateKey) {
+        const el = document.getElementById(containerId);
+        el.innerHTML = items.map(item => `
+            <button class="chip" data-key="${stateKey}" data-id="${item.id}" type="button">
+                <span class="chip-emoji">${item.emoji}</span>
+                <span class="chip-label">${item.label}</span>
+            </button>
+        `).join('');
+
+        el.querySelectorAll('.chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.key;
+                const id = btn.dataset.id;
+                if (selected[key].has(id)) {
+                    selected[key].delete(id);
+                    btn.classList.remove('chip--active');
+                } else {
+                    selected[key].add(id);
+                    btn.classList.add('chip--active');
+                }
+                updateResults();
+            });
+        });
+    }
+
+    renderChips('chips-spirits',  SPIRITS,   'spirits');
+    renderChips('chips-extras',   EXTRAS,    'extras');
+    renderChips('chips-taste',    TASTES,    'taste');
+    renderChips('chips-strength', STRENGTHS, 'strength');
+    renderChips('chips-style',    STYLES,    'style');
+
+    /* ── Scoring & filtro ── */
+    function scorecocktail(c) {
+        const allSelected = selected.spirits.size + selected.extras.size;
+        if (allSelected === 0) return -1; // Nessuno spirit selezionato
+
+        // Score base: quanti spirits selezionati il cocktail richiede
+        let spiritScore = 0;
+        let spiritMatches = 0;
+        const allSpirits = [...(c.baseSpirits || []), ...(c.ingredients || [])];
+
+        for (const s of selected.spirits) {
+            const found = allSpirits.some(si => si.toLowerCase().includes(s) || s.includes(si.toLowerCase()));
+            if (found) { spiritScore += 3; spiritMatches++; }
+        }
+        for (const s of selected.extras) {
+            const found = allSpirits.some(si => si.toLowerCase().includes(s) || s.includes(si.toLowerCase()));
+            if (found) { spiritScore += 2; spiritMatches++; }
+        }
+
+        // Deve avere almeno un match spirit/ingrediente
+        if (spiritMatches === 0) return -1;
+
+        // Bonus: filtri gusto
+        let tasteScore = 0;
+        for (const t of selected.taste) {
+            if ((c.taste || []).includes(t)) tasteScore += 2;
+        }
+
+        // Bonus: strength
+        let strengthScore = 0;
+        if (selected.strength.size > 0 && selected.strength.has(c.strength)) strengthScore = 2;
+
+        // Bonus: style
+        let styleScore = 0;
+        if (selected.style.size > 0 && selected.style.has(c.style)) styleScore = 2;
+
+        // Penalità: filtri gusto attivi ma nessun match
+        if (selected.taste.size > 0 && tasteScore === 0) tasteScore = -1;
+        if (selected.strength.size > 0 && strengthScore === 0) strengthScore = -1;
+        if (selected.style.size > 0 && styleScore === 0) styleScore = -1;
+
+        return spiritScore + tasteScore + strengthScore + styleScore;
+    }
+
+    function updateResults() {
+        const resultsEl = document.getElementById('finder-results');
+
+        if (selected.spirits.size === 0 && selected.extras.size === 0) {
+            resultsEl.innerHTML = `
+            <div class="results-placeholder">
+                <div class="placeholder-icon">🍸</div>
+                <p>Seleziona almeno uno spirit o ingrediente per vedere i cocktail disponibili</p>
+            </div>`;
+            return;
+        }
+
+        const scored = (window._finderCocktails || [])
+            .filter(c => c.strength !== 'none') // Escludi basics senza alcol come ingrediente
+            .map(c => ({ c, score: scorecocktail(c) }))
+            .filter(x => x.score > 0)
+            .sort((a, b) => b.score - a.score);
+
+        if (scored.length === 0) {
+            resultsEl.innerHTML = `
+            <div class="results-placeholder">
+                <div class="placeholder-icon">🤷</div>
+                <p>Nessun cocktail trovato con questi ingredienti.<br>Prova a selezionare qualcosa di diverso.</p>
+            </div>`;
+            return;
+        }
+
+        const STRENGTH_LABEL = { light:'Leggero', medium:'Medio', strong:'Forte', 'spirit-forward':'Spirit-forward' };
+        const STYLE_LABEL = { short:'Short', long:'Long', sparkling:'Sparkling', shot:'Shot' };
+
+        resultsEl.innerHTML = `
+        <div class="results-header-bar">
+            <div class="results-count">${scored.length} cocktail trovati</div>
+            <div class="results-hint">Ordinati per compatibilità</div>
+        </div>
+        <div class="results-grid">
+            ${scored.map(({ c }) => `
+            <a href="cocktail-recipe.html?id=${c.id}&from=finder" class="card card--grid">
+                <div class="card__top">
+                    <div class="card__info">
+                        <div class="card__title">${c.name}</div>
+                        <div class="card__desc">${c.tagline}</div>
+                    </div>
+                </div>
+                <div class="card__tags">
+                    ${c.iba ? '<span class="badge badge--iba">IBA</span>' : ''}
+                    ${c.difford && !c.iba ? '<span class="badge badge--difford">Difford\'s</span>' : ''}
+                    ${c.strength && c.strength !== 'none' ? `<span class="badge badge--strength">${STRENGTH_LABEL[c.strength]||c.strength}</span>` : ''}
+                    ${c.style ? `<span class="badge badge--style">${STYLE_LABEL[c.style]||c.style}</span>` : ''}
+                    ${(c.taste||[]).slice(0,2).map(t=>`<span class="badge badge--taste">${t}</span>`).join('')}
+                </div>
+                <div class="card__spirits">
+                    ${(c.baseSpirits||[]).map(s=>`<span class="spirit-tag ${[...selected.spirits,...selected.extras].some(sel=>s.toLowerCase().includes(sel)||sel.includes(s.toLowerCase())) ? 'spirit-tag--match':''}">${s}</span>`).join('')}
+                </div>
+            </a>
+            `).join('')}
+        </div>`;
+    }
+
+    /* ── Precarica i dati in background al mount ── */
+    TheBarConfig.loadCocktails().then(cocktails => {
+        window._finderCocktails = cocktails;
+    });
+
+})();
+</script>
+
 <script>
-(function () {
-
-    /* ── Dati filtri ── */
-    const SPIRITS = [
-        { id: 'gin',          label: 'Gin',           emoji: '🌿' },
-        { id: 'vodka',        label: 'Vodka',         emoji: '🧊' },
-        { id: 'rum',          label: 'Rum',           emoji: '🌴' },
-        { id: 'tequila',      label: 'Tequila',       emoji: '🌵' },
-        { id: 'mezcal',       label: 'Mezcal',        emoji: '💨' },
-        { id: 'bourbon',      label: 'Bourbon',       emoji: '🥃' },
-        { id: 'scotch',       label: 'Scotch',        emoji: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
-        { id: 'rye',          label: 'Rye Whiskey',   emoji: '🌾' },
-        { id: 'cognac',       label: 'Cognac',        emoji: '🍇' },
-        { id: 'brandy',       label: 'Brandy',        emoji: '🍷' },
-        { id: 'pisco',        label: 'Pisco',         emoji: '🍑' },
-        { id: 'cachaça',      label: 'Cachaça',       emoji: '🎋' },
-        { id: 'absinthe',     label: 'Assenzio',      emoji: '💚' },
-        { id: 'champagne',    label: 'Champagne',     emoji: '🥂' },
-        { id: 'prosecco',     label: 'Prosecco',      emoji: '🍾' },
-    ];
-
-    const EXTRAS = [
-        { id: 'campari',        label: 'Campari',         emoji: '🔴' },
-        { id: 'aperol',         label: 'Aperol',          emoji: '🟠' },
-        { id: 'sweet vermouth', label: 'Vermouth rosso',  emoji: '🍷' },
-        { id: 'dry vermouth',   label: 'Vermouth dry',    emoji: '🥂' },
-        { id: 'triple sec',     label: 'Triple Sec',      emoji: '🍊' },
-        { id: 'kahlua',         label: 'Kahlúa',          emoji: '☕' },
-        { id: 'baileys',        label: 'Bailey\'s',       emoji: '🥛' },
-        { id: 'amaretto',       label: 'Amaretto',        emoji: '🍑' },
-        { id: 'blue curacao',   label: 'Blue Curaçao',    emoji: '💙' },
-        { id: 'peach schnapps', label: 'Peach Schnapps',  emoji: '🍑' },
-        { id: 'coconut cream',  label: 'Crema di cocco',  emoji: '🥥' },
-        { id: 'lime juice',     label: 'Lime / limone',   emoji: '🍋' },
-        { id: 'lemon juice',    label: 'Succo limone',    emoji: '🍋' },
-        { id: 'orange juice',   label: 'Succo d\'arancia',emoji: '🍊' },
-        { id: 'cranberry juice',label: 'Cranberry',       emoji: '🍒' },
-        { id: 'pineapple juice',label: 'Ananas',          emoji: '🍍' },
-        { id: 'grapefruit juice',label: 'Pompelmo',       emoji: '🍈' },
-        { id: 'soda water',     label: 'Soda',            emoji: '💧' },
-        { id: 'ginger beer',    label: 'Ginger Beer',     emoji: '🫚' },
-        { id: 'cola',           label: 'Cola',            emoji: '🥤' },
-        { id: 'cream',          label: 'Panna',           emoji: '🥛' },
-        { id: 'egg white',      label: 'Albume',          emoji: '🥚' },
-        { id: 'espresso',       label: 'Espresso',        emoji: '☕' },
-    ];
-
-    const TASTES = [
-        { id: 'bitter',     label: 'Amaro',       emoji: '🌑' },
-        { id: 'sweet',      label: 'Dolce',       emoji: '🍬' },
-        { id: 'sour',       label: 'Acido',       emoji: '🍋' },
-        { id: 'dry',        label: 'Secco',       emoji: '🏜️' },
-        { id: 'fruity',     label: 'Fruttato',    emoji: '🍓' },
-        { id: 'refreshing', label: 'Rinfrescante',emoji: '❄️' },
-        { id: 'smoky',      label: 'Affumicato',  emoji: '💨' },
-        { id: 'spicy',      label: 'Speziato',    emoji: '🌶️' },
-        { id: 'creamy',     label: 'Cremoso',     emoji: '🥛' },
-        { id: 'herbal',     label: 'Erbaceo',     emoji: '🌿' },
-        { id: 'tropical',   label: 'Tropicale',   emoji: '🌺' },
-        { id: 'complex',    label: 'Complesso',   emoji: '🎭' },
-        { id: 'floral',     label: 'Floreale',    emoji: '🌸' },
-        { id: 'coffee',     label: 'Caffè',       emoji: '☕' },
-    ];
-
-    const STRENGTHS = [
-        { id: 'light',          label: 'Leggero',         emoji: '🌤️' },
-        { id: 'medium',         label: 'Medio',           emoji: '⚖️' },
-        { id: 'strong',         label: 'Forte',           emoji: '💪' },
-        { id: 'spirit-forward', label: 'Spirit-forward',  emoji: '🔥' },
-    ];
-
-    const STYLES = [
-        { id: 'short',     label: 'Short drink',  emoji: '🥃' },
-        { id: 'long',      label: 'Long drink',   emoji: '🥤' },
-        { id: 'sparkling', label: 'Sparkling',    emoji: '🥂' },
-        { id: 'shot',      label: 'Shot',         emoji: '🔫' },
-    ];
-
-    /* ── State ── */
-    const selected = {
-        spirits: new Set(),
-        extras: new Set(),
-        taste: new Set(),
-        strength: new Set(),
-        style: new Set()
-    };
-
-    /* ── Render chips ── */
-    function renderChips(containerId, items, stateKey) {
-        const el = document.getElementById(containerId);
-        el.innerHTML = items.map(item => `
-            <button class="chip" data-key="${stateKey}" data-id="${item.id}" type="button">
-                <span class="chip-emoji">${item.emoji}</span>
-                <span class="chip-label">${item.label}</span>
-            </button>
-        `).join('');
-
-        el.querySelectorAll('.chip').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const key = btn.dataset.key;
-                const id = btn.dataset.id;
-                if (selected[key].has(id)) {
-                    selected[key].delete(id);
-                    btn.classList.remove('chip--active');
-                } else {
-                    selected[key].add(id);
-                    btn.classList.add('chip--active');
-                }
-                updateResults();
-            });
-        });
-    }
-
-    renderChips('chips-spirits',  SPIRITS,   'spirits');
-    renderChips('chips-extras',   EXTRAS,    'extras');
-    renderChips('chips-taste',    TASTES,    'taste');
-    renderChips('chips-strength', STRENGTHS, 'strength');
-    renderChips('chips-style',    STYLES,    'style');
-
-    /* ── Scoring & filtro ── */
-    function scorecocktail(c) {
-        const allSelected = selected.spirits.size + selected.extras.size;
-        if (allSelected === 0) return -1; // Nessuno spirit selezionato
-
-        // Score base: quanti spirits selezionati il cocktail richiede
-        let spiritScore = 0;
-        let spiritMatches = 0;
-        const allSpirits = [...(c.baseSpirits || []), ...(c.ingredients || [])];
-
-        for (const s of selected.spirits) {
-            const found = allSpirits.some(si => si.toLowerCase().includes(s) || s.includes(si.toLowerCase()));
-            if (found) { spiritScore += 3; spiritMatches++; }
-        }
-        for (const s of selected.extras) {
-            const found = allSpirits.some(si => si.toLowerCase().includes(s) || s.includes(si.toLowerCase()));
-            if (found) { spiritScore += 2; spiritMatches++; }
-        }
-
-        // Deve avere almeno un match spirit/ingrediente
-        if (spiritMatches === 0) return -1;
-
-        // Bonus: filtri gusto
-        let tasteScore = 0;
-        for (const t of selected.taste) {
-            if ((c.taste || []).includes(t)) tasteScore += 2;
-        }
-
-        // Bonus: strength
-        let strengthScore = 0;
-        if (selected.strength.size > 0 && selected.strength.has(c.strength)) strengthScore = 2;
-
-        // Bonus: style
-        let styleScore = 0;
-        if (selected.style.size > 0 && selected.style.has(c.style)) styleScore = 2;
-
-        // Penalità: filtri gusto attivi ma nessun match
-        if (selected.taste.size > 0 && tasteScore === 0) tasteScore = -1;
-        if (selected.strength.size > 0 && strengthScore === 0) strengthScore = -1;
-        if (selected.style.size > 0 && styleScore === 0) styleScore = -1;
-
-        return spiritScore + tasteScore + strengthScore + styleScore;
-    }
-
-    function updateResults() {
-        const resultsEl = document.getElementById('finder-results');
-
-        if (selected.spirits.size === 0 && selected.extras.size === 0) {
-            resultsEl.innerHTML = `
-            <div class="results-placeholder">
-                <div class="placeholder-icon">🍸</div>
-                <p>Seleziona almeno uno spirit o ingrediente per vedere i cocktail disponibili</p>
-            </div>`;
-            return;
-        }
-
-        const scored = (window._finderCocktails || [])
-            .filter(c => c.strength !== 'none') // Escludi basics senza alcol come ingrediente
-            .map(c => ({ c, score: scorecocktail(c) }))
-            .filter(x => x.score > 0)
-            .sort((a, b) => b.score - a.score);
-
-        if (scored.length === 0) {
-            resultsEl.innerHTML = `
-            <div class="results-placeholder">
-                <div class="placeholder-icon">🤷</div>
-                <p>Nessun cocktail trovato con questi ingredienti.<br>Prova a selezionare qualcosa di diverso.</p>
-            </div>`;
-            return;
-        }
-
-        const STRENGTH_LABEL = { light:'Leggero', medium:'Medio', strong:'Forte', 'spirit-forward':'Spirit-forward' };
-        const STYLE_LABEL = { short:'Short', long:'Long', sparkling:'Sparkling', shot:'Shot' };
-
-        resultsEl.innerHTML = `
-        <div class="results-header-bar">
-            <div class="results-count">${scored.length} cocktail trovati</div>
-            <div class="results-hint">Ordinati per compatibilità</div>
-        </div>
-        <div class="results-grid">
-            ${scored.map(({ c }) => `
-            <a href="cocktail-recipe.html?id=${c.id}&from=finder" class="card card--grid">
-                <div class="card__top">
-                    <div class="card__info">
-                        <div class="card__title">${c.name}</div>
-                        <div class="card__desc">${c.tagline}</div>
-                    </div>
-                </div>
-                <div class="card__tags">
-                    ${c.iba ? '<span class="badge badge--iba">IBA</span>' : ''}
-                    ${c.difford && !c.iba ? '<span class="badge badge--difford">Difford\'s</span>' : ''}
-                    ${c.strength && c.strength !== 'none' ? `<span class="badge badge--strength">${STRENGTH_LABEL[c.strength]||c.strength}</span>` : ''}
-                    ${c.style ? `<span class="badge badge--style">${STYLE_LABEL[c.style]||c.style}</span>` : ''}
-                    ${(c.taste||[]).slice(0,2).map(t=>`<span class="badge badge--taste">${t}</span>`).join('')}
-                </div>
-                <div class="card__spirits">
-                    ${(c.baseSpirits||[]).map(s=>`<span class="spirit-tag ${[...selected.spirits,...selected.extras].some(sel=>s.toLowerCase().includes(sel)||sel.includes(s.toLowerCase())) ? 'spirit-tag--match':''}">${s}</span>`).join('')}
-                </div>
-            </a>
-            `).join('')}
-        </div>`;
-    }
-
-    /* ── Precarica i dati in background al mount ── */
-    TheBarConfig.loadCocktails().then(cocktails => {
-        window._finderCocktails = cocktails;
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js")
+        .then(reg => console.log("[PWA] SW registrato:", reg.scope))
+        .catch(err => console.warn("[PWA] SW non registrato:", err));
     });
-
-})();
+  }
 </script>
 
-</body>
-</html>
+</body>
+</html>

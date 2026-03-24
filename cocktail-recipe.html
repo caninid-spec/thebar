@@ -1,235 +1,245 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="thebar.ico" type="image/x-icon">
-    <meta name="theme-color" content="#043927" />
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="The Bar">
-    <title>Cocktail — The Bar</title>
-    <link rel="stylesheet" href="core.css">
-    <link rel="stylesheet" href="components.css">
-    <link rel="stylesheet" href="recipe-style.css">
-    <script src="config.js"></script>
-</head>
-<body>
-
-<div class="recipe-page" id="recipe-page">
-
-    <!-- Nav -->
-    <nav class="recipe-nav">
-        <div class="recipe-breadcrumb" id="recipe-breadcrumb">
-            <a href="index.html" class="breadcrumb-pill">← The Bar</a>
-            <!-- Il secondo pill viene iniettato da JS se ?from= è presente -->
-        </div>
-        <div class="nav-search-mini">
-            <input type="text" id="nav-search" placeholder="Cerca cocktail…" autocomplete="off">
-        </div>
-    </nav>
-
-    <!-- Hero -->
-    <header class="page-header page-header--hero" id="recipe-hero">
-        <h1 class="page-header__title" id="hero-title">—</h1>
-        <p class="page-header__subtitle" id="hero-tagline"></p>
-        <div class="page-header__meta" id="hero-badges"></div>
-    </header>
-
-    <!-- Content -->
-    <div class="recipe-content container-narrow">
-
-        <!-- Info tecnica -->
-        <div class="recipe-specs" id="recipe-specs"></div>
-
-        <!-- Tab IBA / Difford's (o ricetta unica) -->
-        <div class="recipe-tabs" id="recipe-tabs"></div>
-
-        <!-- Descrizione e storia -->
-        <div class="recipe-text" id="recipe-text"></div>
-
-    </div>
-
-    <!-- Footer -->
-    <footer class="recipe-footer">
-        <a href="index.html">← Torna a The Bar</a>
-        <a href="cocktail-finder.html">🎯 Trova il tuo cocktail</a>
-    </footer>
-
-</div>
-
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="thebar.ico" type="image/x-icon">
+    <meta name="theme-color" content="#043927" />
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="The Bar">
+    <title>Cocktail — The Bar</title>
+    <link rel="stylesheet" href="core.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="recipe-style.css">
+    <script src="config.js"></script>
+</head>
+<body>
+
+<div class="recipe-page" id="recipe-page">
+
+    <!-- Nav -->
+    <nav class="recipe-nav">
+        <div class="recipe-breadcrumb" id="recipe-breadcrumb">
+            <a href="index.html" class="breadcrumb-pill">← The Bar</a>
+            <!-- Il secondo pill viene iniettato da JS se ?from= è presente -->
+        </div>
+        <div class="nav-search-mini">
+            <input type="text" id="nav-search" placeholder="Cerca cocktail…" autocomplete="off">
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="page-header page-header--hero" id="recipe-hero">
+        <h1 class="page-header__title" id="hero-title">—</h1>
+        <p class="page-header__subtitle" id="hero-tagline"></p>
+        <div class="page-header__meta" id="hero-badges"></div>
+    </header>
+
+    <!-- Content -->
+    <div class="recipe-content container-narrow">
+
+        <!-- Info tecnica -->
+        <div class="recipe-specs" id="recipe-specs"></div>
+
+        <!-- Tab IBA / Difford's (o ricetta unica) -->
+        <div class="recipe-tabs" id="recipe-tabs"></div>
+
+        <!-- Descrizione e storia -->
+        <div class="recipe-text" id="recipe-text"></div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="recipe-footer">
+        <a href="index.html">← Torna a The Bar</a>
+        <a href="cocktail-finder.html">🎯 Trova il tuo cocktail</a>
+    </footer>
+
+</div>
+
+<script>
+(function () {
+
+    const params = new URLSearchParams(location.search);
+    const id     = params.get('id');
+    const from   = params.get('from'); // categoria/contesto di provenienza
+
+    if (!id) {
+        document.getElementById('hero-title').textContent   = 'Cocktail non trovato';
+        document.getElementById('hero-tagline').textContent = 'Torna alla home per cercare un cocktail.';
+        return;
+    }
+
+    /* ── Breadcrumb: costruisce il secondo pill se ?from= è presente ── */
+    (function buildBreadcrumb() {
+        if (!from) return; // solo "← The Bar", nessun secondo pill
+
+        const CATEGORIES = TheBarConfig.CATEGORY_PAGES;
+
+        /* Mappa chiave → { label, url } per ogni contesto di provenienza */
+        const FROM_MAP = {
+            // Categorie Nomad
+            aperitivi:      { label: 'Aperitivi',                 url: 'category.html?name=aperitivi' },
+            light:          { label: 'Light Spirited',            url: 'category.html?name=light' },
+            dark:           { label: 'Dark Spirited',             url: 'category.html?name=dark' },
+            classics:       { label: 'Classics',                  url: 'category.html?name=classics' },
+            soft:           { label: 'Soft Cocktails',            url: 'category.html?name=soft' },
+            basics:         { label: 'Basics',                    url: 'category.html?name=basics' },
+            // Categorie IBA
+            unforgettables: { label: 'The Unforgettables',        url: 'category.html?name=unforgettables' },
+            contemporary:   { label: 'The Contemporary Classics', url: 'category.html?name=contemporary' },
+            new_era:        { label: 'The New Era Drinks',        url: 'category.html?name=new_era' },
+            // Contesti speciali
+            all:            { label: 'All Cocktails',             url: 'cocktail-all.html' },
+            search:         { label: 'Ricerca',                   url: 'search-results.html' },
+            finder:         { label: 'Trova il cocktail',         url: 'cocktail-finder.html' },
+        };
+
+        const origin = FROM_MAP[from];
+        if (!origin) return;
+
+        const breadcrumb = document.getElementById('recipe-breadcrumb');
+        const pill = document.createElement('a');
+        pill.href = origin.url;
+        pill.className = 'breadcrumb-pill breadcrumb-pill--secondary';
+        pill.textContent = '← ' + origin.label;
+        breadcrumb.appendChild(pill);
+    })();
+
+    /* ── Label localizzate da TheBarConfig ── */
+    const { SERVE_LABEL } = TheBarConfig;
+
+    const GLASS_LABEL = {
+        coupe:'Coppa', rocks:'Rocks / Old Fashioned', highball:'Highball', flute:'Flute', martini:'Martini',
+        'nick&nora':'Nick & Nora', hurricane:'Hurricane', mule:'Mule Mug', wine:'Calice da vino',
+        shot:'Shot', champagne:'Flute Champagne', none:'—'
+    };
+    const ICE_LABEL   = { none:'Niente ghiaccio', cubed:'Cubetti', 'large cube':'Cubo grande', crushed:'Ghiaccio tritato', sphere:'Sfera', blended:'Frullato' };
+    const STYLE_LABEL = { short:'Short drink', long:'Long drink', shot:'Shot', sparkling:'Sparkling' };
+
+    /* ── Caricamento asincrono ── */
+    TheBarConfig.loadCocktails().then(() => {
+
+        const c = window.COCKTAILS_BY_ID?.[id];
+
+        if (!c) {
+            document.getElementById('hero-title').textContent   = 'Cocktail non trovato';
+            document.getElementById('hero-tagline').textContent = 'ID non valido. Torna alla home.';
+            return;
+        }
+
+        document.title = `${c.name} — The Bar`;
+
+        /* ── Hero ── */
+        document.getElementById('hero-title').textContent   = c.name;
+        document.getElementById('hero-tagline').textContent = c.tagline;
+
+        /* ── Badges ── */
+        const badges = [];
+        if (c.iba)    badges.push('<span class="badge badge--iba">IBA Official</span>');
+        if (c.difford) badges.push('<span class="badge badge--difford">Difford\'s Guide</span>');
+        (c.taste || []).forEach(t => badges.push(`<span class="badge badge--taste">${t}</span>`));
+        if (c.strength && c.strength !== 'none') {
+            const sl = { light:'Leggero', medium:'Medio', strong:'Forte', 'spirit-forward':'Spirit-forward' };
+            badges.push(`<span class="badge badge--strength">${sl[c.strength] || c.strength}</span>`);
+        }
+        document.getElementById('hero-badges').innerHTML = badges.join('');
+
+        /* ── Specs ── */
+        document.getElementById('recipe-specs').innerHTML = `
+        <div class="specs-grid">
+            ${c.glass && c.glass !== 'none' ? `<div class="spec-item"><div class="spec-label">Bicchiere</div><div class="spec-value">${GLASS_LABEL[c.glass] || c.glass}</div></div>` : ''}
+            ${c.serve ? `<div class="spec-item"><div class="spec-label">Preparazione</div><div class="spec-value">${SERVE_LABEL[c.serve] || c.serve}</div></div>` : ''}
+            ${c.ice ? `<div class="spec-item"><div class="spec-label">Ghiaccio</div><div class="spec-value">${ICE_LABEL[c.ice] || c.ice}</div></div>` : ''}
+            ${c.style ? `<div class="spec-item"><div class="spec-label">Stile</div><div class="spec-value">${STYLE_LABEL[c.style] || c.style}</div></div>` : ''}
+            ${c.garnish && c.garnish !== 'Nessuno' ? `<div class="spec-item spec-item--wide"><div class="spec-label">Guarnizione</div><div class="spec-value">${c.garnish}</div></div>` : ''}
+            ${c.baseSpirits?.length ? `<div class="spec-item spec-item--wide"><div class="spec-label">Spirits</div><div class="spec-value">${c.baseSpirits.map(s => `<span class="spirit-tag">${s}</span>`).join('')}</div></div>` : ''}
+        </div>`;
+
+        /* ── Ricette ── */
+        const tabsEl = document.getElementById('recipe-tabs');
+
+        function renderIngredients(ing) {
+            return ing.map(i => `
+                <div class="ing-row">
+                    <span class="ing-amount">${i.amount}</span>
+                    <span class="ing-item">${i.item}</span>
+                </div>`).join('');
+        }
+
+        function renderRecipeBlock(recipe, label) {
+            return `
+            <div class="recipe-block">
+                ${label ? `<div class="recipe-block-label">${label}</div>` : ''}
+                <div class="ingredients-list">${renderIngredients(recipe.ingredients || [])}</div>
+                <div class="method-block">
+                    <div class="method-label">Metodo</div>
+                    <p class="method-text">${recipe.method || ''}</p>
+                </div>
+                ${recipe.notes ? `<div class="notes-block"><span class="notes-icon">💡</span><p>${recipe.notes}</p></div>` : ''}
+            </div>`;
+        }
+
+        if (c.recipeIBA && c.recipeDifford) {
+            tabsEl.innerHTML = `
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="iba">✨ Versione IBA</button>
+                <button class="tab-btn" data-tab="difford">📖 Versione Difford's</button>
+            </div>
+            <div class="tab-panel active" id="panel-iba">${renderRecipeBlock(c.recipeIBA)}</div>
+            <div class="tab-panel" id="panel-difford">${renderRecipeBlock(c.recipeDifford)}</div>`;
+
+            tabsEl.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabsEl.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    tabsEl.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+                });
+            });
+        } else if (c.recipeIBA) {
+            tabsEl.innerHTML = `<div class="recipe-single-label">✨ Versione IBA</div>` + renderRecipeBlock(c.recipeIBA);
+        } else if (c.recipeDifford) {
+            tabsEl.innerHTML = `<div class="recipe-single-label">📖 Versione Difford's Guide</div>` + renderRecipeBlock(c.recipeDifford);
+        } else if (c.recipe) {
+            tabsEl.innerHTML = renderRecipeBlock(c.recipe);
+        }
+
+        /* ── Descrizione e storia ── */
+        const parts = [];
+        if (c.description) parts.push(`<p class="recipe-description">${c.description}</p>`);
+        if (c.history) parts.push(`<div class="history-block"><div class="history-label">📜 Storia</div><p>${c.history}</p></div>`);
+        document.getElementById('recipe-text').innerHTML = parts.join('');
+
+    }).catch(() => {
+        document.getElementById('hero-title').textContent   = 'Errore di caricamento';
+        document.getElementById('hero-tagline').textContent = 'Impossibile caricare i dati. Riprova.';
+    });
+
+    /* ── Nav search mini (non dipende dai dati) ── */
+    const navSearch = document.getElementById('nav-search');
+    if (navSearch) {
+        navSearch.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && navSearch.value.trim()) {
+                window.location.href = 'search-results.html?q=' + encodeURIComponent(navSearch.value.trim());
+            }
+        });
+    }
+
+})();
+</script>
+
 <script>
-(function () {
-
-    const params = new URLSearchParams(location.search);
-    const id     = params.get('id');
-    const from   = params.get('from'); // categoria/contesto di provenienza
-
-    if (!id) {
-        document.getElementById('hero-title').textContent   = 'Cocktail non trovato';
-        document.getElementById('hero-tagline').textContent = 'Torna alla home per cercare un cocktail.';
-        return;
-    }
-
-    /* ── Breadcrumb: costruisce il secondo pill se ?from= è presente ── */
-    (function buildBreadcrumb() {
-        if (!from) return; // solo "← The Bar", nessun secondo pill
-
-        const CATEGORIES = TheBarConfig.CATEGORY_PAGES;
-
-        /* Mappa chiave → { label, url } per ogni contesto di provenienza */
-        const FROM_MAP = {
-            // Categorie Nomad
-            aperitivi:      { label: 'Aperitivi',                 url: 'category.html?name=aperitivi' },
-            light:          { label: 'Light Spirited',            url: 'category.html?name=light' },
-            dark:           { label: 'Dark Spirited',             url: 'category.html?name=dark' },
-            classics:       { label: 'Classics',                  url: 'category.html?name=classics' },
-            soft:           { label: 'Soft Cocktails',            url: 'category.html?name=soft' },
-            basics:         { label: 'Basics',                    url: 'category.html?name=basics' },
-            // Categorie IBA
-            unforgettables: { label: 'The Unforgettables',        url: 'category.html?name=unforgettables' },
-            contemporary:   { label: 'The Contemporary Classics', url: 'category.html?name=contemporary' },
-            new_era:        { label: 'The New Era Drinks',        url: 'category.html?name=new_era' },
-            // Contesti speciali
-            all:            { label: 'All Cocktails',             url: 'cocktail-all.html' },
-            search:         { label: 'Ricerca',                   url: 'search-results.html' },
-            finder:         { label: 'Trova il cocktail',         url: 'cocktail-finder.html' },
-        };
-
-        const origin = FROM_MAP[from];
-        if (!origin) return;
-
-        const breadcrumb = document.getElementById('recipe-breadcrumb');
-        const pill = document.createElement('a');
-        pill.href = origin.url;
-        pill.className = 'breadcrumb-pill breadcrumb-pill--secondary';
-        pill.textContent = '← ' + origin.label;
-        breadcrumb.appendChild(pill);
-    })();
-
-    /* ── Label localizzate da TheBarConfig ── */
-    const { SERVE_LABEL } = TheBarConfig;
-
-    const GLASS_LABEL = {
-        coupe:'Coppa', rocks:'Rocks / Old Fashioned', highball:'Highball', flute:'Flute', martini:'Martini',
-        'nick&nora':'Nick & Nora', hurricane:'Hurricane', mule:'Mule Mug', wine:'Calice da vino',
-        shot:'Shot', champagne:'Flute Champagne', none:'—'
-    };
-    const ICE_LABEL   = { none:'Niente ghiaccio', cubed:'Cubetti', 'large cube':'Cubo grande', crushed:'Ghiaccio tritato', sphere:'Sfera', blended:'Frullato' };
-    const STYLE_LABEL = { short:'Short drink', long:'Long drink', shot:'Shot', sparkling:'Sparkling' };
-
-    /* ── Caricamento asincrono ── */
-    TheBarConfig.loadCocktails().then(() => {
-
-        const c = window.COCKTAILS_BY_ID?.[id];
-
-        if (!c) {
-            document.getElementById('hero-title').textContent   = 'Cocktail non trovato';
-            document.getElementById('hero-tagline').textContent = 'ID non valido. Torna alla home.';
-            return;
-        }
-
-        document.title = `${c.name} — The Bar`;
-
-        /* ── Hero ── */
-        document.getElementById('hero-title').textContent   = c.name;
-        document.getElementById('hero-tagline').textContent = c.tagline;
-
-        /* ── Badges ── */
-        const badges = [];
-        if (c.iba)    badges.push('<span class="badge badge--iba">IBA Official</span>');
-        if (c.difford) badges.push('<span class="badge badge--difford">Difford\'s Guide</span>');
-        (c.taste || []).forEach(t => badges.push(`<span class="badge badge--taste">${t}</span>`));
-        if (c.strength && c.strength !== 'none') {
-            const sl = { light:'Leggero', medium:'Medio', strong:'Forte', 'spirit-forward':'Spirit-forward' };
-            badges.push(`<span class="badge badge--strength">${sl[c.strength] || c.strength}</span>`);
-        }
-        document.getElementById('hero-badges').innerHTML = badges.join('');
-
-        /* ── Specs ── */
-        document.getElementById('recipe-specs').innerHTML = `
-        <div class="specs-grid">
-            ${c.glass && c.glass !== 'none' ? `<div class="spec-item"><div class="spec-label">Bicchiere</div><div class="spec-value">${GLASS_LABEL[c.glass] || c.glass}</div></div>` : ''}
-            ${c.serve ? `<div class="spec-item"><div class="spec-label">Preparazione</div><div class="spec-value">${SERVE_LABEL[c.serve] || c.serve}</div></div>` : ''}
-            ${c.ice ? `<div class="spec-item"><div class="spec-label">Ghiaccio</div><div class="spec-value">${ICE_LABEL[c.ice] || c.ice}</div></div>` : ''}
-            ${c.style ? `<div class="spec-item"><div class="spec-label">Stile</div><div class="spec-value">${STYLE_LABEL[c.style] || c.style}</div></div>` : ''}
-            ${c.garnish && c.garnish !== 'Nessuno' ? `<div class="spec-item spec-item--wide"><div class="spec-label">Guarnizione</div><div class="spec-value">${c.garnish}</div></div>` : ''}
-            ${c.baseSpirits?.length ? `<div class="spec-item spec-item--wide"><div class="spec-label">Spirits</div><div class="spec-value">${c.baseSpirits.map(s => `<span class="spirit-tag">${s}</span>`).join('')}</div></div>` : ''}
-        </div>`;
-
-        /* ── Ricette ── */
-        const tabsEl = document.getElementById('recipe-tabs');
-
-        function renderIngredients(ing) {
-            return ing.map(i => `
-                <div class="ing-row">
-                    <span class="ing-amount">${i.amount}</span>
-                    <span class="ing-item">${i.item}</span>
-                </div>`).join('');
-        }
-
-        function renderRecipeBlock(recipe, label) {
-            return `
-            <div class="recipe-block">
-                ${label ? `<div class="recipe-block-label">${label}</div>` : ''}
-                <div class="ingredients-list">${renderIngredients(recipe.ingredients || [])}</div>
-                <div class="method-block">
-                    <div class="method-label">Metodo</div>
-                    <p class="method-text">${recipe.method || ''}</p>
-                </div>
-                ${recipe.notes ? `<div class="notes-block"><span class="notes-icon">💡</span><p>${recipe.notes}</p></div>` : ''}
-            </div>`;
-        }
-
-        if (c.recipeIBA && c.recipeDifford) {
-            tabsEl.innerHTML = `
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="iba">✨ Versione IBA</button>
-                <button class="tab-btn" data-tab="difford">📖 Versione Difford's</button>
-            </div>
-            <div class="tab-panel active" id="panel-iba">${renderRecipeBlock(c.recipeIBA)}</div>
-            <div class="tab-panel" id="panel-difford">${renderRecipeBlock(c.recipeDifford)}</div>`;
-
-            tabsEl.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    tabsEl.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                    tabsEl.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-                    btn.classList.add('active');
-                    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-                });
-            });
-        } else if (c.recipeIBA) {
-            tabsEl.innerHTML = `<div class="recipe-single-label">✨ Versione IBA</div>` + renderRecipeBlock(c.recipeIBA);
-        } else if (c.recipeDifford) {
-            tabsEl.innerHTML = `<div class="recipe-single-label">📖 Versione Difford's Guide</div>` + renderRecipeBlock(c.recipeDifford);
-        } else if (c.recipe) {
-            tabsEl.innerHTML = renderRecipeBlock(c.recipe);
-        }
-
-        /* ── Descrizione e storia ── */
-        const parts = [];
-        if (c.description) parts.push(`<p class="recipe-description">${c.description}</p>`);
-        if (c.history) parts.push(`<div class="history-block"><div class="history-label">📜 Storia</div><p>${c.history}</p></div>`);
-        document.getElementById('recipe-text').innerHTML = parts.join('');
-
-    }).catch(() => {
-        document.getElementById('hero-title').textContent   = 'Errore di caricamento';
-        document.getElementById('hero-tagline').textContent = 'Impossibile caricare i dati. Riprova.';
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js")
+        .then(reg => console.log("[PWA] SW registrato:", reg.scope))
+        .catch(err => console.warn("[PWA] SW non registrato:", err));
     });
-
-    /* ── Nav search mini (non dipende dai dati) ── */
-    const navSearch = document.getElementById('nav-search');
-    if (navSearch) {
-        navSearch.addEventListener('keydown', e => {
-            if (e.key === 'Enter' && navSearch.value.trim()) {
-                window.location.href = 'search-results.html?q=' + encodeURIComponent(navSearch.value.trim());
-            }
-        });
-    }
-
-})();
+  }
 </script>
 
-</body>
-</html>
+</body>
+</html>
