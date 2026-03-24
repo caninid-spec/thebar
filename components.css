@@ -336,7 +336,7 @@ article.recipe-card.open .recipe-body { display: block; }
     .recipe-toggle { padding: 12px 14px; }
     .recipe-body { padding: 0 14px 16px; }
     .recipe-badges { display: none; }
-    .recipe-toggle-info h3 { font-size: 1.2rem; }  /* o la dimensione che preferisci */
+    .recipe-toggle-info h3 { font-size: 1.1rem; }  /* o la dimensione che preferisci */
     .recipe-tagline { display: none; }
 }
 @media (max-width: 500px) {
