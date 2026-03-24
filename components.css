@@ -497,13 +497,13 @@ article.recipe-card.open .recipe-body { display: block; }
 .card--list .card__emoji  { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
 .card--list .card__body   { flex: 1; min-width: 0; }
 .card--list .card__title  {
-    font-family: var(--font-display-alt); font-size: 0.88rem;
-    letter-spacing: 0.02em;
+    font-family: var(--font-display-alt); font-size: 1.2rem;
+    letter-spacing: 0.2em;
     color: var(--text); margin-bottom: 4px;
 }
 .card--list .card__meta   { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 5px; }
 .card--list .card__desc   {
-    margin: 0; font-size: 0.82rem; color: var(--muted);
+    margin: 0; font-size: 1rem; color: var(--muted);
     font-style: italic; white-space: nowrap; overflow: hidden;
     text-overflow: ellipsis; font-family: var(--font-serif);
 }
