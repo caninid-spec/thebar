@@ -14,15 +14,15 @@
       "type": "image/x-icon"
     },
     {
-      "src": "icon-192.png",
+      "src": "thebar.ico",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/x-icon",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "thebar.ico",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/x-icon",
       "purpose": "any maskable"
     }
   ],
